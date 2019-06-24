@@ -1,0 +1,22 @@
+opsman-configuration:
+  vsphere:
+    vcenter:
+      url: ((vcenter_url))
+      username: ((vcenter_user.username))
+      password: ((vcenter_user.password))
+      datastore: vnx5600-toronto-2
+      datacenter: canada-dc
+      resource_pool: /canada-dc/host/canada/Resources/oshawa
+      folder: /canada-dc/vm/oshawa_vms
+      insecure: 1
+    disk_type: thin
+    private_ip: 192.168.10.10
+    dns: 10.74.1.10
+    ntp: ntp.ubuntu.com
+    ssh_public_key: ((vsphere_ssh_key))
+    hostname: pcf.ci.vsphere.platform-automation.cf-app.com
+    network: vxw-dvs-16-virtualwire-228-sid-7044-lsw-cf-norm-pcf04-infra
+    netmask: 255.255.255.192
+    gateway: 192.168.10.1
+    memory: 9
+    cpu: 2
