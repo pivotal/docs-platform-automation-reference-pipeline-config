@@ -1,4 +1,4 @@
-pivnet-api-token: ((pivnet_token))
+pivnet-api-token: ((pivnet-token))
 pivnet-file-glob: "*pivotal"
 pivnet-product-slug: "p-metrics"
 product-version: "1.8.24"
