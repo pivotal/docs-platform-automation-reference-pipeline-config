@@ -1,0 +1,6 @@
+pivnet-api-token: ((pivnet_token))
+pivnet-file-glob: "*pivotal"
+pivnet-product-slug: "p-metrics"
+product-version: "1.8.24"
+download-stemcell: true
+stemcell-iaas: "vsphere"
