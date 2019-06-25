@@ -47,8 +47,8 @@ properties-configuration:
     persistent_datastores_string: vnx5600-toronto-2
     ssl_verification_enabled: false
     vcenter_host: vcenter.toronto.cf-app.com
-    vcenter_password: ((vcenter_user.username))  # credhub
-    vcenter_username: ((vcenter_user.password))
+    vcenter_username: ((vcenter_user.username))
+    vcenter_password: ((vcenter_user.password)) # credhub
 
   security-configuration:
     generate_vm_passwords: true
