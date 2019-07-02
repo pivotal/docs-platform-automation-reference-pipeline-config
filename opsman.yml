@@ -2,7 +2,7 @@ opsman-configuration:
   vsphere:
     vcenter:
       url: ((vcenter_url))
-      username: ((vcenter_username))
+      username: ((vcenter_user))
       password: ((vcenter_password)) # credhub
       datastore: LUN01
       datacenter: Datacenter
