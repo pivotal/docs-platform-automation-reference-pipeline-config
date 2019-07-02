@@ -15,7 +15,7 @@ product-properties:
     value: ((vcenter_url))
   .properties.cloud_provider.vsphere.vcenter_master_creds:
     value:
-      identity: ((vcenter_user.user))
+      identity: ((vcenter_user.username))
       password: ((vcenter_user.password))
   .properties.cloud_provider.vsphere.vcenter_vms:
     value: pks_vms
