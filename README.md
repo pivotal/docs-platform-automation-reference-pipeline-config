@@ -1,4 +1,4 @@
-## Platform Automation Reference Pipeline Configs
+## Platform Automation Reference Pipeline PKS Configs
 
 These configs are used
 in the [Platform Automation reference pipeline.](http://docs.pivotal.io/platform-automation/v3.0/pipeline/multiple-products.html)
