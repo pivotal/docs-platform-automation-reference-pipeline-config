@@ -9,7 +9,7 @@ opsman-configuration:
       resource_pool: /Datacenter/host/Cluster
       #      folder: /canada-dc/vm/oshawa_vms
       insecure: 1
-    ssh_password: ((vcenter_password))
+    ssh_public_key: ((vsphere_ssh_key))
     disk_type: thin
     private_ip: 172.16.1.10
     dns: 10.192.2.10
