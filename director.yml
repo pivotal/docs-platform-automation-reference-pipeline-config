@@ -1,16 +1,8 @@
 az-configuration:
 - clusters:
-  - cluster: canada
-    resource_pool: oshawa
-  name: AZ01
-- clusters:
-  - cluster: canada
-    resource_pool: oshawa
-  name: AZ02
-- clusters:
-  - cluster: canada
-    resource_pool: oshawa
-  name: AZ03
+  - cluster: Cluster
+    resource_pool: pks-az1
+  name: pks-az1
 
 properties-configuration:
   director_configuration:
@@ -33,20 +25,25 @@ properties-configuration:
     metrics_ip: null
     ntp_servers_string: ntp.ubuntu.com
     opentsdb_ip: null
-    post_deploy_enabled: false
+    post_deploy_enabled: true
     resurrector_enabled: false
-    retry_bosh_deploys: false
+    retry_bosh_deploys: true
 
   iaas_configuration:
-    bosh_disk_path: oshawa
-    bosh_template_folder: oshawa_templates
-    bosh_vm_folder: oshawa_vms
-    datacenter: canada-dc
-    ephemeral_datastores_string: vnx5600-toronto-2
-    nsx_networking_enabled: false
-    persistent_datastores_string: vnx5600-toronto-2
-    ssl_verification_enabled: false
-    vcenter_host: vcenter.toronto.cf-app.com
+    bosh_disk_path: ((iaas.bosh_disk_path))
+    bosh_template_folder: ((iaas.bosh_template_folder))
+    bosh_vm_folder: ((iaas.bosh_vm_folder))
+    datacenter: ((iaas.datacenter))
+    ephemeral_datastores_string: ((iaas.ephemeral_datastores_string))
+    nsx_address: ((iaas.nsx_address))
+    nsx_ca_certificate: ((iaas.nsx_ca_certificate))
+    nsx_mode: ((iaas.nsx_mode))
+    nsx_networking_enabled: ((iaas.nsx_networking_enabled))
+    nsx_password: ((iaas.nsx_password))
+    nsx_username: ((iaas.nsx_username))
+    persistent_datastores_string: ((iaas.persistent_datastores_string))
+    ssl_verification_enabled: ((iaas.ssl_verification_enabled))
+    vcenter_host: ((vcenter_url))
     vcenter_username: ((vcenter_user.username))
     vcenter_password: ((vcenter_user.password)) # credhub
 
@@ -58,58 +55,32 @@ properties-configuration:
 
 network-assignment:
   network:
-    name: INFRASTRUCTURE
+    name: PKS-Infrastructure
   other_availability_zones: []
   singleton_availability_zone:
-    name: AZ01
+    name: pks-az1
 
 networks-configuration:
   icmp_checks_enabled: false
   networks:
-  - name: INFRASTRUCTURE
+  - name: PKS-Infrastructure
     subnets:
     - availability_zone_names:
-      - AZ01
-      - AZ02
-      - AZ03
-      cidr: 192.168.10.0/26
-      dns: 10.74.1.10
-      gateway: 192.168.10.1
-      iaas_identifier: vxw-dvs-16-virtualwire-228-sid-7044-lsw-cf-norm-pcf04-infra
-      reserved_ip_ranges: 192.168.10.2-192.168.10.10
-  - name: DEPLOYMENT
+      - pks-az1
+      cidr: 172.16.1.0/24
+      dns: 10.192.2.10, 10.192.2.11
+      gateway: 172.16.1.1
+      reserved_ip_ranges: 172.16.1.1-172.16.1.10
+      iaas_identifier: PKS-Infrastructure
+  - name: PKS-Services
     subnets:
     - availability_zone_names:
-      - AZ01
-      - AZ02
-      - AZ03
-      cidr: 192.168.20.0/22
-      dns: 10.74.1.10
-      gateway: 192.168.20.1
-      iaas_identifier: vxw-dvs-16-virtualwire-229-sid-7045-lsw-cf-norm-pcf04-ert
-      reserved_ip_ranges: 192.168.20.2-192.168.20.99
-  - name: SERVICES
-    subnets:
-    - availability_zone_names:
-      - AZ01
-      - AZ02
-      - AZ03
-      cidr: 192.168.24.0/22
-      dns: 10.74.1.10
-      gateway: 192.168.24.1
-      iaas_identifier: vxw-dvs-16-virtualwire-230-sid-7046-lsw-cf-norm-pcf04-pcf-tiles
-      reserved_ip_ranges: 192.168.24.2-192.168.24.99
-  - name: DYNAMIC-SERVICES
-    subnets:
-    - availability_zone_names:
-      - AZ01
-      - AZ02
-      - AZ03
-      cidr: 192.168.28.0/22
-      dns: 10.74.1.10
-      gateway: 192.168.28.1
-      iaas_identifier: vxw-dvs-16-virtualwire-231-sid-7047-lsw-cf-norm-pcf04-dynamic-services
-      reserved_ip_ranges: 192.168.28.2-192.168.28.99
+      - pks-az1
+      cidr: 172.16.2.0/24
+      dns: 10.192.2.10, 10.192.2.11
+      gateway: 172.16.2.1
+      reserved_ip_ranges: 172.16.2.1-172.16.2.10
+      iaas_identifier: PKS-Services
 resource-configuration:
   compilation:
     instance_type:
