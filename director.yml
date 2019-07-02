@@ -23,7 +23,7 @@ properties-configuration:
     keep_unreachable_vms: false
     max_threads: null
     metrics_ip: null
-    ntp_servers_string: ntp.ubuntu.com
+    ntp_servers_string: time.svc.pivotal.io
     opentsdb_ip: null
     post_deploy_enabled: true
     resurrector_enabled: false
