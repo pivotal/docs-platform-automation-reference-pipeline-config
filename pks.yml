@@ -63,8 +63,7 @@ product-properties:
   .properties.plan1_selector.active.allow_privileged_containers:
     value: false
   .properties.plan1_selector.active.description:
-    value: 'Example: This plan will configure a lightweight kubernetes cluster. Not
-      recommended for production workloads.'
+    value: ((plan1_selector_active_description))
   .properties.plan1_selector.active.disable_deny_escalating_exec:
     value: false
   .properties.plan1_selector.active.master_az_placement:
