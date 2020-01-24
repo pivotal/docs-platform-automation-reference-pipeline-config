@@ -1,3 +1,5 @@
+# assuming single pipeline per foundation.
+# cred names are reused, but exist on unique pipeline paths
 opsman-configuration:
   vsphere:
     vcenter:
@@ -7,16 +9,15 @@ opsman-configuration:
       datastore: LUN01
       datacenter: Datacenter
       resource_pool: /Datacenter/host/Cluster
-      #      folder: /canada-dc/vm/oshawa_vms
       insecure: 1
     ssh_public_key: ((vsphere_ssh_key))
     disk_type: thin
-    private_ip: 172.16.1.10
-    dns: 10.192.2.10
-    ntp: 10.192.2.11
-    hostname: opsmgr-02.haas-405.pez.pivotal.io
+    private_ip: 10.197.46.10
+    dns: 10.192.2.10,10.192.2.11
+    ntp: time.svc.pivotal.io
+    hostname: opsmgr-02.haas-427.pez.pivotal.io
     network: PKS-Infrastructure
     netmask: 255.255.255.0
-    gateway: 172.16.1.1
+    gateway: 10.197.46.1
     memory: 9
     cpu: 2

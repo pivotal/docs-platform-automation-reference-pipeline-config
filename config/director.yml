@@ -45,7 +45,7 @@ properties-configuration:
     ssl_verification_enabled: ((iaas.ssl_verification_enabled))
     vcenter_host: ((vcenter_url))
     vcenter_username: ((vcenter_user.username))
-    vcenter_password: ((vcenter_user.password)) # credhub
+    vcenter_password: ((vcenter_user.password))
 
   security-configuration:
     generate_vm_passwords: true
