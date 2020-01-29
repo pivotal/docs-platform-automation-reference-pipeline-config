@@ -112,4 +112,3 @@ resource-configuration:
         server_pools: []
 vmextensions-configuration: []
 vmtypes-configuration: {}
-

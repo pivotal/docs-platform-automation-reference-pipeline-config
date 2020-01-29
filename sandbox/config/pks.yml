@@ -162,4 +162,3 @@ errand-config:
     post-deploy-state: false
   wavefront-alert-deletion:
     pre-delete-state: false
-

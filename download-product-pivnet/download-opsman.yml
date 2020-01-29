@@ -1,4 +1,5 @@
 ---
+pivnet-api-token: ((pivnet-token))
 pivnet-product-slug: ops-manager
 
 file-glob: "ops-manager*.ova"

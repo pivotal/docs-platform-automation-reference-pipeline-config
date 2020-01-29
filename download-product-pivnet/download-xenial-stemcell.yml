@@ -1,10 +1,12 @@
 ---
-pivnet-product-slug: ops-manager
+pivnet-api-token: ((pivnet-token))
+pivnet-product-slug: stemcells-ubuntu-xenial
 
-file-glob: "ops-manager*.ova"
-product-version-regex: ^2\.[567]\.\d+.*$
+file-glob: "*vsphere*"
+product-version: "250.82"
 
 s3-access-key-id: ((s3_access_key_id))
 s3-secret-access-key: ((s3_secret_access_key))
 s3-bucket: ((s3_pivnet_products_bucket))
 s3-region-name: ((s3_region_name))
+s3-stemcell-path: xenial-stemcell
