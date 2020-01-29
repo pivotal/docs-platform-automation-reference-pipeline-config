@@ -5,21 +5,22 @@ az-configuration:
     resource_pool: pks-az1
 iaas-configurations:
 - additional_cloud_properties: {}
-  bosh_disk_path: ((iaas.bosh_disk_path))
-  bosh_template_folder: ((iaas.bosh_template_folder))
-  bosh_vm_folder: ((iaas.bosh_vm_folder))
-  datacenter: ((iaas.datacenter))
+  bosh_disk_path: ((bosh_disk_path))
+  bosh_template_folder: ((bosh_template_folder))
+  bosh_vm_folder: ((bosh_vm_folder))
+  datacenter: ((datacenter))
   disk_type: thin
-  ephemeral_datastores_string: ((iaas.ephemeral_datastores_string))
+  ephemeral_datastores_string: ((ephemeral_datastores_string))
   name: default
+  nsx_t_auth_type: local_user
   nsx_address: ((iaas.nsx_address))
   nsx_ca_certificate: ((iaas.nsx_ca_certificate))
-  nsx_mode: ((iaas.nsx_mode))
-  nsx_networking_enabled: ((iaas.nsx_networking_enabled))
+  nsx_mode: ((nsx_mode))
+  nsx_networking_enabled: ((nsx_networking_enabled))
   nsx_password: ((iaas.nsx_password))
   nsx_username: ((iaas.nsx_username))
-  persistent_datastores_string: ((iaas.persistent_datastores_string))
-  ssl_verification_enabled: ((iaas.ssl_verification_enabled))
+  persistent_datastores_string: ((persistent_datastores_string))
+  ssl_verification_enabled: ((ssl_verification_enabled))
   vcenter_host: ((vcenter_url))
   vcenter_password: ((vcenter_user.password))
   vcenter_username: ((vcenter_user.username))
@@ -30,7 +31,7 @@ network-assignment:
   singleton_availability_zone:
     name: pks-az1
 networks-configuration:
-  icmp_checks_enabled: false
+  icmp_checks_enabled: true
   networks:
   - name: PKS-Infrastructure
     subnets:
@@ -68,11 +69,11 @@ properties-configuration:
     job_configuration_on_tmpfs: false
     keep_unreachable_vms: false
     local_blobstore_options:
-      tls_enabled: true
+      enable_signed_urls: false
     ntp_servers_string: time.svc.pivotal.io
-    post_deploy_enabled: true
+    post_deploy_enabled: false
     resurrector_enabled: false
-    retry_bosh_deploys: true
+    retry_bosh_deploys: false
     skip_director_drain: false
   dns_configuration:
     excluded_recursors: []
@@ -98,7 +99,7 @@ resource-configuration:
   director:
     instances: automatic
     persistent_disk:
-      size_mb: "512000"
+      size_mb: automatic
     instance_type:
       id: automatic
     nsx:

@@ -1,3 +1,5 @@
+# assuming single pipeline per foundation.
+# cred names are reused, but exist on unique pipeline paths
 opsman-configuration:
   vsphere:
     vcenter:
@@ -12,8 +14,8 @@ opsman-configuration:
     disk_type: thin
     private_ip: 172.16.1.10
     dns: 10.192.2.10
-    ntp: 10.192.2.11
-    hostname: opsmgr-02.haas-405.pez.pivotal.io
+    ntp: time.svc.pivotal.io
+    hostname: ((opsman_url))
     network: PKS-Infrastructure
     netmask: 255.255.255.0
     gateway: 172.16.1.1

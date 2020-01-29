@@ -1,0 +1,115 @@
+az-configuration:
+- name: pks-az1
+  clusters:
+  - cluster: Cluster
+    resource_pool: pks-az1
+iaas-configurations:
+- additional_cloud_properties: {}
+  bosh_disk_path: ((bosh_disk_path))
+  bosh_template_folder: ((bosh_template_folder))
+  bosh_vm_folder: ((bosh_vm_folder))
+  datacenter: ((datacenter))
+  disk_type: thin
+  ephemeral_datastores_string: ((ephemeral_datastores_string))
+  name: default
+  nsx_t_auth_type: local_user
+  nsx_address: ((iaas.nsx_address))
+  nsx_ca_certificate: ((iaas.nsx_ca_certificate))
+  nsx_mode: ((nsx_mode))
+  nsx_networking_enabled: ((nsx_networking_enabled))
+  nsx_password: ((iaas.nsx_password))
+  nsx_username: ((iaas.nsx_username))
+  persistent_datastores_string: ((persistent_datastores_string))
+  ssl_verification_enabled: ((ssl_verification_enabled))
+  vcenter_host: ((vcenter_url))
+  vcenter_password: ((vcenter_user.password))
+  vcenter_username: ((vcenter_user.username))
+network-assignment:
+  network:
+    name: PKS-Infrastructure
+  other_availability_zones: []
+  singleton_availability_zone:
+    name: pks-az1
+networks-configuration:
+  icmp_checks_enabled: false
+  networks:
+  - name: PKS-Infrastructure
+    subnets:
+    - iaas_identifier: PKS-Infrastructure
+      cidr: 172.16.1.0/24
+      dns: 10.192.2.10, 10.192.2.11
+      gateway: 172.16.1.1
+      reserved_ip_ranges: 172.16.1.1-172.16.1.10
+      availability_zone_names:
+      - pks-az1
+  - name: PKS-Services
+    subnets:
+    - iaas_identifier: PKS-Services
+      cidr: 172.16.2.0/24
+      dns: 10.192.2.10, 10.192.2.11
+      gateway: 172.16.2.1
+      reserved_ip_ranges: 172.16.2.1-172.16.2.10
+      availability_zone_names:
+      - pks-az1
+properties-configuration:
+  director_configuration:
+    blobstore_type: local
+    bosh_recreate_on_next_deploy: false
+    bosh_recreate_persistent_disks_on_next_deploy: false
+    database_type: internal
+    director_worker_count: 5
+    encryption:
+      keys: []
+      providers: []
+    hm_emailer_options:
+      enabled: false
+    hm_pager_duty_options:
+      enabled: false
+    identification_tags: {}
+    job_configuration_on_tmpfs: false
+    keep_unreachable_vms: false
+    local_blobstore_options:
+      tls_enabled: true
+    ntp_servers_string: time.svc.pivotal.io
+    post_deploy_enabled: true
+    resurrector_enabled: false
+    retry_bosh_deploys: true
+    skip_director_drain: false
+  dns_configuration:
+    excluded_recursors: []
+    handlers: []
+  security_configuration:
+    generate_vm_passwords: true
+    opsmanager_root_ca_trusted_certs: false
+  syslog_configuration:
+    enabled: false
+resource-configuration:
+  compilation:
+    instances: automatic
+    instance_type:
+      id: automatic
+    nsx:
+      security_groups: []
+      lbs: []
+    nsxt:
+      ns_groups: []
+      vif_type: null
+      lb:
+        server_pools: []
+  director:
+    instances: automatic
+    persistent_disk:
+      size_mb: "512000"
+    instance_type:
+      id: automatic
+    nsx:
+      security_groups: []
+      lbs: []
+    nsxt:
+      ns_groups: []
+      vif_type: null
+      lb:
+        server_pools: []
+vmextensions-configuration: []
+vmtypes-configuration: {}
+

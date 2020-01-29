@@ -1,0 +1,9 @@
+bosh_disk_path: pcf_disk
+bosh_template_folder: pcf_templates
+bosh_vm_folder: pcf_vms
+datacenter: Datacenter
+ephemeral_datastores_string: LUN01
+nsx_mode: nsx-t
+nsx_networking_enabled: true
+persistent_datastores_string: LUN01
+ssl_verification_enabled: false
