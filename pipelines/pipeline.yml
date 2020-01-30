@@ -253,6 +253,7 @@ jobs:
     input_mapping:
       config: configuration
       env: configuration
+      vars: configuration
     params:
       ENV_FILE: ((foundation))/config/env.yml
       DIRECTOR_CONFIG_FILE: ((foundation))/config/director.yml
@@ -346,7 +347,7 @@ jobs:
     params:
       CONFIG_FILE: ((foundation))/config/pks.yml
       ENV_FILE: ((foundation))/config/env.yml
-      VARS_FILES: ((foundation))/vars/pks.yml
+      VARS_FILES: vars/((foundation))/vars/pks.yml
 
 - name: apply-product-changes
   serial: true
