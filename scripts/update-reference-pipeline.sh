@@ -2,6 +2,12 @@
 
 set -eu
 
+echo "Setting download products pipeline..."
+
+fly -t ci sp -p reference-resources \
+  -c ~/workspace/docs-platform-automation-reference-pipeline-config/pipelines/download-products.yml \
+  --check-creds
+
 echo "Setting sandbox reference pipeline..."
 
 # Adds a tag to every job to tell the pipeline what remote worker to run on
