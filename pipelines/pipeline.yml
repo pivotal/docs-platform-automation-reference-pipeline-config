@@ -89,8 +89,8 @@ prepare-tasks-with-secrets: &prepare-tasks-with-secrets
     config: configuration
     vars: configuration
   params:
-    CONFIG_PATHS: config/((foundation))/config
-    VARS_PATHS: vars/((foundation))/vars
+    CONFIG_PATHS: config/foundations/config config/foundations/((foundation))/config
+    VARS_PATHS: config/foundations/vars vars/foundations/((foundation))/vars
   output_mapping:
     tasks: platform-automation-tasks
 # code_snippet single-product-prepare-tasks-with-secrets end yaml
@@ -146,8 +146,8 @@ jobs:
       env: configuration
       config: configuration
     params:
-      ENV_FILE: ((foundation))/config/env.yml
-      AUTH_CONFIG_FILE: ((foundation))/config/auth.yml
+      ENV_FILE: config/env.yml
+      AUTH_CONFIG_FILE: config/auth.yml
   - task: configure-director
     image: platform-automation-image
     file: platform-automation-tasks/tasks/configure-director.yml
@@ -156,7 +156,7 @@ jobs:
       env: configuration
       vars: configuration
     params:
-      ENV_FILE: ((foundation))/config/env.yml
+      ENV_FILE: config/env.yml
       DIRECTOR_CONFIG_FILE: ((foundation))/config/director.yml
       VARS_FILES: vars/((foundation))/vars/director.yml
   - task: apply-director-changes
@@ -165,7 +165,7 @@ jobs:
     input_mapping:
       env: configuration
     params:
-      ENV_FILE: ((foundation))/config/env.yml
+      ENV_FILE: config/env.yml
   - task: export-installation
     image: platform-automation-image
     file: platform-automation-tasks/tasks/export-installation.yml
@@ -173,7 +173,7 @@ jobs:
       env: configuration
     params:
       INSTALLATION_FILE: sandbox-installation-$timestamp.zip
-      ENV_FILE: ((foundation))/config/env.yml
+      ENV_FILE: config/env.yml
   - put: installation
     params:
       file: installation/sandbox-installation*.zip
@@ -200,7 +200,7 @@ jobs:
     input_mapping:
       env: configuration
     params:
-      ENV_FILE: ((foundation))/config/env.yml
+      ENV_FILE: config/env.yml
       INSTALLATION_FILE: sandbox-installation-$timestamp.zip
   - put: installation
     params:
@@ -242,7 +242,7 @@ jobs:
       config: configuration
       env: configuration
     params:
-      ENV_FILE: ((foundation))/config/env.yml
+      ENV_FILE: config/env.yml
       OPSMAN_CONFIG_FILE: ((foundation))/config/opsman.yml
       STATE_FILE: state-sandbox.yml
       INSTALLATION_FILE: sandbox-installation*.zip
@@ -255,7 +255,7 @@ jobs:
       env: configuration
       vars: configuration
     params:
-      ENV_FILE: ((foundation))/config/env.yml
+      ENV_FILE: config/env.yml
       DIRECTOR_CONFIG_FILE: ((foundation))/config/director.yml
       VARS_FILES: vars/((foundation))/vars/director.yml
   - task: apply-director-changes
@@ -264,14 +264,14 @@ jobs:
     input_mapping:
       env: configuration
     params:
-      ENV_FILE: ((foundation))/config/env.yml
+      ENV_FILE: config/env.yml
   - task: export-installation
     image: platform-automation-image
     file: platform-automation-tasks/tasks/export-installation.yml
     input_mapping:
       env: configuration
     params:
-      ENV_FILE: ((foundation))/config/env.yml
+      ENV_FILE: config/env.yml
       INSTALLATION_FILE: sandbox-installation-$timestamp.zip
   - put: installation
     params:
@@ -310,7 +310,7 @@ jobs:
       product: pks-product
       env: configuration
     params:
-      ENV_FILE: ((foundation))/config/env.yml
+      ENV_FILE: config/env.yml
   - task: upload-pks-stemcell
     image: platform-automation-image
     file: platform-automation-tasks/tasks/upload-stemcell.yml
@@ -318,7 +318,7 @@ jobs:
       env: configuration
       stemcell: pks-stemcell
     params:
-      ENV_FILE: ((foundation))/config/env.yml
+      ENV_FILE: config/env.yml
 
 - name: configure-pks
   serial: true
@@ -346,7 +346,7 @@ jobs:
       vars: configuration
     params:
       CONFIG_FILE: ((foundation))/config/pks.yml
-      ENV_FILE: ((foundation))/config/env.yml
+      ENV_FILE: config/env.yml
       VARS_FILES: vars/((foundation))/vars/pks.yml
 
 - name: apply-product-changes
@@ -372,21 +372,21 @@ jobs:
     input_mapping:
       env: configuration
     params:
-      ENV_FILE: ((foundation))/config/env.yml
+      ENV_FILE: config/env.yml
   - task: apply-product-changes
     image: platform-automation-image
     file: platform-automation-tasks/tasks/apply-changes.yml
     input_mapping:
       env: configuration
     params:
-      ENV_FILE: ((foundation))/config/env.yml
+      ENV_FILE: config/env.yml
   - task: check-pending-changes
     image: platform-automation-image
     file: platform-automation-tasks/tasks/check-pending-changes.yml
     input_mapping:
       env: configuration
     params:
-      ENV_FILE: ((foundation))/config/env.yml
+      ENV_FILE: config/env.yml
       ALLOW_PENDING_CHANGES: true
   - task: export-installation
     image: platform-automation-image
@@ -394,7 +394,7 @@ jobs:
     input_mapping:
       env: configuration
     params:
-      ENV_FILE: ((foundation))/config/env.yml
+      ENV_FILE: config/env.yml
       INSTALLATION_FILE: sandbox-installation-$timestamp.zip
   - put: installation
     params:
@@ -428,7 +428,7 @@ jobs:
       config: configuration
     params:
       CONFIG_FILE: ((foundation))/config/telemetry.yml
-      ENV_FILE: ((foundation))/config/env.yml
+      ENV_FILE: config/env.yml
   - task: send-telemetry-data
     image: platform-automation-image
     file: platform-automation-tasks/tasks/send-telemetry.yml
