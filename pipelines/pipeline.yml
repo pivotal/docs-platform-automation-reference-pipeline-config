@@ -120,7 +120,7 @@ jobs:
     input_mapping:
       config: configuration
     params:
-      CONFIG_FILE: ((foundation))/config/download-opsman.yml
+      CONFIG_FILE: foundations/((foundation))/config/download-opsman.yml
       SOURCE: s3
     output_mapping:
       downloaded-product: opsman-image
@@ -131,7 +131,7 @@ jobs:
       image: opsman-image
       config: configuration
     params:
-      OPSMAN_CONFIG_FILE: ((foundation))/config/opsman.yml
+      OPSMAN_CONFIG_FILE: foundations/((foundation))/config/opsman.yml
       STATE_FILE: state-sandbox.yml
     ensure: &put-state
       do:
@@ -157,8 +157,8 @@ jobs:
       vars: configuration
     params:
       ENV_FILE: config/env.yml
-      DIRECTOR_CONFIG_FILE: ((foundation))/config/director.yml
-      VARS_FILES: vars/((foundation))/vars/director.yml
+      DIRECTOR_CONFIG_FILE: foundations/((foundation))/config/director.yml
+      VARS_FILES: vars/foundations/vars/director.yml vars/foundations/((foundation))/vars/director.yml
   - task: apply-director-changes
     image: platform-automation-image
     file: platform-automation-tasks/tasks/apply-director-changes.yml
@@ -230,7 +230,7 @@ jobs:
     input_mapping:
       config: configuration
     params:
-      CONFIG_FILE: ((foundation))/config/download-opsman.yml
+      CONFIG_FILE: foundations/((foundation))/config/download-opsman.yml
       SOURCE: s3
     output_mapping:
       downloaded-product: opsman-image
@@ -243,7 +243,7 @@ jobs:
       env: configuration
     params:
       ENV_FILE: config/env.yml
-      OPSMAN_CONFIG_FILE: ((foundation))/config/opsman.yml
+      OPSMAN_CONFIG_FILE: foundations/((foundation))/config/opsman.yml
       STATE_FILE: state-sandbox.yml
       INSTALLATION_FILE: sandbox-installation*.zip
     ensure: *put-state
@@ -256,8 +256,8 @@ jobs:
       vars: configuration
     params:
       ENV_FILE: config/env.yml
-      DIRECTOR_CONFIG_FILE: ((foundation))/config/director.yml
-      VARS_FILES: vars/((foundation))/vars/director.yml
+      DIRECTOR_CONFIG_FILE: foundations/((foundation))/config/director.yml
+      VARS_FILES: vars/foundations/vars/director.yml vars/foundations/((foundation))/vars/director.yml
   - task: apply-director-changes
     image: platform-automation-image
     file: platform-automation-tasks/tasks/apply-director-changes.yml
@@ -298,7 +298,7 @@ jobs:
     input_mapping:
       config: configuration
     params:
-      CONFIG_FILE: ((foundation))/config/download-pks.yml
+      CONFIG_FILE: foundations/((foundation))/config/download-pks.yml
       SOURCE: s3
     output_mapping:
       downloaded-product: pks-product
@@ -345,7 +345,7 @@ jobs:
       env: configuration
       vars: configuration
     params:
-      CONFIG_FILE: ((foundation))/config/pks.yml
+      CONFIG_FILE: foundations/((foundation))/config/pks.yml
       ENV_FILE: config/env.yml
       VARS_FILES: vars/((foundation))/vars/pks.yml
 
@@ -427,7 +427,7 @@ jobs:
       env: configuration
       config: configuration
     params:
-      CONFIG_FILE: ((foundation))/config/telemetry.yml
+      CONFIG_FILE: foundations/((foundation))/config/telemetry.yml
       ENV_FILE: config/env.yml
   - task: send-telemetry-data
     image: platform-automation-image
