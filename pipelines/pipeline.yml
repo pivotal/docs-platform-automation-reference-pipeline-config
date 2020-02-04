@@ -122,7 +122,7 @@ jobs:
       vars: configuration
     params:
       CONFIG_FILE: foundations/((foundation))/config/download-opsman.yml
-      VARS_FILES: vars/foundations/((foundation))/versions.yml
+      VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
       SOURCE: s3
     output_mapping:
       downloaded-product: opsman-image
@@ -302,7 +302,7 @@ jobs:
       vars: configuration
     params:
       CONFIG_FILE: foundations/((foundation))/config/download-pks.yml
-      VARS_FILES: vars/foundations/((foundation))/versions.yml
+      VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
       SOURCE: s3
     output_mapping:
       downloaded-product: pks-product
