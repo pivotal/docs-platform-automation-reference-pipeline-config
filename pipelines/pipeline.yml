@@ -40,7 +40,7 @@ resources:
     secret_access_key: ((s3_secret_access_key))
     region_name: ((s3_region_name))
     bucket: ((s3_installation_bucket))
-    regexp: sandbox-installation-(.*).zip
+    regexp: ((foundation))-installation-(.*).zip
 # code_snippet single-product-export-installation end yaml
 
 # code_snippet single-product-resources-configurations start yaml
@@ -52,7 +52,7 @@ resources:
     bucket: ((s3_foundation_state_bucket))
     region_name: ((s3_region_name))
     secret_access_key: ((s3_secret_access_key))
-    versioned_file: state-sandbox.yml
+    versioned_file: state-((foundation)).yml
     initial_content_text: '{}'
     initial_version: 'empty-start'
 
@@ -134,12 +134,12 @@ jobs:
       config: configuration
     params:
       OPSMAN_CONFIG_FILE: foundations/((foundation))/config/opsman.yml
-      STATE_FILE: state-sandbox.yml
+      STATE_FILE: state-((foundation)).yml
     ensure: &put-state
       do:
       - put: state
         params:
-          file: generated-state/state-sandbox.yml
+          file: generated-state/state-((foundation)).yml
   - task: configure-authentication
     image: platform-automation-image
     file: platform-automation-tasks/tasks/configure-authentication.yml
@@ -174,11 +174,11 @@ jobs:
     input_mapping:
       env: configuration
     params:
-      INSTALLATION_FILE: sandbox-installation-$timestamp.zip
+      INSTALLATION_FILE: ((foundation))-installation-$timestamp.zip
       ENV_FILE: foundations/config/env.yml
   - put: installation
     params:
-      file: installation/sandbox-installation*.zip
+      file: installation/((foundation))-installation*.zip
 
 - name: export-installation
   serial: true
@@ -203,10 +203,10 @@ jobs:
       env: configuration
     params:
       ENV_FILE: foundations/config/env.yml
-      INSTALLATION_FILE: sandbox-installation-$timestamp.zip
+      INSTALLATION_FILE: ((foundation))-installation-$timestamp.zip
   - put: installation
     params:
-      file: installation/sandbox-installation*.zip
+      file: installation/((foundation))-installation*.zip
 
 - name: upgrade-opsman
   serial: true
@@ -246,8 +246,8 @@ jobs:
     params:
       ENV_FILE: foundations/config/env.yml
       OPSMAN_CONFIG_FILE: foundations/((foundation))/config/opsman.yml
-      STATE_FILE: state-sandbox.yml
-      INSTALLATION_FILE: sandbox-installation*.zip
+      STATE_FILE: state-((foundation)).yml
+      INSTALLATION_FILE: ((foundation))-installation*.zip
     ensure: *put-state
   - task: configure-director
     image: platform-automation-image
@@ -274,10 +274,10 @@ jobs:
       env: configuration
     params:
       ENV_FILE: foundations/config/env.yml
-      INSTALLATION_FILE: sandbox-installation-$timestamp.zip
+      INSTALLATION_FILE: ((foundation))-installation-$timestamp.zip
   - put: installation
     params:
-      file: installation/sandbox-installation*.zip
+      file: installation/((foundation))-installation*.zip
 
 - name: upload-and-stage-pks
   serial: true
@@ -399,10 +399,10 @@ jobs:
       env: configuration
     params:
       ENV_FILE: foundations/config/env.yml
-      INSTALLATION_FILE: sandbox-installation-$timestamp.zip
+      INSTALLATION_FILE: ((foundation))-installation-$timestamp.zip
   - put: installation
     params:
-      file: installation/sandbox-installation*.zip
+      file: installation/((foundation))-installation*.zip
 
 - name: collect-telemetry
   serial: true
