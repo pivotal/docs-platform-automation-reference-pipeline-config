@@ -119,8 +119,10 @@ jobs:
     file: platform-automation-tasks/tasks/download-product.yml
     input_mapping:
       config: configuration
+      vars: configuration
     params:
       CONFIG_FILE: foundations/((foundation))/config/download-opsman.yml
+      VARS_FILES: vars/foundations/((foundation))/versions.yml
       SOURCE: s3
     output_mapping:
       downloaded-product: opsman-image
@@ -297,8 +299,10 @@ jobs:
     file: platform-automation-tasks/tasks/download-product.yml
     input_mapping:
       config: configuration
+      vars: configuration
     params:
       CONFIG_FILE: foundations/((foundation))/config/download-pks.yml
+      VARS_FILES: vars/foundations/((foundation))/versions.yml
       SOURCE: s3
     output_mapping:
       downloaded-product: pks-product
@@ -347,7 +351,7 @@ jobs:
     params:
       CONFIG_FILE: foundations/((foundation))/config/pks.yml
       ENV_FILE: foundations/config/env.yml
-      VARS_FILES: vars/((foundation))/vars/pks.yml
+      VARS_FILES: vars/foundations/((foundation))/vars/pks.yml
 
 - name: apply-product-changes
   serial: true

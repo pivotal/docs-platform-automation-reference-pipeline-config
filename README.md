@@ -8,7 +8,7 @@ and use it as a reference for your own configurations.
 ### Design Considerations
 
 * The example pipelines that have configuration/vars (`CONFIG_PATHS`/`VARS_PATHS`)
-that come from multiple paths
+that come from multiple locations
 are intentionally written from *least* specific to *most* specific
 in order to give priority to foundation specific properties over the common properties.
 * Config file location considerations:
