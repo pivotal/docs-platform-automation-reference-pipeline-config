@@ -13,8 +13,8 @@ iaas-configurations:
   ephemeral_datastores_string: ((ephemeral_datastores_string))
   name: default
   nsx_t_auth_type: local_user
-  nsx_address: ((iaas.nsx_address))
-  nsx_ca_certificate: ((iaas.nsx_ca_certificate))
+  nsx.url: ((nsx.url))
+  nsx.ca_cert: ((nsx.ca_cert))
   nsx_mode: ((nsx_mode))
   nsx_networking_enabled: ((nsx_networking_enabled))
   nsx_password: ((iaas.nsx_password))

@@ -25,9 +25,9 @@ product-properties:
   .properties.network_selector.nsx.cloud-config-dns:
     value: 10.192.2.10, 10.192.2.11
   .properties.network_selector.nsx.floating-ip-pool-ids:
-    value: 01c955fa-21db-4471-a506-e3c2bff13b1c
+    value: bf2aa9da-7ec4-43cc-a877-cf665d4ff5b0
   .properties.network_selector.nsx.ip-block-id:
-    value: 6a687eda-231b-412d-abf5-9bed153ad87e
+    value: eed376ce-9385-4cf0-b076-d457825132c7
   .properties.network_selector.nsx.lb_size_large_supported:
     value: true
   .properties.network_selector.nsx.lb_size_medium_supported:
@@ -37,7 +37,7 @@ product-properties:
   .properties.network_selector.nsx.network_automation:
     value: true
   .properties.network_selector.nsx.nodes-ip-block-id:
-    value: a1f02faf-8bf2-4ae2-ba66-05e73693d7db
+    value: ed11ea63-2df4-49f8-bbac-d35cc2531f6a
   .properties.network_selector.nsx.nsx-t-ca-cert:
     value: ((nsx.ca_cert))
   .properties.network_selector.nsx.nsx-t-host:
@@ -49,7 +49,7 @@ product-properties:
       cert_pem: ((nsx.cert_pem))
       private_key_pem: ((nsx.private_key_pem))
   .properties.network_selector.nsx.t0-router-id:
-    value: cf3e5d58-fbc5-48fd-b899-3dd208f6aa11
+    value: 674c7da3-0d58-4d5e-87c7-e10ff95e229f
   .properties.network_selector.nsx.vcenter_cluster:
     value: Cluster
   .properties.pks-vrli:
@@ -68,7 +68,7 @@ product-properties:
     value: false
   .properties.plan1_selector.active.master_az_placement:
     value:
-    - pks-az1
+      - pks-az1
   .properties.plan1_selector.active.master_instances:
     value: 1
   .properties.plan1_selector.active.max_worker_instances:
@@ -77,7 +77,7 @@ product-properties:
     value: small
   .properties.plan1_selector.active.worker_az_placement:
     value:
-    - pks-az1
+      - pks-az1
   .properties.plan1_selector.active.worker_instances:
     value: 3
   .properties.plan2_selector:
@@ -135,9 +135,9 @@ product-properties:
     value: 1
 network-properties:
   network:
-    name: PKS-Services
+    name: PKS-Infrastructure
   other_availability_zones:
-  - name: pks-az1
+    - name: pks-az1
   service_network:
     name: PKS-Services
   singleton_availability_zone:
