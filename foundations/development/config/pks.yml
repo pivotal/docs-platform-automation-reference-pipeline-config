@@ -25,9 +25,9 @@ product-properties:
   .properties.network_selector.nsx.cloud-config-dns:
     value: 10.192.2.10, 10.192.2.11
   .properties.network_selector.nsx.floating-ip-pool-ids:
-    value: bf2aa9da-7ec4-43cc-a877-cf665d4ff5b0
+    value: ((floating_ip_pool_ids))
   .properties.network_selector.nsx.ip-block-id:
-    value: eed376ce-9385-4cf0-b076-d457825132c7
+    value: ((ip_block_id))
   .properties.network_selector.nsx.lb_size_large_supported:
     value: true
   .properties.network_selector.nsx.lb_size_medium_supported:
@@ -37,7 +37,7 @@ product-properties:
   .properties.network_selector.nsx.network_automation:
     value: true
   .properties.network_selector.nsx.nodes-ip-block-id:
-    value: ed11ea63-2df4-49f8-bbac-d35cc2531f6a
+    value: ((nodes_ip_block_id))
   .properties.network_selector.nsx.nsx-t-ca-cert:
     value: ((nsx.ca_cert))
   .properties.network_selector.nsx.nsx-t-host:
@@ -49,7 +49,7 @@ product-properties:
       cert_pem: ((nsx.cert_pem))
       private_key_pem: ((nsx.private_key_pem))
   .properties.network_selector.nsx.t0-router-id:
-    value: 674c7da3-0d58-4d5e-87c7-e10ff95e229f
+    value: ((t0_router_id))
   .properties.network_selector.nsx.vcenter_cluster:
     value: Cluster
   .properties.pks-vrli:
@@ -135,7 +135,7 @@ product-properties:
     value: 1
 network-properties:
   network:
-    name: PKS-Infrastructure
+    name: PKS-Services
   other_availability_zones:
     - name: pks-az1
   service_network:
