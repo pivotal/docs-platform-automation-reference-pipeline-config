@@ -353,7 +353,10 @@ jobs:
     params:
       CONFIG_FILE: foundations/((foundation))/config/pks.yml
       ENV_FILE: foundations/config/env.yml
-      VARS_FILES: vars/foundations/((foundation))/vars/pks.yml
+      VARS_FILES: |
+        vars/foundations/vars/director.yml
+        vars/foundations/((foundation))/vars/director.yml
+        vars/foundations/((foundation))/vars/pks.yml
 
 - name: apply-product-changes
   serial: true

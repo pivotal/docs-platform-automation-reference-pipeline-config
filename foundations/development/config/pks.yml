@@ -8,9 +8,9 @@ product-properties:
     selected_option: vsphere
     value: vSphere
   .properties.cloud_provider.vsphere.vcenter_dc:
-    value: Datacenter
+    value: ((datacenter))
   .properties.cloud_provider.vsphere.vcenter_ds:
-    value: LUN01
+    value: ((persistent_datastores_string))
   .properties.cloud_provider.vsphere.vcenter_ip:
     value: ((vcenter_url))
   .properties.cloud_provider.vsphere.vcenter_master_creds:
@@ -18,7 +18,7 @@ product-properties:
       identity: ((vcenter_user.username))
       password: ((vcenter_user.password))
   .properties.cloud_provider.vsphere.vcenter_vms:
-    value: pks_vms
+    value: ((bosh_vm_folder))
   .properties.network_selector:
     selected_option: nsx
     value: nsx
