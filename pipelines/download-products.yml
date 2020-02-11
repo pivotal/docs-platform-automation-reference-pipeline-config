@@ -93,8 +93,8 @@ interpolate-creds: &interpolate-creds
   image: platform-automation-image
   file: platform-automation-tasks/tasks/prepare-tasks-with-secrets.yml
   params:
-    VARS_PATHS: vars/vars
-    CONFIG_PATHS: config/download-product
+    VARS_PATHS: vars/foundations/vars
+    CONFIG_PATHS: config/download-product-pivnet
   input_mapping:
     tasks: platform-automation-tasks
     config: configuration
