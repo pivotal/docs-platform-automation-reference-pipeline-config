@@ -19,6 +19,10 @@ product-properties:
       password: ((vcenter_user.password))
   .properties.cloud_provider.vsphere.vcenter_vms:
     value: ((bosh_vm_folder))
+  .properties.log_sink_resources_deploy:
+    value: true
+  .properties.metric_sink_resources_deploy:
+    value: true
   .properties.network_selector:
     selected_option: nsx
     value: nsx
@@ -34,6 +38,12 @@ product-properties:
     value: true
   .properties.network_selector.nsx.nat_mode:
     value: true
+  .properties.network_selector.nsx.ncp-ha-heartbeat-period:
+    value: 6
+  .properties.network_selector.nsx.ncp-ha-master-timeout:
+    value: 18
+  .properties.network_selector.nsx.ncp-ha-update-timeout:
+    value: 12
   .properties.network_selector.nsx.network_automation:
     value: true
   .properties.network_selector.nsx.nodes-ip-block-id:
@@ -48,6 +58,8 @@ product-properties:
     value:
       cert_pem: ((nsx.cert_pem))
       private_key_pem: ((nsx.private_key_pem))
+  .properties.network_selector.nsx.service_cluster_cidr:
+    value: 10.100.200.0/24
   .properties.network_selector.nsx.t0-router-id:
     value: ((t0_router_id))
   .properties.network_selector.nsx.vcenter_cluster:
@@ -55,17 +67,21 @@ product-properties:
   .properties.pks-vrli:
     selected_option: disabled
     value: disabled
+  .properties.pks-vrops:
+    selected_option: disabled
+    value: disabled
   .properties.pks_api_hostname:
     value: ((pks_api_url))
   .properties.plan1_selector:
     selected_option: active
     value: Plan Active
+  .properties.plan1_selector.active.admission_plugins:
+    value:
+    - deny_escalating_exec
   .properties.plan1_selector.active.allow_privileged_containers:
     value: false
   .properties.plan1_selector.active.description:
     value: ((plan1_selector_active_description))
-  .properties.plan1_selector.active.disable_deny_escalating_exec:
-    value: false
   .properties.plan1_selector.active.master_az_placement:
     value:
       - pks-az1
@@ -110,9 +126,6 @@ product-properties:
   .properties.proxy_selector:
     selected_option: disabled
     value: Disabled
-  .properties.sink_resources_selector:
-    selected_option: enabled
-    value: enabled
   .properties.syslog_selector:
     selected_option: disabled
     value: disabled
@@ -137,7 +150,7 @@ network-properties:
   network:
     name: PKS-Services
   other_availability_zones:
-    - name: pks-az1
+  - name: pks-az1
   service_network:
     name: PKS-Services
   singleton_availability_zone:
