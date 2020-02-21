@@ -90,7 +90,7 @@ prepare-tasks-with-secrets: &prepare-tasks-with-secrets
     vars: configuration
   params:
     CONFIG_PATHS: config/foundations/config config/foundations/((foundation))/config
-    VARS_PATHS: config/foundations/vars vars/foundations/((foundation))/vars
+    VARS_PATHS: vars/foundations/vars vars/foundations/((foundation))/vars
   output_mapping:
     tasks: platform-automation-tasks
 # code_snippet single-product-prepare-tasks-with-secrets end yaml
