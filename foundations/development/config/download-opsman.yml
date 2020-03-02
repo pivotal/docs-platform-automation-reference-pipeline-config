@@ -1,6 +1,5 @@
 ---
 pivnet-product-slug: ops-manager
-
 file-glob: "ops-manager*.ova"
 product-version: ((opsman-version))
 
