@@ -38,6 +38,24 @@ resources:
     region_name: ((s3_region_name))
     secret_access_key: ((s3_secret_access_key))
     regexp: pks-stemcell/\[stemcells-ubuntu-xenial,(.*)\]bosh-stemcell-.*-vsphere.*\.tgz
+
+- name: tas-product
+  type: s3
+  source:
+    access_key_id: ((s3_access_key_id))
+    bucket: ((s3_pivnet_products_bucket))
+    region_name: ((s3_region_name))
+    secret_access_key: ((s3_secret_access_key))
+    regexp: \[elastic-runtime,(.*)\]srt*.pivotal
+
+- name: tas-stemcell
+  type: s3
+  source:
+    access_key_id: ((s3_access_key_id))
+    bucket: ((s3_pivnet_products_bucket))
+    region_name: ((s3_region_name))
+    secret_access_key: ((s3_secret_access_key))
+    regexp: tas-stemcell/\[stemcells-ubuntu-xenial,(.*)\]bosh-stemcell-.*-vsphere.*\.tgz
 # code_snippet resources-pipeline-products end yaml
 
 # code_snippet resources-pipeline-platform-automation start yaml
@@ -134,15 +152,15 @@ jobs:
 - name: fetch-pks
   plan:
   - aggregate:
-      - get: daily
-        trigger: true
-      - get: platform-automation-image
-        params:
-          unpack: true
-      - get: platform-automation-tasks
-        params:
-          unpack: true
-      - get: configuration
+    - get: daily
+      trigger: true
+    - get: platform-automation-image
+      params:
+        unpack: true
+    - get: platform-automation-tasks
+      params:
+        unpack: true
+    - get: configuration
   - task: interpolate-creds
     <<: *interpolate-creds
   - task: download-pks-product-and-stemcell
@@ -160,6 +178,36 @@ jobs:
       - put: pks-stemcell
         params:
           file: pks-stemcell/*.tgz
+
+- name: fetch-tas
+  plan:
+    - aggregate:
+      - get: daily
+        trigger: true
+      - get: platform-automation-image
+        params:
+          unpack: true
+      - get: platform-automation-tasks
+        params:
+          unpack: true
+      - get: configuration
+    - task: interpolate-creds
+      <<: *interpolate-creds
+    - task: download-tas-product-and-stemcell
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/download-product.yml
+      params:
+        CONFIG_FILE: download-product-pivnet/download-tas.yml
+      input_mapping:
+        config: configuration
+      output_mapping: {downloaded-stemcell: tas-stemcell}
+    - aggregate:
+        - put: tas-product
+          params:
+            file: downloaded-product/*.pivotal
+        - put: tas-stemcell
+          params:
+            file: tas-stemcell/*.tgz
 
 - name: fetch-platform-automation
   # We use the pivnet resource to bootstrap the pipeline,

@@ -1,0 +1,132 @@
+---
+product-name: cf
+network-properties:
+  network:
+    name: ((vsphere_deployment_network))
+  other_availability_zones:
+    - name: AZ01
+    - name: AZ02
+    - name: AZ03
+  singleton_availability_zone:
+    name: AZ01
+product-properties:
+  .cloud_controller.allow_app_ssh_access:
+    value: "true"
+  .cloud_controller.apps_domain:
+    value: ((apps_domain))
+  .cloud_controller.default_quota_max_number_services:
+    value: "1000"
+  .cloud_controller.default_quota_memory_limit_mb:
+    value: "10240"
+  .cloud_controller.system_domain:
+    value: ((system_domain))
+  .diego_brain.static_ips:
+    value: "192.168.20.120,192.168.20.121,192.168.20.122"
+  .ha_proxy.skip_cert_verify:
+    value: "true"
+  .ha_proxy.static_ips:
+    value: ""
+  .mysql_monitor.recipient_email:
+    value: ((mysql_monitor_recipient_email))
+  .properties.container_networking_interface_plugin.silk.network_cidr:
+    value: 10.255.0.0/16
+  .properties.credhub_internal_provider_keys:
+    value:
+      -
+        key:
+          secret: ((credhub_key_encryption_password_secret))
+        name: key-1
+        primary: true
+  .properties.gorouter_ssl_ciphers:
+    value: "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384"
+  .properties.haproxy_forward_tls:
+    value: disable
+  .properties.haproxy_ssl_ciphers:
+    value: "DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384"
+  .properties.logger_endpoint_port:
+    value: ""
+  .properties.networking_poe_ssl_certs:
+    value:
+      -
+        certificate:
+          cert_pem: ((networking_poe_ssl_cert.certificate))
+          private_key_pem: ((networking_poe_ssl_cert.private_key))
+        name: "Certificate 1"
+  .properties.push_apps_manager_company_name:
+    value: ""
+  .properties.route_services:
+    value: enable
+  .properties.route_services.enable.ignore_ssl_cert_verification:
+    value: "true"
+  .properties.routing_disable_http:
+    value: "false"
+  .properties.routing_tls_termination:
+    value: load_balancer
+  .properties.security_acknowledgement:
+    value: X
+  .properties.system_blobstore:
+    value: internal
+  .properties.tcp_routing:
+    value: enable
+  .properties.tcp_routing.enable.reservable_ports:
+    value: "2323"
+  .properties.uaa:
+    value: internal
+  .router.disable_insecure_cookies:
+    value: "false"
+  .router.frontend_idle_timeout:
+    value: "900"
+  .router.request_timeout_in_seconds:
+    value: "900"
+  .router.static_ips:
+    value: "192.168.20.100,192.168.20.101,192.168.20.102"
+  .tcp_router.static_ips:
+    value: "192.168.20.110,192.168.20.111,192.168.20.112"
+  .uaa.service_provider_key_credentials:
+    value:
+      cert_pem: ((service_provider_key.certificate))
+      private_key_pem: ((service_provider_key.private_key))
+resource-config:
+  backup_restore:
+    instances: 0
+  clock_global:
+    instances: 1
+  cloud_controller:
+    instances: 1
+  cloud_controller_worker:
+    instances: 1
+  credhub:
+    instances: 1
+  diego_brain:
+    instances: 1
+  diego_cell:
+    instances: 5
+  diego_database:
+    instances: 1
+  doppler:
+    instances: 1
+  ha_proxy:
+    instances: 0
+  loggregator_trafficcontroller:
+    instances: 1
+  mysql:
+    instances: 1
+  mysql_monitor:
+    instances: 0
+  mysql_proxy:
+    instances: 1
+  nats:
+    instances: 1
+  nfs_server:
+    instances: 1
+  router:
+    instances: 1
+  tcp_router:
+    instances: 0
+  uaa:
+    instances: 1
+errand-config:
+  deploy-notifications:
+    post-deploy-state: false
+  deploy-notifications-ui:
+    post-deploy-state: false

@@ -1,0 +1,2 @@
+vsphere_deployment_network: DEPLOYMENT
+mysql_monitor_recipient_email: noreply@vmware.com
