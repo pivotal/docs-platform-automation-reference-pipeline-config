@@ -309,7 +309,7 @@ jobs:
     output_mapping:
       downloaded-product: pks-product
       downloaded-stemcell: pks-stemcell
-  - task: upload-and-stage-product
+  - task: upload-and-stage-pks
     image: platform-automation-image
     file: platform-automation-tasks/tasks/upload-and-stage-product.yml
     input_mapping:
