@@ -14,7 +14,7 @@ iaas-configurations:
   name: default
   nsx_t_auth_type: local_user
   nsx_address: ((nsx.url))
-  nsx_ca_certificate:: ((nsx.ca_cert))
+  nsx_ca_certificate: ((nsx.ca_cert))
   nsx_mode: ((nsx_mode))
   nsx_networking_enabled: ((nsx_networking_enabled))
   nsx_password: ((iaas.nsx_password))
