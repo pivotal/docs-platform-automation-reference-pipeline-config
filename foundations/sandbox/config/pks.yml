@@ -148,7 +148,7 @@ product-properties:
     value: 1
 network-properties:
   network:
-    name: PKS
+    name: Services
   other_availability_zones:
   - name: pks-az1
   service_network:
