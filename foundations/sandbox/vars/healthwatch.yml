@@ -1,2 +1,2 @@
-vsphere_deployment_network: DEPLOYMENT
-vsphere_services_network: SERVICES
+vsphere_tas_network: TAS
+vsphere_services_network: Services

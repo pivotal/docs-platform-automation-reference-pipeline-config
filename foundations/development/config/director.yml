@@ -26,25 +26,25 @@ iaas-configurations:
   vcenter_username: ((vcenter_user.username))
 network-assignment:
   network:
-    name: PKS-Infrastructure
+    name: Management
   other_availability_zones: []
   singleton_availability_zone:
     name: pks-az1
 networks-configuration:
   icmp_checks_enabled: true
   networks:
-  - name: PKS-Infrastructure
+  - name: Management
     subnets:
-    - iaas_identifier: PKS-Infrastructure
+    - iaas_identifier: Management
       cidr: 172.16.1.0/24
       dns: 10.192.2.10, 10.192.2.11
       gateway: 172.16.1.1
       reserved_ip_ranges: 172.16.1.1-172.16.1.10
       availability_zone_names:
       - pks-az1
-  - name: PKS-Services
+  - name: Services
     subnets:
-    - iaas_identifier: PKS-Services
+    - iaas_identifier: Services
       cidr: 172.16.2.0/24
       dns: 10.192.2.10, 10.192.2.11
       gateway: 172.16.2.1

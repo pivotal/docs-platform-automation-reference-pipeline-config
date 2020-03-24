@@ -2,13 +2,11 @@
 product-name: cf
 network-properties:
   network:
-    name: ((vsphere_deployment_network))
+    name: ((vsphere_tas_network))
   other_availability_zones:
-    - name: AZ01
-    - name: AZ02
-    - name: AZ03
+    - name: pks-az1
   singleton_availability_zone:
-    name: AZ01
+    name: pks-az1
 product-properties:
   .cloud_controller.allow_app_ssh_access:
     value: "true"

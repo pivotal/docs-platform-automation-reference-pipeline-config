@@ -2,13 +2,11 @@
 product-name: p-healthwatch
 network-properties:
   singleton_availability_zone:
-    name: AZ01
+    name: pks-az1
   other_availability_zones:
-    - name: AZ01
-    - name: AZ02
-    - name: AZ03
+    - name: pks-az1
   network:
-    name: ((vsphere_deployment_network))
+    name: ((vsphere_tas_network))
   service_network:
     name: ((vsphere_services_network))
 product-properties:
@@ -37,6 +35,6 @@ product-properties:
   .properties.opsman:
     value: enable
   .properties.opsman.enable.url:
-    value: ((pcf_url))
+    value: ((opsman_url))
   .properties.syslog_selector:
     value: "No"

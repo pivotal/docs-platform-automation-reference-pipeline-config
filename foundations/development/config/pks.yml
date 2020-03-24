@@ -148,11 +148,11 @@ product-properties:
     value: 1
 network-properties:
   network:
-    name: PKS-Services
+    name: Management
   other_availability_zones:
   - name: pks-az1
   service_network:
-    name: PKS-Services
+    name: Services
   singleton_availability_zone:
     name: pks-az1
 resource-config:

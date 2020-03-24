@@ -520,6 +520,8 @@ jobs:
         unpack: true
       passed:
       - configure-pks
+      - configure-tas
+      - configure-healthwatch
       trigger: true
     - get: platform-automation-tasks
       params:

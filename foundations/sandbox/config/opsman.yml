@@ -14,7 +14,7 @@ opsman-configuration:
     dns: 10.192.2.10
     ntp: 10.192.2.11
     hostname: ((opsman_url))
-    network: PKS-Infrastructure
+    network: Management
     netmask: 255.255.255.0
     gateway: 172.16.1.1
     memory: 9
