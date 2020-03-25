@@ -19,7 +19,7 @@ product-properties:
   .healthwatch-forwarder.cli_instance_count:
     value: 2
   .healthwatch-forwarder.health_check_az:
-    value: AZ01
+    value: pks-az1
   .healthwatch-forwarder.ingestor_instance_count:
     value: 4
   .healthwatch-forwarder.opsman_instance_count:
