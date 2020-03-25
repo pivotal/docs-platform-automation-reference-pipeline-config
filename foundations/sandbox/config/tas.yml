@@ -19,7 +19,7 @@ product-properties:
   .cloud_controller.system_domain:
     value: ((system_domain))
   .diego_brain.static_ips:
-    value: "192.168.20.120,192.168.20.121,192.168.20.122"
+    value: "172.16.3.120,172.16.3.121,172.16.3.122"
   .ha_proxy.skip_cert_verify:
     value: "true"
   .ha_proxy.static_ips:
@@ -77,9 +77,9 @@ product-properties:
   .router.request_timeout_in_seconds:
     value: "900"
   .router.static_ips:
-    value: "192.168.20.100,192.168.20.101,192.168.20.102"
+    value: "172.16.3.100,172.16.3.101,172.16.3.102"
   .tcp_router.static_ips:
-    value: "192.168.20.110,192.168.20.111,192.168.20.112"
+    value: "172.16.3.110,172.16.3.111,172.16.3.112"
   .uaa.service_provider_key_credentials:
     value:
       cert_pem: ((service_provider_key.certificate))
@@ -94,9 +94,9 @@ resource-config:
   control:
     instances: 1
   database:
-    instances: automatic
+    instances: 1
   ha_proxy:
-    instances: automatic
+    instances: 0
   istio_control:
     instances: 0
   istio_router:

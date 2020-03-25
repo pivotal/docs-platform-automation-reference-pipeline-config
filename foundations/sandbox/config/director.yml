@@ -46,27 +46,27 @@ networks-configuration:
     subnets:
     - iaas_identifier: Services
       cidr: 172.16.2.0/24
-      dns: 10.192.2.10, 10.192.2.11
+      dns: 10.192.2.10
       gateway: 172.16.2.1
-      reserved_ip_ranges: 172.16.2.1-172.16.2.10
+      reserved_ip_ranges: 172.16.2.1
       availability_zone_names:
       - pks-az1
   - name: TAS
     subnets:
     - iaas_identifier: Management
       cidr: 172.16.3.0/24
-      dns: 10.192.3.10, 10.192.3.11
+      dns: 10.192.3.10
       gateway: 172.16.3.1
-      reserved_ip_ranges: 172.16.3.1-172.16.3.10
+      reserved_ip_ranges: 172.16.3.2-172.16.3.99
       availability_zone_names:
       - pks-az1
   - name: PKS
     subnets:
     - iaas_identifier: Services
       cidr: 172.16.4.0/24
-      dns: 10.192.4.10, 10.192.4.11
+      dns: 10.192.4.10
       gateway: 172.16.4.1
-      reserved_ip_ranges: 172.16.4.1-172.16.4.10
+      reserved_ip_ranges: 172.16.4.1
       availability_zone_names:
       - pks-az1
 properties-configuration:
