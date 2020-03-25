@@ -87,42 +87,28 @@ product-properties:
 resource-config:
   backup_restore:
     instances: 0
-  clock_global:
+  blobstore:
     instances: 1
-  cloud_controller:
+  compute:
     instances: 1
-  cloud_controller_worker:
+  control:
     instances: 1
-  credhub:
-    instances: 1
-  diego_brain:
-    instances: 1
-  diego_cell:
-    instances: 5
-  diego_database:
-    instances: 1
-  doppler:
-    instances: 1
+  database:
+    instances: automatic
   ha_proxy:
+    instances: automatic
+  istio_control:
     instances: 0
-  loggregator_trafficcontroller:
-    instances: 1
-  mysql:
-    instances: 1
+  istio_router:
+    instances: 0
   mysql_monitor:
     instances: 0
-  mysql_proxy:
-    instances: 1
-  nats:
-    instances: 1
-  nfs_server:
-    instances: 1
+  route_syncer:
+    instances: 0
   router:
     instances: 1
   tcp_router:
     instances: 0
-  uaa:
-    instances: 1
 errand-config:
   deploy-notifications:
     post-deploy-state: false
