@@ -93,6 +93,7 @@ resource-config:
     instances: 1
   control:
     instances: 1
+    additional_vm_extensions: ["pas_ssh_vm_extension"]
   database:
     instances: 1
   ha_proxy:
@@ -107,8 +108,10 @@ resource-config:
     instances: 0
   router:
     instances: 1
+    additional_vm_extensions: ["pas_web_vm_extension"]
   tcp_router:
-    instances: 0
+    instances: 1
+    additional_vm_extensions: ["pas_tcp_vm_extension"]
 errand-config:
   deploy-notifications:
     post-deploy-state: false
