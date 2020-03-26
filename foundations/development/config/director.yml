@@ -110,23 +110,5 @@ resource-configuration:
       vif_type: null
       lb:
         server_pools: []
-vmextensions-configuration:
-- name: pas_web_vm_extension
-  cloud_properties:
-    nsxt:
-      lb:
-        server_pools:
-        - name: pas-web-pool
-- name: pas_ssh_vm_extension
-  cloud_properties:
-    nsxt:
-      lb:
-        server_pools:
-        - name: pas-ssh-pool
-- name: pas_tcp_vm_extension
-  cloud_properties:
-    nsxt:
-      lb:
-        server_pools:
-        - name: pas-tcp-pool
+vmextensions-configuration: []
 vmtypes-configuration: {}
