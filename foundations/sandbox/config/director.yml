@@ -115,11 +115,11 @@ resource-configuration:
       lb:
         server_pools:
         - name: pas-web-pool
-          port: null
+          port: 443
         - name: pas-tcp-pool
-          port: null
+          port: 2323
         - name: pas-ssh-pool
-          port: null
+          port: 2222
   director:
     instances: automatic
     persistent_disk:
@@ -135,9 +135,9 @@ resource-configuration:
       lb:
         server_pools:
         - name: pas-web-pool
-          port: null
+          port: 443
         - name: pas-tcp-pool
-          port: null
+          port: 2323
         - name: pas-ssh-pool
-          port: null
+          port: 2222
 vmtypes-configuration: {}
