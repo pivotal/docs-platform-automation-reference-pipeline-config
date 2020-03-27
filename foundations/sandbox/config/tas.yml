@@ -93,6 +93,13 @@ resource-config:
     instances: 1
   control:
     instances: 1
+    nsxt:
+      ns_groups: ["pas-ssh-group"]
+      vif_type: null
+      lb:
+        server_pools:
+        - name: pas-ssh-pool
+          port: 2222
   database:
     instances: 1
   ha_proxy:
@@ -107,8 +114,22 @@ resource-config:
     instances: 0
   router:
     instances: 1
+    nsxt:
+      ns_groups: ["pas-web-group"]
+      vif_type: null
+      lb:
+        server_pools:
+        - name: pas-web-pool
+          port: 443
   tcp_router:
     instances: 1
+    nsxt:
+      ns_groups: ["pas-tcp-group"]
+      vif_type: null
+      lb:
+        server_pools:
+        - name: pas-tcp-pool
+          port: 1024
 errand-config:
   deploy-notifications:
     post-deploy-state: false
