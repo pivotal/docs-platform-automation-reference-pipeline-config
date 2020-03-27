@@ -133,15 +133,11 @@ resource-configuration:
       ns_groups: []
       vif_type: null
       lb:
-        server_pools: |
-          {
-            "name": "pas-web-pool",
-            "port": 80
-          },{
-            "name": "pas-tcp-pool",
-            "port": 1024
-          },{
-            "name": "pas-ssh-pool",
-            "port": 2222
-          }
+        server_pools:
+        - name: pas-web-pool
+          port: 80
+        - name: pas-tcp-pool
+          port: 1024
+        - name: pas-ssh-pool
+          port: 2222
 vmtypes-configuration: {}
