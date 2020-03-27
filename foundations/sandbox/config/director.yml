@@ -113,7 +113,13 @@ resource-configuration:
       ns_groups: []
       vif_type: null
       lb:
-        server_pools: []
+        server_pools:
+        - name: pas-web-pool
+          port: 80,443
+        - name: pas-tcp-pool
+          port: 1024-1123,5900
+        - name: pas-ssh-pool
+          port: 2222
   director:
     instances: automatic
     persistent_disk:
@@ -127,6 +133,12 @@ resource-configuration:
       ns_groups: []
       vif_type: null
       lb:
-        server_pools: []
+        server_pools:
+        - name: pas-web-pool
+          port: 80,443
+        - name: pas-tcp-pool
+          port: 1024-1123,5900
+        - name: pas-ssh-pool
+          port: 2222
 vmextensions-configuration: []
 vmtypes-configuration: {}

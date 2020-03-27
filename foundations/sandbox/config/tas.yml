@@ -93,10 +93,6 @@ resource-config:
     instances: 1
   control:
     instances: 1
-    nsxt:
-      lb:
-        server_pools:
-        - name: pas-ssh-pool
   database:
     instances: 1
   ha_proxy:
@@ -111,16 +107,8 @@ resource-config:
     instances: 0
   router:
     instances: 1
-    nsxt:
-      lb:
-        server_pools:
-        - name: pas-web-pool
   tcp_router:
     instances: 1
-    nsxt:
-      lb:
-        server_pools:
-        - name: pas-tcp-pool
 errand-config:
   deploy-notifications:
     post-deploy-state: false
