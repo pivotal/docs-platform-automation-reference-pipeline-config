@@ -129,7 +129,7 @@ resource-config:
       lb:
         server_pools:
         - name: pas-tcp-pool
-          port: 1024
+          port: 2323
 errand-config:
   deploy-notifications:
     post-deploy-state: false
