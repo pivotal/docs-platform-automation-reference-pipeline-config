@@ -115,7 +115,7 @@ resource-configuration:
       lb:
         server_pools:
         - name: pas-web-pool
-          port: 80
+          port: 443
         - name: pas-tcp-pool
           port: 1024
         - name: pas-ssh-pool
@@ -135,7 +135,7 @@ resource-configuration:
       lb:
         server_pools:
         - name: pas-web-pool
-          port: 80
+          port: 443
         - name: pas-tcp-pool
           port: 1024
         - name: pas-ssh-pool
