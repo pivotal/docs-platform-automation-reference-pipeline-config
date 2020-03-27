@@ -140,5 +140,4 @@ resource-configuration:
           port: 1024-1123,5900
         - name: pas-ssh-pool
           port: 2222
-vmextensions-configuration: []
 vmtypes-configuration: {}
