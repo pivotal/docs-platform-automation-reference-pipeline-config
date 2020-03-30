@@ -452,16 +452,16 @@ jobs:
   serial: true
   plan:
     - aggregate:
-        - get: platform-automation-image
-          params:
-            unpack: true
-          trigger: true
-          passed: [ "upgrade-opsman" ]
-        - get: platform-automation-tasks
-          params:
-            unpack: true
-        - get: configuration
-        - get: tas-windows-stemcell
+      - get: platform-automation-image
+        params:
+          unpack: true
+        trigger: true
+        passed: [ "upgrade-opsman" ]
+      - get: platform-automation-tasks
+        params:
+          unpack: true
+      - get: configuration
+      - get: tas-windows-stemcell
     - task: prepare-tasks-with-secrets
       <<: *prepare-tasks-with-secrets
     - task: download-tas-windows
@@ -788,6 +788,7 @@ jobs:
       input_mapping:
         env: configuration
       params:
+        ENV_FILE: foundations/config/env.yml
         EXPIRES_WITHIN: 6m
     # code_snippet expiring-certificates-usage end
 
