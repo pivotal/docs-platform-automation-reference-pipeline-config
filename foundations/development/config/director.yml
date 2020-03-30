@@ -110,4 +110,5 @@ resource-configuration:
       vif_type: null
       lb:
         server_pools: []
+vmextensions-configuration: []
 vmtypes-configuration: {}
