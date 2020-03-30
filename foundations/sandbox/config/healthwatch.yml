@@ -13,21 +13,21 @@ product-properties:
   .healthwatch-forwarder.boshhealth_instance_count:
     value: 1
   .healthwatch-forwarder.boshtasks_instance_count:
-    value: 2
+    value: 1
   .healthwatch-forwarder.canary_instance_count:
-    value: 2
+    value: 1
   .healthwatch-forwarder.cli_instance_count:
-    value: 2
+    value: 1
   .healthwatch-forwarder.health_check_az:
     value: pks-az1
   .healthwatch-forwarder.ingestor_instance_count:
-    value: 4
+    value: 1
   .healthwatch-forwarder.opsman_instance_count:
-    value: 2
+    value: 1
   .healthwatch-forwarder.publish_to_eva:
     value: true
   .healthwatch-forwarder.worker_instance_count:
-    value: 4
+    value: 1
   .mysql.skip_name_resolve:
     value: true
   .properties.boshtasks:
