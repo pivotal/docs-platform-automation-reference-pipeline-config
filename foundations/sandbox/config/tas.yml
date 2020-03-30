@@ -92,7 +92,7 @@ resource-config:
     instances: 1
     additional_vm_extensions: []
   compute:
-    instances: 1
+    instances: 2
     additional_vm_extensions: []
   control:
     instances: 1
