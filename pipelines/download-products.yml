@@ -57,6 +57,15 @@ resources:
     secret_access_key: ((s3_secret_access_key))
     regexp: tas-stemcell/\[stemcells-ubuntu-xenial,(.*)\]bosh-stemcell-.*-vsphere.*\.tgz
 
+- name: tas-windows-product
+  type: s3
+  source:
+    access_key_id: ((s3_access_key_id))
+    bucket: ((s3_pivnet_products_bucket))
+    region_name: ((s3_region_name))
+    secret_access_key: ((s3_secret_access_key))
+    regexp: \[pas-windows,(.*)\]pas-windows-.*.pivotal
+
 - name: healthwatch-product
   type: s3
   source:
@@ -167,6 +176,7 @@ jobs:
       params:
         file: downloaded-product/*
 
+# code_snippet download-product-usage start yaml
 - name: fetch-pks
   plan:
   - aggregate:
@@ -196,6 +206,7 @@ jobs:
       - put: pks-stemcell
         params:
           file: pks-stemcell/*.tgz
+# code_snippet download-product-usage end
 
 - name: fetch-tas
   plan:
@@ -226,6 +237,32 @@ jobs:
         - put: tas-stemcell
           params:
             file: tas-stemcell/*.tgz
+
+- name: fetch-tas-windows
+  plan:
+    - aggregate:
+      - get: daily
+        trigger: true
+      - get: platform-automation-image
+        params:
+          unpack: true
+      - get: platform-automation-tasks
+        params:
+          unpack: true
+      - get: configuration
+    - task: interpolate-creds
+      <<: *interpolate-creds
+    - task: download-tas-windows-product
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/download-product.yml
+      params:
+        CONFIG_FILE: download-product/tas-windows.yml
+      input_mapping:
+        config: configuration
+    - aggregate:
+      - put: tas-windows-product
+        params:
+          file: downloaded-product/*.pivotal
 
 - name: fetch-healthwatch
   plan:

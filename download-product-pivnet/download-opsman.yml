@@ -1,3 +1,4 @@
+# code_snippet download-ops-manager-from-pivnet-usage start yaml
 ---
 pivnet-api-token: ((pivnet_token))
 pivnet-product-slug: ops-manager
@@ -9,3 +10,4 @@ s3-access-key-id: ((s3_access_key_id))
 s3-secret-access-key: ((s3_secret_access_key))
 s3-bucket: ((s3_pivnet_products_bucket))
 s3-region-name: ((s3_region_name))
+# code_snippet download-ops-manager-from-pivnet-usage end

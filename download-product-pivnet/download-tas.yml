@@ -1,3 +1,4 @@
+# code_snippet download-tas-from-pivnet-usage start yaml
 ---
 pivnet-api-token: ((pivnet_token))
 pivnet-product-slug: elastic-runtime
@@ -11,3 +12,4 @@ s3-secret-access-key: ((s3_secret_access_key))
 s3-bucket: ((s3_pivnet_products_bucket))
 s3-region-name: ((s3_region_name))
 s3-stemcell-path: tas-stemcell
+# code_snippet download-tas-from-pivnet-usage end
