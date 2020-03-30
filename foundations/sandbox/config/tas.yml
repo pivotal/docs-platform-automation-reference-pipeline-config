@@ -87,12 +87,16 @@ product-properties:
 resource-config:
   backup_restore:
     instances: 0
+    additional_vm_extensions: []
   blobstore:
     instances: 1
+    additional_vm_extensions: []
   compute:
     instances: 1
+    additional_vm_extensions: []
   control:
     instances: 1
+    additional_vm_extensions: []
     nsxt:
       ns_groups: ["pas-ssh-group"]
       vif_type: null
@@ -102,18 +106,25 @@ resource-config:
           port: 2222
   database:
     instances: 1
+    additional_vm_extensions: []
   ha_proxy:
     instances: 0
+    additional_vm_extensions: []
   istio_control:
     instances: 0
+    additional_vm_extensions: []
   istio_router:
     instances: 0
+    additional_vm_extensions: []
   mysql_monitor:
     instances: 0
+    additional_vm_extensions: []
   route_syncer:
     instances: 0
+    additional_vm_extensions: []
   router:
     instances: 1
+    additional_vm_extensions: []
     nsxt:
       ns_groups: ["pas-web-group"]
       vif_type: null
@@ -123,6 +134,7 @@ resource-config:
           port: 443
   tcp_router:
     instances: 1
+    additional_vm_extensions: []
     nsxt:
       ns_groups: ["pas-tcp-group"]
       vif_type: null
