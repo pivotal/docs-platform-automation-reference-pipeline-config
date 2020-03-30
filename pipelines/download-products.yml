@@ -256,7 +256,7 @@ jobs:
       image: platform-automation-image
       file: platform-automation-tasks/tasks/download-product.yml
       params:
-        CONFIG_FILE: download-product/tas-windows.yml
+        CONFIG_FILE: download-product-pivnet/tas-windows.yml
       input_mapping:
         config: configuration
     - aggregate:
