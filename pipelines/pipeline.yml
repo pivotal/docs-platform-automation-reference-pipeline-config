@@ -353,7 +353,6 @@ jobs:
     - get: configuration
   - task: prepare-tasks-with-secrets
     <<: *prepare-tasks-with-secrets
-  # code_snippet download-product-usage-s3 start yaml
   # code_snippet download-product-s3-usage start yaml
   - task: download-pks
     image: platform-automation-image
@@ -369,7 +368,6 @@ jobs:
       downloaded-product: pks-product
       downloaded-stemcell: pks-stemcell
   # code_snippet download-product-s3-usage end
-  # code_snippet download-product-usage-s3 end
   # code_snippet upload-and-stage-product-usage start yaml
   - task: upload-and-stage-pks
     image: platform-automation-image
