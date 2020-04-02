@@ -247,7 +247,7 @@ jobs:
     input_mapping:
       env: configuration
     params:
-      INSTALLATION_FILE: installation-$timestamp.zip
+      ENV_FILE: foundations/config/env.yml
   # code_snippet revert-staged-changes-usage end
   # code_snippet export-installation-usage start yaml
   - task: export-installation
