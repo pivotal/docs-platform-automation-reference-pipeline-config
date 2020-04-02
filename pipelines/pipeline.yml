@@ -30,6 +30,15 @@ resources:
     bucket: ((s3_pivnet_products_bucket))
     regexp: .*telemetry-(.*).tgz
 
+- name: tas-windows-stemcell
+  type: s3
+  source:
+    access_key_id: ((s3_access_key_id))
+    bucket: ((s3_pivnet_products_bucket))
+    region_name: ((s3_region_name))
+    secret_access_key: ((s3_secret_access_key))
+    regexp: pas-windows-stemcell/\[stemcells-windows-server,(.*)\]bosh-stemcell-.*-vsphere.*\.tgz
+
 # code_snippet reference-resources-s3 end yaml
 
 # code_snippet export-installation-resource-usage start yaml
@@ -43,16 +52,7 @@ resources:
     regexp: ((foundation))-installation-(.*).zip
 # code_snippet export-installation-resource-usage end
 
-- name: tas-windows-stemcell
-  type: s3
-  source:
-    access_key_id: ((s3_access_key_id))
-    bucket: ((s3_pivnet_products_bucket))
-    region_name: ((s3_region_name))
-    secret_access_key: ((s3_secret_access_key))
-    regexp: pas-windows-stemcell/\[stemcells-windows-server,(.*)\]bosh-stemcell-.*-vsphere.*\.tgz
-
-# code_snippet single-product-resources-configurations start yaml
+# code_snippet resources-configurations start yaml
 # VM state and foundation configuration
 - name: state
   type: s3
@@ -72,9 +72,9 @@ resources:
     private_key: ((docs-ref-pipeline-repo-key.private_key))
     uri: ((docs-ref-pipeline-repo-uri))
     branch: single-product
-# code_snippet single-product-resources-configurations end yaml
+# code_snippet resources-configurations end yaml
 
-# code_snippet single-product-resources-triggers start yaml
+# code_snippet resources-triggers start yaml
 # triggers used to have jobs do something in a timely manner
 - name: one-time-trigger
   type: time
@@ -85,7 +85,7 @@ resources:
   type: time
   source:
     interval: 24h
-# code_snippet single-product-resources-triggers end yaml
+# code_snippet resources-triggers end yaml
 
 # code_snippet prepare-tasks-with-secrets-usage start yaml
 # This task is used in multiple jobs
@@ -104,7 +104,7 @@ prepare-tasks-with-secrets: &prepare-tasks-with-secrets
     tasks: platform-automation-tasks
 # code_snippet prepare-tasks-with-secrets-usage end yaml
 
-# code_snippet single-product-jobs start yaml
+# code_snippet reference-jobs start yaml
 jobs:
 - name: test-platform-automation
   serial: true
