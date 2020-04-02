@@ -482,7 +482,7 @@ jobs:
         env: configuration
       params:
         ENV_FILE: foundations/config/env.yml
-    - task: upload-healthwatch-stemcell
+    - task: upload-windows-stemcell
       image: platform-automation-image
       file: platform-automation-tasks/tasks/upload-stemcell.yml
       input_mapping:
