@@ -213,7 +213,7 @@ jobs:
       ENV_FILE: foundations/config/env.yml
   # code_snippet apply-director-changes-usage end
   - task: export-installation
-    image: platform-automation-image`
+    image: platform-automation-image
     file: platform-automation-tasks/tasks/export-installation.yml
     input_mapping:
       env: configuration
@@ -789,7 +789,45 @@ jobs:
         ENV_FILE: foundations/config/env.yml
         EXPIRES_WITHIN: 6m
     # code_snippet expiring-certificates-usage end
-
+- name: delete-installation
+  serial: true
+  serial_groups: [install]
+  plan:
+    - aggregate:
+      - get: platform-automation-image
+        params:
+          unpack: true
+      - get: platform-automation-tasks
+        params:
+          unpack: true
+      - get: configuration
+      - get: state
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
+    # code_snippet delete-installation-usage start yaml
+    - task: delete-installation
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/delete-installation.yml
+      input_mapping:
+        env: configuration
+      params:
+        ENV_FILE: foundations/config/env.yml
+      # code_snippet delete-installation-usage end yaml
+    # code_snippet delete-vm-usage start yaml
+    - task: delete-vm
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/delete-vm.yml
+      input_mapping:
+        config: configuration
+      params:
+        OPSMAN_CONFIG_FILE: foundations/((foundation))/config/opsman.yml
+        STATE_FILE: state-((foundation)).yml
+      ensure:
+        do:
+        - put: state
+          params:
+            file: generated-state/state-((foundation)).yml
+    # code_snippet delete-vm-usage end
 # code_snippet reference-jobs end yaml
 # code_snippet reference-pipeline end
 # The previous line helps maintain current documentation at http://docs.pivotal.io.
