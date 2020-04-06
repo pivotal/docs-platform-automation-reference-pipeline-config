@@ -142,6 +142,11 @@ resource-config:
         server_pools:
         - name: pas-tcp-pool
           port: 2323
+
+# Errands here have been disabled
+# to facilitate rapid testing of our tooling.
+# In your environments, choose which errands to run
+# according to your configuration and needs.
 errand-config:
   deploy-notifications:
     post-deploy-state: false
