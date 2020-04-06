@@ -23,8 +23,13 @@ resource-config:
     instances: 1
     instance_type:
       id: automatic
+
+# Errands here have been disabled
+# to facilitate rapid testing of our tooling.
+# In your environments, choose which errands to run
+# according to your configuration and needs.
 errand-config:
   install-hwc-buildpack:
-    post-deploy-state: true
+    post-deploy-state: false
   smoke_tests_windows:
     post-deploy-state: false
