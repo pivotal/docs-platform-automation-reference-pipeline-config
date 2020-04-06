@@ -147,3 +147,20 @@ errand-config:
     post-deploy-state: false
   deploy-notifications-ui:
     post-deploy-state: false
+  push-usage-service:
+    post-deploy-state: false
+  push-apps-manager:
+    post-deploy-state: false
+  deploy-autoscaler:
+    post-deploy-state: false
+  test-autoscaling:
+    post-deploy-state: false
+  metric_registrar_smoke_test:
+    post-deploy-state: false
+  nfsbrokerpush:
+    post-deploy-state: false
+  smbbrokerpush:
+    post-deploy-state: false
+  rotate_cc_database_key:
+    post-deploy-state: false
+
