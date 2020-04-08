@@ -29,16 +29,6 @@ resources:
     region_name: ((s3_region_name))
     bucket: ((s3_pivnet_products_bucket))
     regexp: .*telemetry-(.*).tgz
-
-- name: tas-windows-stemcell
-  type: s3
-  source:
-    access_key_id: ((s3_access_key_id))
-    bucket: ((s3_pivnet_products_bucket))
-    region_name: ((s3_region_name))
-    secret_access_key: ((s3_secret_access_key))
-    regexp: pas-windows-stemcell/\[stemcells-windows-server,(.*)\]bosh-stemcell-.*-vsphere.*\.tgz
-
 # code_snippet reference-resources-s3 end yaml
 
 # code_snippet export-installation-resource-usage start yaml
@@ -445,52 +435,6 @@ jobs:
     params:
       ENV_FILE: foundations/config/env.yml
   # code_snippet stage-product-usage end
-
-- name: download-upload-and-stage-tas-windows
-  serial: true
-  plan:
-    - aggregate:
-      - get: platform-automation-image
-        params:
-          unpack: true
-        trigger: true
-        passed: [ "upgrade-opsman" ]
-      - get: platform-automation-tasks
-        params:
-          unpack: true
-      - get: configuration
-      - get: tas-windows-stemcell
-    - task: prepare-tasks-with-secrets
-      <<: *prepare-tasks-with-secrets
-    - task: download-tas-windows
-      image: platform-automation-image
-      file: platform-automation-tasks/tasks/download-product.yml
-      input_mapping:
-        config: configuration
-        vars: configuration
-      params:
-        CONFIG_FILE: foundations/((foundation))/config/download-tas-windows.yml
-        VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
-        SOURCE: s3
-      output_mapping:
-        downloaded-product: tas-windows-product
-    - task: upload-and-stage-tas-windows
-      image: platform-automation-image
-      file: platform-automation-tasks/tasks/upload-and-stage-product.yml
-      input_mapping:
-        product: tas-windows-product
-        env: configuration
-      params:
-        ENV_FILE: foundations/config/env.yml
-    - task: upload-windows-stemcell
-      image: platform-automation-image
-      file: platform-automation-tasks/tasks/upload-stemcell.yml
-      input_mapping:
-        env: configuration
-        stemcell: tas-windows-stemcell
-      params:
-        ENV_FILE: foundations/config/env.yml
-
 - name: download-upload-and-stage-healthwatch
   serial: true
   plan:
@@ -601,37 +545,6 @@ jobs:
           vars/foundations/vars/director.yml
           vars/foundations/((foundation))/vars/tas.yml
 
-- name: configure-tas-windows
-  serial: true
-  serial_groups: [ install ]
-  plan:
-    - aggregate:
-      - get: platform-automation-image
-        params:
-          unpack: true
-        passed:
-          - download-upload-and-stage-tas-windows
-        trigger: true
-      - get: platform-automation-tasks
-        params:
-          unpack: true
-      - get: configuration
-    - task: prepare-tasks-with-secrets
-      <<: *prepare-tasks-with-secrets
-    - task: configure-tas-windows
-      image: platform-automation-image
-      file: platform-automation-tasks/tasks/configure-product.yml
-      input_mapping:
-        config: configuration
-        env: configuration
-        vars: configuration
-      params:
-        CONFIG_FILE: foundations/((foundation))/config/tas-windows.yml
-        ENV_FILE: foundations/config/env.yml
-        VARS_FILES: |
-          vars/foundations/vars/director.yml
-          vars/foundations/((foundation))/vars/tas-windows.yml
-
 - name: configure-healthwatch
   serial: true
   serial_groups: [ install ]
@@ -674,7 +587,6 @@ jobs:
       passed:
       - configure-pks
       - configure-tas
-      - configure-tas-windows
       - configure-healthwatch
       trigger: true
     - get: platform-automation-tasks
