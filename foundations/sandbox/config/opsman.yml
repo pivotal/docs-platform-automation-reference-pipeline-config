@@ -19,3 +19,7 @@ opsman-configuration:
     gateway: 172.16.1.1
     memory: 9
     cpu: 2
+
+# Platform Automation 4.4+ only
+pivotal-network-settings:
+  api_token: ((pivnet-token))
