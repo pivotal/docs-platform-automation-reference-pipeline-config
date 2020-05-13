@@ -93,7 +93,13 @@ prepare-tasks-with-secrets: &prepare-tasks-with-secrets
   output_mapping:
     tasks: platform-automation-tasks
 # code_snippet prepare-tasks-with-secrets-usage end yaml
-
+# code_snippet prepare-image-usage start yaml
+prepare-image: &prepare-image
+  image: platform-automation-image
+  file: platform-automation-tasks/tasks/prepare-image.yml
+  params:
+    CA_CERTS: ((opsman-ssl.ca))
+# code_snippet prepare-image-usage end yaml
 # code_snippet reference-jobs start yaml
 jobs:
 - name: test-platform-automation
@@ -140,6 +146,8 @@ jobs:
     - get: state
   - task: prepare-tasks-with-secrets
     <<: *prepare-tasks-with-secrets
+  - task: prepare-image
+    <<: *prepare-image
   - task: download-opsman-image
     image: platform-automation-image
     file: platform-automation-tasks/tasks/download-product.yml
@@ -230,6 +238,8 @@ jobs:
     - get: configuration
   - task: prepare-tasks-with-secrets
     <<: *prepare-tasks-with-secrets
+  - task: prepare-image
+    <<: *prepare-image
   # code_snippet revert-staged-changes-usage start yaml
   - task: revert-staged-changes
     image: platform-automation-image
@@ -271,6 +281,8 @@ jobs:
     - get: state
   - task: prepare-tasks-with-secrets
     <<: *prepare-tasks-with-secrets
+  - task: prepare-image
+    <<: *prepare-image
   - task: download-opsman-image
     image: platform-automation-image
     file: platform-automation-tasks/tasks/download-product.yml
@@ -343,6 +355,8 @@ jobs:
     - get: configuration
   - task: prepare-tasks-with-secrets
     <<: *prepare-tasks-with-secrets
+  - task: prepare-image
+    <<: *prepare-image
   # code_snippet download-product-s3-usage start yaml
   - task: download-pks
     image: platform-automation-image
@@ -394,6 +408,8 @@ jobs:
     - get: configuration
   - task: prepare-tasks-with-secrets
     <<: *prepare-tasks-with-secrets
+  - task: prepare-image
+    <<: *prepare-image
   - task: download-tas
     image: platform-automation-image
     file: platform-automation-tasks/tasks/download-product.yml
@@ -497,6 +513,8 @@ jobs:
     - get: configuration
   - task: prepare-tasks-with-secrets
     <<: *prepare-tasks-with-secrets
+  - task: prepare-image
+    <<: *prepare-image
   # code_snippet configure-product-usage start yaml
   - task: configure-pks
     image: platform-automation-image
@@ -595,6 +613,8 @@ jobs:
     - get: configuration
   - task: prepare-tasks-with-secrets
     <<: *prepare-tasks-with-secrets
+  - task: prepare-image
+    <<: *prepare-image
   # code_snippet pre-deploy-check-usage start yaml
   - task: pre-deploy-check
     image: platform-automation-image
@@ -655,6 +675,8 @@ jobs:
     - get: configuration
   - task: prepare-tasks-with-secrets
     <<: *prepare-tasks-with-secrets
+  - task: prepare-image
+    <<: *prepare-image
   # code_snippet collect-telemetry-usage start yaml
   - task: collect-telemetry-data
     image: platform-automation-image
