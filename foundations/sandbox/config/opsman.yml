@@ -23,3 +23,6 @@ opsman-configuration:
 # Platform Automation 4.4+ only
 pivotal-network-settings:
   api_token: ((pivnet-token))
+ssl-certificate:
+  certificate: ((opsman-ssl.certificate))
+  private_key: ((opsman-ssl.private_key))
