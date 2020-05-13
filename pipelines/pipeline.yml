@@ -223,15 +223,17 @@ jobs:
       file: installation/((foundation))-installation*.zip
 
 - name: export-installation
+  serial_groups: [ install ]
   serial: true
   plan:
   - aggregate:
+    - get: state
+      passed: [ install-opsman ]
     - get: daily-trigger
       trigger: true
     - get: platform-automation-image
       params:
         unpack: true
-      passed: [ install-opsman ]
     - get: platform-automation-tasks
       params:
         unpack: true
