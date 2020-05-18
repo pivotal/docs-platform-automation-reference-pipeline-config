@@ -369,7 +369,7 @@ jobs:
     <<: *prepare-tasks-with-secrets
   - task: prepare-image
     <<: *prepare-image
-  # code_snippet download-product-s3-usage start yaml
+  # code_snippet download-product-usage-s3 start yaml
   - task: download-pks
     image: platform-automation-image
     file: platform-automation-tasks/tasks/download-product.yml
@@ -383,7 +383,7 @@ jobs:
     output_mapping:
       downloaded-product: pks-product
       downloaded-stemcell: pks-stemcell
-  # code_snippet download-product-s3-usage end
+  # code_snippet download-product-usage-s3 end
   # code_snippet upload-and-stage-product-usage start yaml
   - task: upload-and-stage-pks
     image: platform-automation-image
