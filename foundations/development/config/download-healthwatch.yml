@@ -1,0 +1,12 @@
+---
+pivnet-product-slug: p-healthwatch
+
+file-glob: "*.pivotal"
+product-version: ((healthwatch-version))
+stemcell-iaas: vsphere
+
+s3-access-key-id: ((s3_access_key_id))
+s3-secret-access-key: ((s3_secret_access_key))
+s3-bucket: ((s3_pivnet_products_bucket))
+s3-region-name: ((s3_region_name))
+s3-stemcell-path: healthwatch-stemcell

@@ -1,0 +1,40 @@
+---
+product-name: p-healthwatch
+network-properties:
+  singleton_availability_zone:
+    name: pks-az1
+  other_availability_zones:
+    - name: pks-az1
+  network:
+    name: ((vsphere_tas_network))
+  service_network:
+    name: ((vsphere_services_network))
+product-properties:
+  .healthwatch-forwarder.boshhealth_instance_count:
+    value: 1
+  .healthwatch-forwarder.boshtasks_instance_count:
+    value: 1
+  .healthwatch-forwarder.canary_instance_count:
+    value: 1
+  .healthwatch-forwarder.cli_instance_count:
+    value: 1
+  .healthwatch-forwarder.health_check_az:
+    value: pks-az1
+  .healthwatch-forwarder.ingestor_instance_count:
+    value: 1
+  .healthwatch-forwarder.opsman_instance_count:
+    value: 1
+  .healthwatch-forwarder.publish_to_eva:
+    value: true
+  .healthwatch-forwarder.worker_instance_count:
+    value: 1
+  .mysql.skip_name_resolve:
+    value: true
+  .properties.boshtasks:
+    value: disable
+  .properties.opsman:
+    value: enable
+  .properties.opsman.enable.url:
+    value: ((opsman_url))
+  .properties.syslog_selector:
+    value: "No"
