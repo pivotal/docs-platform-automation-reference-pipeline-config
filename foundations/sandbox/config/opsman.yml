@@ -10,13 +10,13 @@ opsman-configuration:
       insecure: 1
     ssh_public_key: ((vsphere_ssh_key))
     disk_type: thin
-    private_ip: 172.16.1.10
+    private_ip: 194.168.1.10
     dns: 10.192.2.10
     ntp: 10.192.2.11
     hostname: ((opsman_url))
     network: Management
     netmask: 255.255.255.0
-    gateway: 172.16.1.1
+    gateway: 194.168.1.1
     memory: 9
     cpu: 2
 
