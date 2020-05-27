@@ -13,7 +13,7 @@ opsman-configuration:
     ssh_public_key: ((vsphere_ssh_key))
     disk_type: thin
     private_ip: 194.168.1.10
-    dns: 10.192.2.10
+    dns: 10.192.2.10,10.192.2.11
     ntp: time.svc.pivotal.io
     hostname: ((opsman_url))
     network: development-PAS-Infrastructure
