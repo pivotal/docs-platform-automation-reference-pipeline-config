@@ -16,7 +16,7 @@ opsman-configuration:
     dns: 10.192.2.10
     ntp: time.svc.pivotal.io
     hostname: ((opsman_url))
-    network: Management
+    network: development-PAS-Infrastructure
     netmask: 255.255.255.0
     gateway: 194.168.1.1
     memory: 9
