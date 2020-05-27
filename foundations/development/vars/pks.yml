@@ -1,5 +1,5 @@
 plan1_selector_active_description: 'Example: This plan will configure a lightweight kubernetes cluster. Not recommended for production workloads.'
-floating_ip_pool_ids: 63ebee1f-8c36-4ccd-a625-d76dea5b5112
-ip_block_id: 1ad21f2b-cff7-404c-bb16-4e166ca3ab8a
+floating_ip_pool_ids: ead07060-07e4-4101-ab7e-694addbefd11
+ip_block_id: 6e451bed-5f52-4879-9b9f-eb4dafc97e3c
 nodes_ip_block_id: c7f2723a-b80e-4b9f-abc4-888d4958892e
 t0_router_id: 053ba5c5-2220-4c39-9234-b6a786193bfd
