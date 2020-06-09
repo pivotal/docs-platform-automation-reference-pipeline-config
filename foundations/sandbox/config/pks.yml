@@ -130,6 +130,9 @@ product-properties:
   .properties.syslog_selector:
     selected_option: disabled
     value: disabled
+  .properties.telemetry_installation_purpose_selector:
+    selected_option: not_provided
+    value: not_provided
   .properties.telemetry_selector:
     selected_option: disabled
     value: disabled
