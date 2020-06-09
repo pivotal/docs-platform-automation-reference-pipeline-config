@@ -136,8 +136,6 @@ product-properties:
   .properties.uaa:
     selected_option: internal
     value: internal
-  .properties.uaa_oidc:
-    value: false
   .properties.uaa_pks_cli_access_token_lifetime:
     value: 600
   .properties.uaa_pks_cli_refresh_token_lifetime:
