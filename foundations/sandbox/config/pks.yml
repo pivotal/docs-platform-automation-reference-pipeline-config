@@ -28,7 +28,7 @@ product-properties:
     selected_option: nsx
     value: nsx
   .properties.network_selector.nsx.cloud-config-dns:
-    value: 10.192.2.10, 10.192.2.11
+    value: 10.192.2.10,10.192.2.11
   .properties.network_selector.nsx.floating-ip-pool-ids:
     value: ((floating_ip_pool_ids))
   .properties.network_selector.nsx.ip-block-id:

@@ -37,7 +37,7 @@ networks-configuration:
     subnets:
     - iaas_identifier: Management
       cidr: 172.16.1.0/24
-      dns: 10.192.2.10, 10.192.2.11
+      dns: 10.192.2.10,10.192.2.11
       gateway: 172.16.1.1
       reserved_ip_ranges: 172.16.1.1-172.16.1.10
       availability_zone_names:
@@ -46,7 +46,7 @@ networks-configuration:
     subnets:
     - iaas_identifier: Services
       cidr: 172.16.2.0/24
-      dns: 10.192.2.10, 10.192.2.11
+      dns: 10.192.2.10,10.192.2.11
       gateway: 172.16.2.1
       reserved_ip_ranges: 172.16.2.1-172.16.2.10
       availability_zone_names:
@@ -55,7 +55,7 @@ networks-configuration:
     subnets:
     - iaas_identifier: TAS
       cidr: 172.16.3.0/24
-      dns: 10.192.2.10, 10.192.2.11
+      dns: 10.192.2.10,10.192.2.11
       gateway: 172.16.3.1
       reserved_ip_ranges: 172.16.3.1-172.16.3.10
       availability_zone_names:
@@ -64,7 +64,7 @@ networks-configuration:
     subnets:
     - iaas_identifier: PKS
       cidr: 172.16.4.0/24
-      dns: 10.192.2.10, 10.192.2.11
+      dns: 10.192.2.10,10.192.2.11
       gateway: 172.16.4.1
       reserved_ip_ranges: 172.16.4.1-172.16.4.10
       availability_zone_names:
