@@ -1,21 +1,21 @@
 ---
-pivnet_api_token: ((pivnet_token))
-pivnet_product_slug: elastic-runtime
+pivnet-api-token: ((pivnet_token))
+pivnet-product-slug: elastic-runtime
 
-file_glob: "srt*.pivotal"
-product_version_regex: ^2\.7\..*$
-stemcell_iaas: vsphere
+file-glob: "srt*.pivotal"
+product-version-regex: ^2\.7\..*$
+stemcell-iaas: vsphere
 
-s3_access_key_id: ((s3_access_key_id))
-s3_secret_access_key: ((s3_secret_access_key))
-s3_bucket: ((s3_pivnet_products_bucket))
-s3_region_name: ((s3_region_name))
-s3_stemcell_path: tas-stemcell
+s3-access-key-id: ((s3_access_key_id))
+s3-secret-access-key: ((s3_secret_access_key))
+s3-bucket: ((s3_pivnet_products_bucket))
+s3-region-name: ((s3_region_name))
+s3-stemcell-path: tas-stemcell
 
 # test stuff below
 
-other_s3_secret_access_key: ((other_s3_secret_access_key))
-other_s3_access_key_id: ((other_s3_access_key_id))
-other_s3_bucket: ((other_s3_pivnet_products_bucket))
-other_s3_region_name: ((other_s3_region_name))
-other_s3_stemcell_path: tas-stemcell
+other-s3-secret-access-key: ((other_s3_secret_access_key))
+other-s3-access-key-id: ((other_s3_access_key_id))
+other-s3-bucket: ((other_s3_pivnet_products_bucket))
+other-s3-region-name: ((s3_region_name))
+other-s3-stemcell-path: tas-stemcell
