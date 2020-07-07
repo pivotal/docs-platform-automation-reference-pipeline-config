@@ -11,11 +11,3 @@ s3-secret-access-key: ((s3_secret_access_key))
 s3-bucket: ((s3_pivnet_products_bucket))
 s3-region-name: ((s3_region_name))
 s3-stemcell-path: tas-stemcell
-
-# test stuff below
-
-other-s3-secret-access-key: ((other_s3_secret_access_key))
-other-s3-access-key-id: ((other_s3_access_key_id))
-other-s3-bucket: ((other_s3_pivnet_products_bucket))
-other-s3-region-name: ((s3_region_name))
-other-s3-stemcell-path: tas-stemcell
