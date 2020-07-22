@@ -1,7 +1,7 @@
 ---
 pivnet-product-slug: elastic-runtime
 
-file-glob: "srt*.pivotal"
+file-glob: "*srt*.pivotal"
 product-version: ((tas-version))
 stemcell-iaas: vsphere
 
