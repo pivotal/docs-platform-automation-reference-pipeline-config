@@ -1,0 +1,4 @@
+errands:
+  p-healthwatch:
+    run_post_deploy:
+      smoke-tests: false
