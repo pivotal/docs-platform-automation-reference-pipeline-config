@@ -6,7 +6,7 @@ opsman-configuration:
       password: ((vcenter_user.password))
       datastore: LUN01
       datacenter: Datacenter
-      resource_pool: /Datacenter/host/Cluster
+      resource_pool: /Datacenter/host/Cluster/Resources/pks-az1
       insecure: 1
     ssh_public_key: ((vsphere_ssh_key))
     disk_type: thin
