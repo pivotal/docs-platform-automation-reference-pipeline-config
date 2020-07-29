@@ -196,6 +196,7 @@ jobs:
       env: configuration
       config: configuration
     params:
+      ENV_FILE: foundations/config/env.yml
       OPSMAN_CONFIG_FILE: foundations/((foundation))/config/opsman.yml
   # code_snippet configure-opsman-usage end
   # code_snippet configure-director-usage start yaml
