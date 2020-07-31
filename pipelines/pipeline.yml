@@ -355,6 +355,7 @@ jobs:
 
 - name: download-upload-and-stage-pks
   serial: true
+  serial_groups: [ products ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -408,6 +409,7 @@ jobs:
 
 - name: download-upload-and-stage-tas
   serial: true
+  serial_groups: [ products ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -466,6 +468,7 @@ jobs:
   # code_snippet stage-product-usage end
 - name: download-upload-and-stage-healthwatch
   serial: true
+  serial_groups: [ products ]
   plan:
     - aggregate:
         - get: platform-automation-image
