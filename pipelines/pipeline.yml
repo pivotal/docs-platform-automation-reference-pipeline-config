@@ -105,7 +105,7 @@ jobs:
 - name: test-platform-automation
   serial: true
   plan:
-    - aggregate:
+    - in_parallel:
       - get: platform-automation-image
         params:
           unpack: true
@@ -133,7 +133,7 @@ jobs:
   serial: true
   serial_groups: [ install ]
   plan:
-  - aggregate:
+  - in_parallel:
     - get: platform-automation-image
       params:
         unpack: true
@@ -237,7 +237,7 @@ jobs:
   serial_groups: [ install ]
   serial: true
   plan:
-  - aggregate:
+  - in_parallel:
     - get: state
       passed: [ install-opsman ]
     - get: daily-trigger
@@ -280,7 +280,7 @@ jobs:
   serial: true
   serial_groups: [ install ]
   plan:
-  - aggregate:
+  - in_parallel:
     - get: platform-automation-image
       params:
         unpack: true
@@ -357,7 +357,7 @@ jobs:
   serial: true
   serial_groups: [ products ]
   plan:
-  - aggregate:
+  - in_parallel:
     - get: platform-automation-image
       params:
         unpack: true
@@ -411,7 +411,7 @@ jobs:
   serial: true
   serial_groups: [ products ]
   plan:
-  - aggregate:
+  - in_parallel:
     - get: platform-automation-image
       params:
         unpack: true
@@ -470,7 +470,7 @@ jobs:
   serial: true
   serial_groups: [ products ]
   plan:
-    - aggregate:
+    - in_parallel:
         - get: platform-automation-image
           params:
             unpack: true
@@ -516,7 +516,7 @@ jobs:
   serial: true
   serial_groups: [ install ]
   plan:
-  - aggregate:
+  - in_parallel:
     - get: platform-automation-image
       params:
         unpack: true
@@ -552,7 +552,7 @@ jobs:
   serial: true
   serial_groups: [ install ]
   plan:
-    - aggregate:
+    - in_parallel:
       - get: platform-automation-image
         params:
           unpack: true
@@ -583,7 +583,7 @@ jobs:
   serial: true
   serial_groups: [ install ]
   plan:
-    - aggregate:
+    - in_parallel:
       - get: platform-automation-image
         params:
           unpack: true
@@ -614,7 +614,7 @@ jobs:
   serial: true
   serial_groups: [ install ]
   plan:
-  - aggregate:
+  - in_parallel:
     - get: platform-automation-image
       params:
         unpack: true
@@ -675,7 +675,7 @@ jobs:
   serial: true
   serial_groups: [ install ]
   plan:
-  - aggregate:
+  - in_parallel:
     - get: telemetry-collector-binary
       params:
         unpack: true
@@ -716,7 +716,7 @@ jobs:
   serial: true
   serial_groups: [ install ]
   plan:
-    - aggregate:
+    - in_parallel:
       - get: daily-trigger
         trigger: true
       - get: platform-automation-image
@@ -743,7 +743,7 @@ jobs:
   serial: true
   serial_groups: [install]
   plan:
-    - aggregate:
+    - in_parallel:
       - get: platform-automation-image
         params:
           unpack: true
