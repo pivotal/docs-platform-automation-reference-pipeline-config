@@ -690,7 +690,7 @@ jobs:
     <<: *prepare-tasks-with-secrets
   - task: prepare-image
     <<: *prepare-image
-  # code_snippet run-bosh-errand start yaml
+  # code_snippet run-bosh-errand-usage start yaml
   - task: run-bosh-errand
     image: platform-automation-image
     file: platform-automation-tasks/tasks/run-bosh-errand.yml
@@ -699,7 +699,7 @@ jobs:
     params:
       PRODUCT: cf
       ERRAND_NAME: smoke-tests
-  # code_snippet run-bosh-errand end
+  # code_snippet run-bosh-errand-usage end
 - name: collect-telemetry
   serial: true
   serial_groups: [ install ]
