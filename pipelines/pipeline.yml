@@ -697,8 +697,9 @@ jobs:
     input_mapping:
       env: configuration
     params:
-      PRODUCT: cf
+      PRODUCT_NAME: cf
       ERRAND_NAME: smoke-tests
+      ENV_FILE: foundations/config/env.yml
   # code_snippet run-bosh-errand-usage end
 - name: collect-telemetry
   serial: true
