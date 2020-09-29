@@ -1,191 +1,57 @@
 ---
 product-name: pivotal-container-service
+network-properties:
+  network:
+    name: pks
+  service_network:
+    name: services
+  other_availability_zones:
+    - name: ((availability_zones.0))
+    - name: ((availability_zones.1))
+    - name: ((availability_zones.2))
+  singleton_availability_zone:
+    name: ((availability_zones.0))
 product-properties:
   .pivotal-container-service.pks_tls:
     value:
-      cert_pem: ((pks_tls.cert_pem))
-      private_key_pem: ((pks_tls.private_key_pem))
-  .properties.cloud_provider:
-    selected_option: vsphere
-    value: vSphere
-  .properties.cloud_provider.vsphere.vcenter_dc:
-    value: ((datacenter))
-  .properties.cloud_provider.vsphere.vcenter_ds:
-    value: ((persistent_datastores_string))
-  .properties.cloud_provider.vsphere.vcenter_ip:
-    value: ((vcenter_url))
-  .properties.cloud_provider.vsphere.vcenter_master_creds:
-    value:
-      identity: ((vcenter_user.username))
-      password: ((vcenter_user.password))
-  .properties.cloud_provider.vsphere.vcenter_vms:
-    value: ((bosh_vm_folder))
-  .properties.log_sink_resources_deploy:
-    value: true
-  .properties.metric_sink_resources_deploy:
-    value: true
-  .properties.network_selector:
-    selected_option: nsx
-    value: nsx
-  .properties.network_selector.nsx.cloud-config-dns:
-    value: 10.192.2.10,10.192.2.11
-  .properties.network_selector.nsx.floating-ip-pool-ids:
-    value: ((floating_ip_pool_ids))
-  .properties.network_selector.nsx.ip-block-id:
-    value: ((ip_block_id))
-  .properties.network_selector.nsx.lb_size_large_supported:
-    value: true
-  .properties.network_selector.nsx.lb_size_medium_supported:
-    value: true
-  .properties.network_selector.nsx.nat_mode:
-    value: true
-  .properties.network_selector.nsx.ncp-ha-heartbeat-period:
-    value: 6
-  .properties.network_selector.nsx.ncp-ha-master-timeout:
-    value: 18
-  .properties.network_selector.nsx.ncp-ha-update-timeout:
-    value: 12
-  .properties.network_selector.nsx.network_automation:
-    value: true
-  .properties.network_selector.nsx.nodes-ip-block-id:
-    value: ((nodes_ip_block_id))
-  .properties.network_selector.nsx.nsx-t-ca-cert:
-    value: ((nsx.ca_cert))
-  .properties.network_selector.nsx.nsx-t-host:
-    value: ((nsx.url))
-  .properties.network_selector.nsx.nsx-t-insecure:
-    value: true
-  .properties.network_selector.nsx.nsx-t-superuser-certificate:
-    value:
-      cert_pem: ((nsx.cert_pem))
-      private_key_pem: ((nsx.private_key_pem))
-  .properties.network_selector.nsx.service_cluster_cidr:
-    value: 10.100.200.0/24
-  .properties.network_selector.nsx.t0-router-id:
-    value: ((t0_router_id))
-  .properties.network_selector.nsx.vcenter_cluster:
-    value: Cluster
-  .properties.pks-vrli:
-    selected_option: disabled
-    value: disabled
-  .properties.pks-vrops:
-    selected_option: disabled
-    value: disabled
+      cert_pem: |
+        ((ssl_certificate))
+      private_key_pem: |
+        ((ssl_private_key))
   .properties.pks_api_hostname:
-    value: ((pks_api_url))
-  .properties.plan1_selector:
-    selected_option: active
-    value: Plan Active
-  .properties.plan1_selector.active.admission_plugins:
-    value:
-    - deny_escalating_exec
-  .properties.plan1_selector.active.allow_privileged_containers:
-    value: false
-  .properties.plan1_selector.active.description:
-    value: ((plan1_selector_active_description))
+    value: ((pks_api_dns_domain))
   .properties.plan1_selector.active.master_az_placement:
     value:
-      - pks-az1
-  .properties.plan1_selector.active.master_instances:
-    value: 1
-  .properties.plan1_selector.active.max_worker_instances:
-    value: 50
-  .properties.plan1_selector.active.name:
-    value: small
+      - ((availability_zones.0))
   .properties.plan1_selector.active.worker_az_placement:
     value:
-      - pks-az1
-  .properties.plan1_selector.active.worker_instances:
-    value: 3
+      - ((availability_zones.0))
+      - ((availability_zones.1))
+      - ((availability_zones.2))
   .properties.plan2_selector:
-    selected_option: inactive
-    value: Plan Inactive
+    value: "Plan Inactive"
   .properties.plan3_selector:
-    selected_option: inactive
-    value: Plan Inactive
-  .properties.plan4_selector:
-    selected_option: inactive
-    value: Plan Inactive
-  .properties.plan5_selector:
-    selected_option: inactive
-    value: Plan Inactive
-  .properties.plan6_selector:
-    selected_option: inactive
-    value: Plan Inactive
-  .properties.plan7_selector:
-    selected_option: inactive
-    value: Plan Inactive
-  .properties.plan8_selector:
-    selected_option: inactive
-    value: Plan Inactive
-  .properties.plan9_selector:
-    selected_option: inactive
-    value: Plan Inactive
-  .properties.plan10_selector:
-    selected_option: inactive
-    value: Plan Inactive
-  .properties.proxy_selector:
-    selected_option: disabled
-    value: Disabled
-  .properties.syslog_selector:
-    selected_option: disabled
+    value: "Plan Inactive"
+  .properties.cloud_provider:
+    value: GCP
+  .properties.cloud_provider.gcp.project_id:
+    value: ((project))
+  .properties.cloud_provider.gcp.network:
+    value: ((network_name))
+  .properties.cloud_provider.gcp.master_service_account:
+    value: ((pks_master_node_service_account_id))
+  .properties.cloud_provider.gcp.worker_service_account:
+    value: ((pks_worker_node_service_account_id))
+  .properties.oidc_selector:
+    value: disabled
+  .properties.telemetry_selector:
     value: disabled
   .properties.telemetry_installation_purpose_selector:
-    selected_option: not_provided
     value: not_provided
-  .properties.telemetry_selector:
-    selected_option: disabled
-    value: disabled
-  .properties.uaa:
-    selected_option: internal
-    value: internal
-  .properties.uaa_pks_cli_access_token_lifetime:
-    value: 600
-  .properties.uaa_pks_cli_refresh_token_lifetime:
-    value: 21600
-  .properties.wavefront:
-    selected_option: disabled
-    value: disabled
-  .properties.worker_max_in_flight:
-    value: 1
-network-properties:
-  network:
-    name: PKS
-  other_availability_zones:
-  - name: pks-az1
-  service_network:
-    name: Services
-  singleton_availability_zone:
-    name: pks-az1
 resource-config:
   pivotal-container-service:
-    max_in_flight: 1
-    additional_networks: []
-    additional_vm_extensions: []
-    instance_type:
-      id: automatic
-    instances: automatic
-    nsx:
-      lbs: []
-      security_groups: []
-    nsxt:
-      lb:
-        server_pools: []
-      ns_groups: []
-      vif_type: null
-    persistent_disk:
-      size_mb: automatic
-    swap_as_percent_of_memory_size: automatic
+    elb_names:
+      - tcp:((pks_api_target_pool_name))
 errand-config:
-  delete-all-clusters:
-    pre-delete-state: true
-  pks-nsx-t-precheck:
-    post-deploy-state: true
   smoke-tests:
-    post-deploy-state: false
-  upgrade-all-service-instances:
     post-deploy-state: true
-  wavefront-alert-creation:
-    post-deploy-state: false
-  wavefront-alert-deletion:
-    pre-delete-state: false

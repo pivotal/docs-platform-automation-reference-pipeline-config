@@ -61,7 +61,7 @@ resources:
   source:
     private_key: ((docs-ref-pipeline-repo-key.private_key))
     uri: ((docs-ref-pipeline-repo-uri))
-    branch: develop
+    branch: migrate-pez
 # code_snippet resources-configurations end yaml
 
 # code_snippet resources-triggers start yaml

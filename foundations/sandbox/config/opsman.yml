@@ -1,28 +1,15 @@
+---
 opsman-configuration:
-  vsphere:
-    vcenter:
-      url: ((vcenter_url))
-      username: ((vcenter_user.username))
-      password: ((vcenter_user.password))
-      datastore: LUN01
-      datacenter: Datacenter
-      resource_pool: /Datacenter/host/Cluster/Resources/pks-az1
-      insecure: 1
-    ssh_public_key: ((vsphere_ssh_key))
-    disk_type: thin
-    private_ip: 172.16.1.10
-    dns: 10.192.2.10
-    ntp: 10.192.2.11
-    hostname: ((opsman_url))
-    network: Management
-    netmask: 255.255.255.0
-    gateway: 172.16.1.1
-    memory: 9
-    cpu: 2
-
-# Platform Automation 4.4+ only
-pivotal-network-settings:
-  api_token: ((pivnet-token))
-ssl-certificate:
-  certificate: ((opsman-ssl.certificate))
-  private_key: ((opsman-ssl.private_key))
+  gcp:
+    boot_disk_size: 100
+    custom_cpu: 4
+    custom_memory: 16
+    gcp_service_account: ((service_account_key))
+    project: ((project))
+    public_ip: ((ops_manager_public_ip))
+    region: ((region))
+    ssh_public_key: ((ops_manager_ssh_public_key))
+    tags: ((ops_manager_tags))
+    vm_name: ((environment_name))-ops-manager-vm
+    vpc_subnet: ((management_subnet_name))
+    zone: ((availability_zones.0))
