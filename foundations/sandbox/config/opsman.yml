@@ -5,7 +5,6 @@ opsman-configuration:
     custom_cpu: 4
     custom_memory: 16
     gcp_service_account: ((service_account_key))
-    hostname: ((ops_manager_dns))
     project: ((project))
     public_ip: ((ops_manager_public_ip))
     region: ((region))
