@@ -186,11 +186,9 @@ jobs:
     input_mapping:
       env: configuration
       config: configuration
-      vars: configuration
     params:
       ENV_FILE: foundations/config/env.yml
       AUTH_CONFIG_FILE: foundations/config/auth.yml
-      VARS_FILES: vars/foundations/((foundation))/vars/director.yml
   # code_snippet configure-authentication-usage end
   # code_snippet configure-opsman-usage start yaml
   - task: configure-opsman
