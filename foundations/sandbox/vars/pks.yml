@@ -1,5 +1,14 @@
-plan1_selector_active_description: 'Example: This plan will configure a lightweight kubernetes cluster. Not recommended for production workloads.'
-floating_ip_pool_ids: 9631121f-0d49-4209-8d98-4cc2d6d2aa4f
-ip_block_id: 6a687eda-231b-412d-abf5-9bed153ad87e
-nodes_ip_block_id: a1f02faf-8bf2-4ae2-ba66-05e73693d7db
-t0_router_id: cf3e5d58-fbc5-48fd-b899-3dd208f6aa11
+# All infrastructure was created using https://github.com/pivotal/paving for GCP
+# This file was generated from the location of terraform.tfstate:
+# terraform output stable_config_pks > ~/workspace/docs-platform-automation-reference-pipeline-config/foundations/sandbox/vars/pks.yml
+# Secrets are stored in Credhub
+{
+  "pks_api_dns_domain": "pks.reference-gcp.gcp.platform-automation.cf-app.com",
+  "pks_api_target_pool_name": "reference-gcp-pks-api-lb",
+  "pks_master_node_service_account_id": "reference-gcp-pks-master@cf-norm-ci.iam.gserviceaccount.com",
+  "pks_subnet_cidr": "10.0.10.0/24",
+  "pks_subnet_gateway": "10.0.10.1",
+  "pks_subnet_name": "reference-gcp-pks-subnet",
+  "pks_subnet_reserved_ip_ranges": "10.0.10.1-10.0.10.9",
+  "pks_worker_node_service_account_id": "reference-gcp-pks-worker@cf-norm-ci.iam.gserviceaccount.com"
+}

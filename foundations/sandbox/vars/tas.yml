@@ -1,2 +1,25 @@
-vsphere_tas_network: TAS
-mysql_monitor_recipient_email: noreply-sandbox@vmware.com
+# All infrastructure was created using https://github.com/pivotal/paving for GCP
+# This file was generated from the location of terraform.tfstate:
+# terraform output stable_config_pas > ~/workspace/docs-platform-automation-reference-pipeline-config/foundations/sandbox/vars/tas.yml
+# Secrets are stored in Credhub
+{
+  "apps_dns_domain": "apps.reference-gcp.gcp.platform-automation.cf-app.com",
+  "backup_bucket_name": "cf-norm-ci-reference-gcp-backup-82303",
+  "buildpacks_bucket_name": "cf-norm-ci-reference-gcp-buildpacks-82303",
+  "doppler_dns": "doppler.sys.reference-gcp.gcp.platform-automation.cf-app.com",
+  "droplets_bucket_name": "cf-norm-ci-reference-gcp-droplets-82303",
+  "http_backend_service_name": "reference-gcp-http-lb",
+  "loggregator_dns": "loggregator.sys.reference-gcp.gcp.platform-automation.cf-app.com",
+  "packages_bucket_name": "cf-norm-ci-reference-gcp-packages-82303",
+  "pas_subnet_cidr": "10.0.4.0/24",
+  "pas_subnet_gateway": "10.0.4.1",
+  "pas_subnet_name": "reference-gcp-pas-subnet",
+  "pas_subnet_reserved_ip_ranges": "10.0.4.1-10.0.4.9",
+  "resources_bucket_name": "cf-norm-ci-reference-gcp-resources-82303",
+  "ssh_dns": "ssh.sys.reference-gcp.gcp.platform-automation.cf-app.com",
+  "ssh_target_pool_name": "reference-gcp-ssh-lb",
+  "sys_dns_domain": "sys.reference-gcp.gcp.platform-automation.cf-app.com",
+  "tcp_dns": "tcp.reference-gcp.gcp.platform-automation.cf-app.com",
+  "tcp_target_pool_name": "reference-gcp-tcp-lb",
+  "web_target_pool_name": "reference-gcp-websocket-lb"
+}
