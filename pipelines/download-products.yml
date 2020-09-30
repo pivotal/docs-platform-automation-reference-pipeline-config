@@ -110,7 +110,7 @@ resources:
   source:
     private_key: ((docs-ref-pipeline-repo-key.private_key))
     uri: ((docs-ref-pipeline-repo-uri))
-    branch: develop
+    branch: migrate-pez
     submodules: all
     depth: 1
 # code_snippet resources-pipeline-configurations end yaml
@@ -129,12 +129,10 @@ prepare-tasks-with-secrets: &prepare-tasks-with-secrets
   image: platform-automation-image
   file: platform-automation-tasks/tasks/prepare-tasks-with-secrets.yml
   params:
-    VARS_PATHS: vars/foundations/vars
     CONFIG_PATHS: config/download-product-pivnet
   input_mapping:
     tasks: platform-automation-tasks
     config: configuration
-    vars: configuration
   output_mapping:
     tasks: platform-automation-tasks
 # code_snippet resources-pipeline-prepare-tasks-with-secrets end yaml
