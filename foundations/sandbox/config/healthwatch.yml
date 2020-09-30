@@ -1,14 +1,16 @@
 ---
 product-name: p-healthwatch
 network-properties:
-  singleton_availability_zone:
-    name: pks-az1
-  other_availability_zones:
-    - name: pks-az1
   network:
-    name: ((vsphere_tas_network))
+    name: pas
   service_network:
-    name: ((vsphere_services_network))
+    name: services
+  other_availability_zones:
+  - name: ((availability_zones.0))
+  - name: ((availability_zones.1))
+  - name: ((availability_zones.2))
+  singleton_availability_zone:
+    name: ((availability_zones.0))
 product-properties:
   .healthwatch-forwarder.boshhealth_instance_count:
     value: 1
@@ -35,6 +37,6 @@ product-properties:
   .properties.opsman:
     value: enable
   .properties.opsman.enable.url:
-    value: ((opsman_url))
+    value: ((ops_manager_dns))
   .properties.syslog_selector:
     value: "No"
