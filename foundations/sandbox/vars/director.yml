@@ -21,7 +21,6 @@
   "management_subnet_reserved_ip_ranges": "10.0.0.1-10.0.0.9",
   "network_name": "reference-gcp-network",
   "ops_manager_bucket": "cf-norm-ci-reference-gcp-ops-manager-82303",
-  "ops_manager_dns": "opsmanager.reference-gcp.gcp.platform-automation.cf-app.com",
   "ops_manager_public_ip": "35.193.237.179",
   "ops_manager_tags": "reference-gcp-ops-manager",
   "platform_vms_tag": "reference-gcp-vms",
