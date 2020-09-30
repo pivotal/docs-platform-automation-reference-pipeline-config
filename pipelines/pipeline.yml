@@ -167,9 +167,11 @@ jobs:
     input_mapping:
       image: opsman-image
       config: configuration
+      vars: configuration
     params:
       OPSMAN_CONFIG_FILE: foundations/((foundation))/config/opsman.yml
       STATE_FILE: state-((foundation)).yml
+      VARS_FILES: vars/foundations/((foundation))/vars/director.yml
     ensure: &put-state
       do:
       - put: state
@@ -195,9 +197,11 @@ jobs:
     input_mapping:
       env: configuration
       config: configuration
+      vars: configuration
     params:
       ENV_FILE: foundations/config/env.yml
       OPSMAN_CONFIG_FILE: foundations/((foundation))/config/opsman.yml
+      VARS_FILES: vars/foundations/((foundation))/vars/director.yml
   # code_snippet configure-opsman-usage end
   # code_snippet configure-director-usage start yaml
   - task: configure-director
@@ -316,11 +320,13 @@ jobs:
       image: opsman-image
       config: configuration
       env: configuration
+      vars: configuration
     params:
       ENV_FILE: foundations/config/env.yml
       OPSMAN_CONFIG_FILE: foundations/((foundation))/config/opsman.yml
       STATE_FILE: state-((foundation)).yml
       INSTALLATION_FILE: ((foundation))-installation*.zip
+      VARS_FILES: vars/foundations/((foundation))/vars/director.yml
     ensure: *put-state
   # code_snippet upgrade-opsman-usage end
   - task: configure-director
@@ -329,9 +335,11 @@ jobs:
     input_mapping:
       config: configuration
       env: configuration
+      vars: configuration
     params:
       ENV_FILE: foundations/config/env.yml
       DIRECTOR_CONFIG_FILE: foundations/((foundation))/config/director.yml
+      VARS_FILES: vars/foundations/((foundation))/vars/director.yml
   - task: apply-director-changes
     image: platform-automation-image
     file: platform-automation-tasks/tasks/apply-director-changes.yml
