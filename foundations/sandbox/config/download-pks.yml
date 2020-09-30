@@ -3,7 +3,7 @@ pivnet-product-slug: pivotal-container-service
 
 file-glob: "pivotal-container-service*.pivotal"
 product-version: ((pks-version))
-stemcell-iaas: gcp
+stemcell-iaas: google
 
 s3-access-key-id: ((s3_access_key_id))
 s3-secret-access-key: ((s3_secret_access_key))

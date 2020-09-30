@@ -214,7 +214,10 @@ jobs:
     params:
       ENV_FILE: foundations/config/env.yml
       DIRECTOR_CONFIG_FILE: foundations/((foundation))/config/director.yml
-      VARS_FILES: foundations/((foundation))/vars/director.yml
+      VARS_FILES: |
+        vars/foundations/((foundation))/vars/director.yml
+        vars/foundations/((foundation))/vars/tas.yml
+        vars/foundations/((foundation))/vars/pks.yml 
   # code_snippet configure-director-usage end
   # code_snippet apply-director-changes-usage start yaml
   - task: apply-director-changes
@@ -339,7 +342,10 @@ jobs:
     params:
       ENV_FILE: foundations/config/env.yml
       DIRECTOR_CONFIG_FILE: foundations/((foundation))/config/director.yml
-      VARS_FILES: vars/foundations/((foundation))/vars/director.yml
+      VARS_FILES: |
+        vars/foundations/((foundation))/vars/director.yml
+        vars/foundations/((foundation))/vars/tas.yml
+        vars/foundations/((foundation))/vars/pks.yml 
   - task: apply-director-changes
     image: platform-automation-image
     file: platform-automation-tasks/tasks/apply-director-changes.yml
