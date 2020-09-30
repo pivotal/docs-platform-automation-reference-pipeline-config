@@ -1,7 +1,7 @@
 ---
 pivnet-product-slug: ops-manager
 
-file-glob: "ops-manager*.ova"
+file-glob: "ops-manager-gcp*.yml"
 product-version: ((opsman-version))
 
 s3-access-key-id: ((s3_access_key_id))

@@ -19,7 +19,7 @@ resources:
     bucket: ((s3_pivnet_products_bucket))
     region_name: ((s3_region_name))
     secret_access_key: ((s3_secret_access_key))
-    regexp: \[ops-manager,(.*)\].*.ova
+    regexp: \[ops-manager,(.*)\]ops-manager-gcp.*.yml
 
 - name: pks-product
   type: s3
