@@ -709,7 +709,7 @@ jobs:
       env: configuration
     params:
       PRODUCT_NAME: cf
-      ERRAND_NAME: smoke-tests
+      ERRAND_NAME: smoke_tests
       ENV_FILE: foundations/config/env.yml
       OPSMAN_SSH_PRIVATE_KEY: ((ops_manager_ssh_private_key))
   # code_snippet run-bosh-errand-usage end
