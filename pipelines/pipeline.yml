@@ -118,7 +118,7 @@ jobs:
       image: platform-automation-image
       file: platform-automation-tasks/tasks/test-interpolate.yml
       params:
-        CONFIG_FILE: download-product/pas.yml
+        CONFIG_FILE: foundations/((foundation))/config/download-tas.yml
         SKIP_MISSING: true
       input_mapping:
         config: configuration
