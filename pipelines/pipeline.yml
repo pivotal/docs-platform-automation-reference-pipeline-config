@@ -315,6 +315,14 @@ jobs:
       SOURCE: s3
     output_mapping:
       downloaded-product: opsman-image
+  - task: check-pending-changes
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/check-pending-changes.yml
+    input_mapping:
+      env: configuration
+    params:
+      ENV_FILE: foundations/config/env.yml
+      ALLOW_PENDING_CHANGES: true
   # code_snippet upgrade-opsman-usage start yaml
   - task: upgrade-opsman
     image: platform-automation-image
