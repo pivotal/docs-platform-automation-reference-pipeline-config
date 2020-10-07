@@ -789,6 +789,39 @@ jobs:
         ENV_FILE: foundations/config/env.yml
         EXPIRES_WITHIN: 6m
     # code_snippet expiring-certificates-usage end
+- name: stage-configure-apply-telemetry
+  serial_groups: [install]
+  plan:
+    - in_parallel:
+      - get: platform-automation-image
+        params:
+          unpack: true
+        passed:
+          - apply-product-changes
+        trigger: true
+      - get: platform-automation-tasks
+        params:
+          unpack: true
+      - get: configuration
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
+    - task: prepare-image
+      <<: *prepare-image
+    # code_snippet stage-configure-apply-usage start yaml
+    - task: stage-configure-apply
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/stage-configure-apply.yml
+      params:
+        CONFIG_FILE: foundations/((foundation))/config/p-telemetry.yml
+        STAGE_PRODUCT_CONFIG_FILE: foundations/((foundation))/config/p-telemetry.yml
+        ENV_FILE: foundations/config/env.yml
+        VARS_FILES: |
+          vars/foundations/((foundation))/vars/director.yml
+      input_mapping:
+        env: configuration
+        config: configuration
+        vars: configuration
+    # code_snippet stage-configure-apply-usage end
 - name: delete-installation
   serial: true
   serial_groups: [install]
