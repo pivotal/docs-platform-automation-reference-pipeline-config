@@ -1,0 +1,45 @@
+product-name: pivotal-telemetry-om
+product-version: latest
+product-properties:
+  .properties.api_key:
+    value:
+      secret: ((properties_api_key.secret))
+  .properties.audit_mode:
+    value: false
+  .properties.collector_cron_schedule:
+    value: random
+  .properties.endpoint:
+    value: https://telemetry.pivotal.io
+  .properties.env_type:
+    value: sandbox
+  .properties.eula_acceptance:
+    value:
+      - agree
+  .properties.flush_interval:
+    value: 3600
+  .properties.opsmanager_insecure_skip_tls_verify:
+    value: false
+  .properties.usage_service_selector:
+    selected_option: disabled
+    value: Disabled
+network-properties:
+  network:
+    name: management
+  other_availability_zones:
+    - name: ((availability_zones.0))
+  singleton_availability_zone:
+    name: ((availability_zones.0))
+resource-config:
+  telemetry-centralizer:
+    max_in_flight: 1
+    additional_networks: []
+    additional_vm_extensions: []
+    elb_names: []
+    instance_type:
+      id: automatic
+    instances: automatic
+    internet_connected: true
+    persistent_disk:
+      size_mb: automatic
+    swap_as_percent_of_memory_size: automatic
+
