@@ -3,7 +3,7 @@ product-version: latest
 product-properties:
   .properties.api_key:
     value:
-      secret: ((properties_api_key.secret))
+      secret: no-op-test-key
   .properties.audit_mode:
     value: false
   .properties.collector_cron_schedule:
