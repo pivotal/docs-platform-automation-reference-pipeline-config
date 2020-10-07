@@ -110,7 +110,7 @@ resources:
   source:
     private_key: ((docs-ref-pipeline-repo-key.private_key))
     uri: ((docs-ref-pipeline-repo-uri))
-    branch: migrate-pez
+    branch: develop
     submodules: all
     depth: 1
 # code_snippet resources-pipeline-configurations end yaml
@@ -141,7 +141,7 @@ prepare-tasks-with-secrets: &prepare-tasks-with-secrets
 jobs:
 - name: fetch-opsman
   plan:
-  - aggregate:
+  - in_parallel:
     - get: daily
       trigger: true
     - get: platform-automation-image
@@ -160,7 +160,7 @@ jobs:
       CONFIG_FILE: download-product-pivnet/download-opsman.yml
     input_mapping:
       config: configuration
-  - aggregate:
+  - in_parallel:
     - put: opsman-product
       params:
         file: downloaded-product/*
@@ -168,7 +168,7 @@ jobs:
 # code_snippet download-product-usage start yaml
 - name: fetch-pks
   plan:
-  - aggregate:
+  - in_parallel:
     - get: daily
       trigger: true
     - get: platform-automation-image
@@ -188,7 +188,7 @@ jobs:
     input_mapping:
       config: configuration
     output_mapping: {downloaded-stemcell: pks-stemcell}
-  - aggregate:
+  - in_parallel:
       - put: pks-product
         params:
           file: downloaded-product/*.pivotal
@@ -199,7 +199,7 @@ jobs:
 
 - name: fetch-tas
   plan:
-    - aggregate:
+    - in_parallel:
       - get: daily
         trigger: true
       - get: platform-automation-image
@@ -219,7 +219,7 @@ jobs:
       input_mapping:
         config: configuration
       output_mapping: {downloaded-stemcell: tas-stemcell}
-    - aggregate:
+    - in_parallel:
         - put: tas-product
           params:
             file: downloaded-product/*.pivotal
@@ -229,7 +229,7 @@ jobs:
 
 - name: fetch-healthwatch
   plan:
-    - aggregate:
+    - in_parallel:
       - get: daily
         trigger: true
       - get: platform-automation-image
@@ -249,7 +249,7 @@ jobs:
       input_mapping:
         config: configuration
       output_mapping: {downloaded-stemcell: healthwatch-stemcell}
-    - aggregate:
+    - in_parallel:
         - put: healthwatch-product
           params:
             file: downloaded-product/*.pivotal
@@ -263,7 +263,7 @@ jobs:
   plan:
   - get: platform-automation-pivnet
     trigger: true
-  - aggregate:
+  - in_parallel:
     - put: platform-automation-tasks
       params:
         file: platform-automation-pivnet/*tasks*.zip
