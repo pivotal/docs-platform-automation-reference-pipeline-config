@@ -52,7 +52,7 @@ product-properties:
     value: 1024-1123
 resource-config:
   compute:
-    instances: 5
+    instances: ((instances))
   control:
     elb_names:
       - tcp:((ssh_target_pool_name))
