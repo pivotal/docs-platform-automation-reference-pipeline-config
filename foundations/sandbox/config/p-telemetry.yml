@@ -18,7 +18,7 @@ product-properties:
   .properties.flush_interval:
     value: 3600
   .properties.opsmanager_insecure_skip_tls_verify:
-    value: false
+    value: true
   .properties.usage_service_selector:
     selected_option: disabled
     value: Disabled
