@@ -74,6 +74,15 @@ resources:
     region_name: ((s3_region_name))
     secret_access_key: ((s3_secret_access_key))
     regexp: healthwatch-stemcell/\[stemcells-ubuntu-xenial,(.*)\]light-bosh-stemcell-.*-google.*\.tgz
+
+- name: telemetry-product
+  type: s3
+  source:
+    access_key_id: ((s3_access_key_id))
+    bucket: ((s3_pivnet_products_bucket))
+    region_name: ((s3_region_name))
+    secret_access_key: ((s3_secret_access_key))
+    regexp: \[pivotal-telemetry-collector,(.*)\]telemetry-collector-*\.tgz
 # code_snippet resources-pipeline-products end yaml
 
 # code_snippet resources-pipeline-platform-automation start yaml
@@ -256,6 +265,32 @@ jobs:
         - put: healthwatch-stemcell
           params:
             file: healthwatch-stemcell/*.tgz
+
+- name: fetch-telemetry-collector
+  plan:
+    - in_parallel:
+        - get: daily
+          trigger: true
+        - get: platform-automation-image
+          params:
+            unpack: true
+        - get: platform-automation-tasks
+          params:
+            unpack: true
+        - get: configuration
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
+    - task: download-telemetry-product
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/download-product.yml
+      params:
+        CONFIG_FILE: download-product-pivnet/download-telemetry.yml
+      input_mapping:
+        config: configuration
+    - in_parallel:
+        - put: telemetry-product
+          params:
+            file: downloaded-product/*
 
 - name: fetch-platform-automation
   # We use the pivnet resource to bootstrap the pipeline,
