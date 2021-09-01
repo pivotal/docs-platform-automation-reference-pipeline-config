@@ -10,4 +10,5 @@ s3-access-key-id: ((s3_access_key_id))
 s3-secret-access-key: ((s3_secret_access_key))
 s3-bucket: ((s3_pivnet_products_bucket))
 s3-region-name: ((s3_region_name))
+blobstore-bucket: ((s3_pivnet_products_bucket))
 # code_snippet download-telemetry-collector-from-pivnet-usage end
