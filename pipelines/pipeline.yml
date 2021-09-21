@@ -803,6 +803,8 @@ jobs:
     - task: stage-configure-apply
       image: platform-automation-image
       file: platform-automation-tasks/tasks/stage-configure-apply.yml
+      timeout: 1m
+      attemps: 3
       params:
         CONFIG_FILE: foundations/((foundation))/config/p-telemetry.yml
         STAGE_PRODUCT_CONFIG_FILE: foundations/((foundation))/config/p-telemetry.yml
