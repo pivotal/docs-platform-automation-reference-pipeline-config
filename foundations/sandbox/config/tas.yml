@@ -16,8 +16,6 @@ product-properties:
     value: ((apps_dns_domain))
   .cloud_controller.system_domain:
     value: ((sys_dns_domain))
-  .ha_proxy.skip_cert_verify:
-    value: true
   .mysql_monitor.recipient_email:
     value: cf-infra@pivotal.io
   .uaa.service_provider_key_credentials:
