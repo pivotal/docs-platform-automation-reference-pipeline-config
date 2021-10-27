@@ -71,6 +71,7 @@ and make it available on S3.
         ```
 
 1. Update `foundations/sandbox`
+
     a. Merge the resulting config with the existing `foundations/sandbox/config/pks.yml`.
 
         Diffing the previous `pks.yml`
