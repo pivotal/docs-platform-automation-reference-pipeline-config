@@ -64,7 +64,25 @@ resources:
     bucket: ((s3_pivnet_products_bucket))
     region_name: ((s3_region_name))
     secret_access_key: ((s3_secret_access_key))
-    regexp: \[p-healthwatch,(.*)\].*.pivotal
+    regexp: \[p-healthwatch,(.*)\]healthwatch-\d.*.pivotal
+
+- name: healthwatch-pas-exporter
+  type: s3
+  source:
+    access_key_id: ((s3_access_key_id))
+    bucket: ((s3_pivnet_products_bucket))
+    region_name: ((s3_region_name))
+    secret_access_key: ((s3_secret_access_key))
+    regexp: \[p-healthwatch,(.*)\]healthwatch-pas-exporter.*.pivotal
+
+- name: healthwatch-pks-exporter
+  type: s3
+  source:
+    access_key_id: ((s3_access_key_id))
+    bucket: ((s3_pivnet_products_bucket))
+    region_name: ((s3_region_name))
+    secret_access_key: ((s3_secret_access_key))
+    regexp: \[p-healthwatch,(.*)\]healthwatch-pks-exporter.*.pivotal
 
 - name: healthwatch-stemcell
   type: s3
@@ -258,13 +276,54 @@ jobs:
       input_mapping:
         config: configuration
       output_mapping: {downloaded-stemcell: healthwatch-stemcell}
-    - task: download-healthwatch-tas-exporter-and-stemcell
+    - in_parallel:
+        - put: healthwatch-product
+          params:
+            file: downloaded-product/*healthwatch-2*.pivotal
+        - put: healthwatch-stemcell
+          params:
+            file: healthwatch-stemcell/*.tgz
+
+- name: fetch-healthwatch-pas-exporter
+  plan:
+    - in_parallel:
+      - get: daily
+        trigger: true
+      - get: platform-automation-image
+        params:
+          unpack: true
+      - get: platform-automation-tasks
+        params:
+          unpack: true
+      - get: configuration
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
+    - task: download-healthwatch-pas-exporter-and-stemcell
       image: platform-automation-image
       file: platform-automation-tasks/tasks/download-product.yml
       params:
-        CONFIG_FILE: download-product-pivnet/download-healthwatch-tas-exporter.yml
+        CONFIG_FILE: download-product-pivnet/download-healthwatch-pas-exporter.yml
       input_mapping:
         config: configuration
+    - in_parallel:
+        - put: healthwatch-pas-exporter
+          params:
+            file: downloaded-product/*healthwatch-pas-exporter*.pivotal
+
+- name: fetch-healthwatch-pks-exporter
+  plan:
+    - in_parallel:
+      - get: daily
+        trigger: true
+      - get: platform-automation-image
+        params:
+          unpack: true
+      - get: platform-automation-tasks
+        params:
+          unpack: true
+      - get: configuration
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
     - task: download-healthwatch-pks-exporter-and-stemcell
       image: platform-automation-image
       file: platform-automation-tasks/tasks/download-product.yml
@@ -273,19 +332,9 @@ jobs:
       input_mapping:
         config: configuration
     - in_parallel:
-        - put: healthwatch-product
-          params:
-            file: downloaded-product/*healthwatch-2*.pivotal
-        - put: healthwatch-tas-product
-          params:
-            file: downloaded-product/*healthwatch-tas-exporter*.pivotal
-        - put: healthwatch-pks-product
+        - put: healthwatch-pks-exporter
           params:
             file: downloaded-product/*healthwatch-pks-exporter*.pivotal
-        - put: healthwatch-stemcell
-          params:
-            file: healthwatch-stemcell/*.tgz
-
 
 - name: fetch-telemetry-collector
   plan:
