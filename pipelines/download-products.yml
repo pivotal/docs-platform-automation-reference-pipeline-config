@@ -64,7 +64,7 @@ resources:
     bucket: ((s3_pivnet_products_bucket))
     region_name: ((s3_region_name))
     secret_access_key: ((s3_secret_access_key))
-    regexp: \[p-healthwatch,(.*)\]healthwatch-2*.pivotal
+    regexp: \[p-healthwatch,(.*)\].*.pivotal
 
 - name: healthwatch-stemcell
   type: s3
@@ -261,7 +261,7 @@ jobs:
     - in_parallel:
         - put: healthwatch-product
           params:
-            file: downloaded-product/*.pivotal
+            file: downloaded-product/*healthwatch-2*.pivotal
         - put: healthwatch-stemcell
           params:
             file: healthwatch-stemcell/*.tgz
