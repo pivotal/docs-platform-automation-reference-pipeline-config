@@ -524,6 +524,43 @@ jobs:
       params:
         ENV_FILE: foundations/config/env.yml
 
+- name: download-upload-and-stage-healthwatch-pas-exporter
+  serial: true
+  serial_groups: [ products ]
+  plan:
+    - in_parallel:
+        - get: platform-automation-image
+          params:
+            unpack: true
+          trigger: true
+          passed: [ "upgrade-opsman" ]
+        - get: platform-automation-tasks
+          params:
+            unpack: true
+        - get: configuration
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
+    - task: download-healthwatch
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/download-product.yml
+      input_mapping:
+        config: configuration
+        vars: configuration
+      params:
+        CONFIG_FILE: foundations/((foundation))/config/download-healthwatch-pas-exporter.yml
+        VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
+        SOURCE: s3
+      output_mapping:
+        downloaded-product: healthwatch-pas-exporter
+    - task: upload-and-stage-healthwatch-pas-exporter
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/upload-and-stage-product.yml
+      input_mapping:
+        product: healthwatch-pas-exporter
+        env: configuration
+      params:
+        ENV_FILE: foundations/config/env.yml
+
 - name: configure-pks
   serial: true
   serial_groups: [ install ]
