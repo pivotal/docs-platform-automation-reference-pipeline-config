@@ -258,13 +258,34 @@ jobs:
       input_mapping:
         config: configuration
       output_mapping: {downloaded-stemcell: healthwatch-stemcell}
+    - task: download-healthwatch-tas-exporter-and-stemcell
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/download-product.yml
+      params:
+        CONFIG_FILE: download-product-pivnet/download-healthwatch-tas-exporter.yml
+      input_mapping:
+        config: configuration
+    - task: download-healthwatch-pks-exporter-and-stemcell
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/download-product.yml
+      params:
+        CONFIG_FILE: download-product-pivnet/download-healthwatch-pks-exporter.yml
+      input_mapping:
+        config: configuration
     - in_parallel:
         - put: healthwatch-product
           params:
             file: downloaded-product/*healthwatch-2*.pivotal
+        - put: healthwatch-tas-product
+          params:
+            file: downloaded-product/*healthwatch-tas-exporter*.pivotal
+        - put: healthwatch-pks-product
+          params:
+            file: downloaded-product/*healthwatch-pks-exporter*.pivotal
         - put: healthwatch-stemcell
           params:
             file: healthwatch-stemcell/*.tgz
+
 
 - name: fetch-telemetry-collector
   plan:
