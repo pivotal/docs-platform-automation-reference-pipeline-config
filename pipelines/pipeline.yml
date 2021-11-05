@@ -674,8 +674,6 @@ jobs:
           unpack: true
         passed:
           - download-upload-and-stage-healthwatch
-          - download-upload-and-stage-healthwatch-pas-exporter
-          - download-upload-and-stage-healthwatch-pks-exporter
         trigger: true
       - get: platform-automation-tasks
         params:
@@ -694,7 +692,66 @@ jobs:
         CONFIG_FILE: foundations/((foundation))/config/healthwatch.yml
         ENV_FILE: foundations/config/env.yml
         VARS_FILES: |
-          vars/foundations/((foundation))/vars/healthwatch.yml
+          vars/foundations/((foundation))/vars/director.yml
+
+- name: configure-healthwatch-pas-exporter
+  serial: true
+  serial_groups: [ install ]
+  plan:
+    - in_parallel:
+      - get: platform-automation-image
+        params:
+          unpack: true
+        passed:
+          - download-upload-and-stage-healthwatch-pas-exporter
+        trigger: true
+      - get: platform-automation-tasks
+        params:
+          unpack: true
+      - get: configuration
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
+    - task: configure-healthwatch
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/configure-product.yml
+      input_mapping:
+        config: configuration
+        env: configuration
+        vars: configuration
+      params:
+        CONFIG_FILE: foundations/((foundation))/config/healthwatch-pas-exporter.yml
+        ENV_FILE: foundations/config/env.yml
+        VARS_FILES: |
+          vars/foundations/((foundation))/vars/director.yml
+
+- name: configure-healthwatch-pks-exporter
+  serial: true
+  serial_groups: [ install ]
+  plan:
+    - in_parallel:
+      - get: platform-automation-image
+        params:
+          unpack: true
+        passed:
+          - download-upload-and-stage-healthwatch-pks-exporter
+        trigger: true
+      - get: platform-automation-tasks
+        params:
+          unpack: true
+      - get: configuration
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
+    - task: configure-healthwatch
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/configure-product.yml
+      input_mapping:
+        config: configuration
+        env: configuration
+        vars: configuration
+      params:
+        CONFIG_FILE: foundations/((foundation))/config/healthwatch-pks-exporter.yml
+        ENV_FILE: foundations/config/env.yml
+        VARS_FILES: |
           vars/foundations/((foundation))/vars/director.yml
 
 - name: apply-product-changes
@@ -709,6 +766,8 @@ jobs:
       - configure-pks
       - configure-tas
       - configure-healthwatch
+      - configure-healthwatch-pas-exporter
+      - configure-healthwatch-pks-exporter
       trigger: true
     - get: platform-automation-tasks
       params:
