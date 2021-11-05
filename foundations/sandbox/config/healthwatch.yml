@@ -11,32 +11,4 @@ network-properties:
   - name: ((availability_zones.2))
   singleton_availability_zone:
     name: ((availability_zones.0))
-product-properties:
-  .healthwatch-forwarder.boshhealth_instance_count:
-    value: 1
-  .healthwatch-forwarder.boshtasks_instance_count:
-    value: 1
-  .healthwatch-forwarder.canary_instance_count:
-    value: 1
-  .healthwatch-forwarder.cli_instance_count:
-    value: 1
-  .healthwatch-forwarder.health_check_az:
-    value: ((availability_zones.0))
-  .healthwatch-forwarder.ingestor_instance_count:
-    value: 1
-  .healthwatch-forwarder.opsman_instance_count:
-    value: 1
-  .healthwatch-forwarder.publish_to_eva:
-    value: true
-  .healthwatch-forwarder.worker_instance_count:
-    value: 1
-  .mysql.skip_name_resolve:
-    value: true
-  .properties.boshtasks:
-    value: disable
-  .properties.opsman:
-    value: enable
-  .properties.opsman.enable.url:
-    value: ((ops_manager_dns))
-  .properties.syslog_selector:
-    value: "No"
+
