@@ -884,6 +884,7 @@ jobs:
   # code_snippet collect-telemetry-usage end
   # code_snippet send-telemetry-usage start yaml
   - task: send-telemetry-data
+    attempts: 3
     image: platform-automation-image
     file: platform-automation-tasks/tasks/send-telemetry.yml
     params:
