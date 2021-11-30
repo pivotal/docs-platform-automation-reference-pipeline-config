@@ -1,20 +1,8 @@
-# Sign the CLA
-
-If you have not previously done so, please fill out and
-submit the [Contributor License Agreement](https://cla.pivotal.io).
-
 # Contributing to the docs
 
-All kinds of contributions to docs are welcome.
-As a team, we are moving to structure our docs
-in such a way as to separate distinct ideas
-on a per line basis 
-to lessen line change impact
-when editing ideas.
-This method of writing has no concrete rules
-and is adapted from the book: 
-["Several short sentences about writing"](https://www.penguinrandomhouse.com/books/93789/several-short-sentences-about-writing-by-verlyn-klinkenborg/9780307279415/) 
-by Verlyn Klinkenborg.
+The Platform Automation Reference Pipeline project team welcomes contributions from the community. If you wish to contribute code 
+and you have not signed our [contributor license agreement](https://cla.vmware.com/cla/1/preview), our bot will update the issue when 
+you open a Pull Request. For any questions about the CLA process, please refer to our [FAQ](https://cla.vmware.com/faq).
 
 ## Start with a github issue
 
