@@ -222,6 +222,7 @@ jobs:
   # code_snippet apply-director-changes-usage start yaml
   - task: apply-director-changes
     image: platform-automation-image
+    attempts: 3
     file: platform-automation-tasks/tasks/apply-director-changes.yml
     input_mapping:
       env: configuration
