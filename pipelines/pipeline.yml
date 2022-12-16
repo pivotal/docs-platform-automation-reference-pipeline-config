@@ -918,7 +918,7 @@ jobs:
         env: configuration
       params:
         ENV_FILE: foundations/config/env.yml
-        EXPIRES_WITHIN: 6m
+        EXPIRES_WITHIN: 2m
     # code_snippet expiring-certificates-usage end
 - name: stage-configure-apply-telemetry
   serial_groups: [install]
