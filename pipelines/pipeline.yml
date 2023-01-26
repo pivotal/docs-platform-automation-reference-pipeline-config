@@ -1,8 +1,54 @@
 # The following line helps maintain current documentation at http://docs.pivotal.io.
 # code_snippet reference-pipeline start yaml
 
+# Groups start yaml
+groups:
+- jobs:
+    - install-opsman
+    - expiring-certificates
+    - delete-installation
+    - test-platform-automation
+    - export-installation
+    - upgrade-opsman
+    - download-upload-and-stage-healthwatch-pks-exporter
+    - download-upload-and-stage-healthwatch-pas-exporter
+    - download-upload-and-stage-healthwatch
+    - download-upload-and-stage-tas
+    - download-upload-and-stage-pks
+    - configure-healthwatch-pks-exporter
+    - configure-healthwatch-pas-exporter
+    - configure-healthwatch
+    - configure-tas
+    - configure-pks
+    - apply-product-changes
+    - run-tas-smoketest-errand
+    - collect-telemetry
+    - stage-configure-apply-telemetry
+  name: reference-pipeline
+- jobs:
+    - rotate-certificates
+  name: certificate-rotation-single-job
+- jobs:
+    - create-root-ca
+    - apply-new-ca
+    - activate-new-ca
+    - regenerate-certificates
+    - apply-certificates
+    - delete-certificate-authority
+  name: certificate-rotation-multiple-jobs
+# Groups end yaml
+
 # code_snippet reference-resources-s3 start yaml
 resources:
+- name: ca-guid
+  source:
+    access_key_id: ((s3_access_key_id))
+    bucket: ((s3_pivnet_products_bucket))
+    regexp: guid
+    region_name: ((s3_region_name))
+    secret_access_key: ((s3_secret_access_key))
+  type: s3
+
 - name: platform-automation-tasks
   type: s3
   source:
@@ -993,6 +1039,258 @@ jobs:
           params:
             file: generated-state/state-((foundation)).yml
     # code_snippet delete-vm-usage end
+# code_snippet certificate-rotation start
+- name: rotate-certificates
+  plan:
+    - in_parallel:
+        - get: platform-automation-image
+          params:
+            unpack: true
+        - get: platform-automation-tasks
+          params:
+            unpack: true
+        - get: configuration
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
+    - task: prepare-image
+      <<: *prepare-image
+    # code_snippet create-root-ca start yaml
+    - task: create-root-ca
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/generate-certificate-authority.yml
+      input_mapping:
+        env: configuration
+      params:
+        ENV_FILE: foundations/config/env.yml
+      output_mapping:
+        new-ca: new-ca
+    # code_snippet create-root-ca end
+    # code_snippet apply-product-changes start
+    - task: apply-product-changes
+      attempts: 3
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/apply-changes.yml
+      input_mapping:
+        env: configuration
+      params:
+        ENV_FILE: foundations/config/env.yml
+    # code_snippet apply-product-changes end
+    # code_snippet activate-root-ca start
+    - task: activate-new-ca
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/activate-certificate-authority.yml
+      input_mapping:
+        env: configuration
+      params:
+        ENV_FILE: foundations/config/env.yml
+    # code_snippet activate-root-ca end
+    # code_snippet regenerate-certificates start
+    - task: regenerate-certificates
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/regenerate-certificates.yml
+      input_mapping:
+        env: configuration
+      params:
+        ENV_FILE: foundations/config/env.yml
+    # code_snippet regenerate-certificates end
+    # code_snippet apply-product-changes start
+    - task: apply-product-changes
+      attempts: 3
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/apply-changes.yml
+      input_mapping:
+        env: configuration
+      params:
+        ENV_FILE: foundations/config/env.yml
+    # code_snippet apply-product-changes end
+    # code_snippet delete-certificate-authorities start
+    - task: delete-certificate-authority
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/delete-certificate-authority.yml
+      input_mapping:
+        env: configuration
+      params:
+        ENV_FILE: foundations/config/env.yml
+    # code_snippet delete-certificate-authorities end
+# code_snippet certificate-rotation end
+  # code_snippet certificate-rotation start
+- name: create-root-ca
+  plan:
+    - in_parallel:
+        - get: platform-automation-image
+          params:
+            unpack: true
+        - get: platform-automation-tasks
+          params:
+            unpack: true
+        - get: configuration
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
+    - task: prepare-image
+      <<: *prepare-image
+    # code_snippet create-root-ca start yaml
+    - task: create-root-ca
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/generate-certificate-authority.yml
+      input_mapping:
+        env: configuration
+      params:
+        ENV_FILE: foundations/config/env.yml
+      output_mapping:
+        new-ca: new-ca
+    - put: ca-guid
+      params:
+        file: new-ca/guid
+
+    # code_snippet create-root-ca end
+
+- name: apply-new-ca
+  serial: true
+  plan:
+    - in_parallel:
+        - get: platform-automation-image
+          params:
+            unpack: true
+          passed:
+            - create-root-ca
+          trigger: true
+        - get: platform-automation-tasks
+          params:
+            unpack: true
+        - get: configuration
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
+    - task: prepare-image
+      <<: *prepare-image
+    # code_snippet apply-changes-usage start yaml
+    - task: apply-product-changes
+      attempts: 3
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/apply-changes.yml
+      input_mapping:
+        env: configuration
+      params:
+        ENV_FILE: foundations/config/env.yml
+    # code_snippet apply-changes-usage end
+
+- name: activate-new-ca
+  serial: true
+  plan:
+    - in_parallel:
+        - get: platform-automation-image
+          params:
+            unpack: true
+          passed:
+            - apply-new-ca
+          trigger: true
+        - get: ca-guid
+          passed: [create-root-ca]
+          trigger: true
+        - get: platform-automation-tasks
+          params:
+            unpack: true
+        - get: configuration
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
+    - task: prepare-image
+      <<: *prepare-image
+    # code_snippet apply-changes-usage start yaml
+    - task: activate-new-ca
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/activate-certificate-authority.yml
+      input_mapping:
+        env: configuration
+        new-ca: ca-guid
+      params:
+        ENV_FILE: foundations/config/env.yml
+    # code_snippet apply-changes-usage end
+
+- name: regenerate-certificates
+  serial: true
+  plan:
+    - in_parallel:
+        - get: platform-automation-image
+          params:
+            unpack: true
+          passed:
+            - activate-new-ca
+          trigger: true
+        - get: platform-automation-tasks
+          params:
+            unpack: true
+        - get: configuration
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
+    - task: prepare-image
+      <<: *prepare-image
+    # code_snippet regenerate-certificates start yaml
+    - task: regenerate-certificates
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/regenerate-certificates.yml
+      input_mapping:
+        env: configuration
+      params:
+        ENV_FILE: foundations/config/env.yml
+    # code_snippet regenerate-certificates end
+
+- name: apply-certificates
+  serial: true
+  plan:
+    - in_parallel:
+        - get: platform-automation-image
+          params:
+            unpack: true
+          passed:
+            - regenerate-certificates
+          trigger: true
+        - get: platform-automation-tasks
+          params:
+            unpack: true
+        - get: configuration
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
+    - task: prepare-image
+      <<: *prepare-image
+    # code_snippet apply-changes-usage start yaml
+    - task: apply-product-changes
+      attempts: 3
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/apply-changes.yml
+      input_mapping:
+        env: configuration
+      params:
+        ENV_FILE: foundations/config/env.yml
+    # code_snippet apply-changes-usage end
+
+- name: delete-certificate-authority
+  serial: true
+  plan:
+    - in_parallel:
+        - get: platform-automation-image
+          params:
+            unpack: true
+          passed:
+            - apply-certificates
+          trigger: true
+        - get: platform-automation-tasks
+          params:
+            unpack: true
+        - get: configuration
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
+    - task: prepare-image
+      <<: *prepare-image
+    # code_snippet delete-certificate-authority start yaml
+    - task: delete-certificate-authority
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/delete-certificate-authority.yml
+      input_mapping:
+        env: configuration
+      params:
+        ENV_FILE: foundations/config/env.yml
+    # code_snippet delete-certificate-authority end
+# code_snippet certificate-rotation end
+
 # code_snippet reference-jobs end yaml
 # code_snippet reference-pipeline end
 # The previous line helps maintain current documentation at http://docs.pivotal.io.
