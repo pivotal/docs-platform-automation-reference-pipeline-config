@@ -26,29 +26,16 @@ groups:
     - stage-configure-apply-telemetry
   name: reference-pipeline
 - jobs:
-    - rotate-certificates
-  name: certificate-rotation-single-job
-- jobs:
     - create-root-ca
     - apply-new-ca
-    - activate-new-ca
-    - regenerate-certificates
+    - activate-new-ca-and-regenerate-certs
     - apply-certificates
-    - delete-certificate-authority
+    - cleanup-certificate-authorities
   name: certificate-rotation-multiple-jobs
 # Groups end yaml
 
 # code_snippet reference-resources-s3 start yaml
 resources:
-- name: ca-guid
-  source:
-    access_key_id: ((s3_access_key_id))
-    bucket: ((s3_pivnet_products_bucket))
-    regexp: guid
-    region_name: ((s3_region_name))
-    secret_access_key: ((s3_secret_access_key))
-  type: s3
-
 - name: platform-automation-tasks
   type: s3
   source:
@@ -1039,81 +1026,8 @@ jobs:
           params:
             file: generated-state/state-((foundation)).yml
     # code_snippet delete-vm-usage end
+
 # code_snippet certificate-rotation start
-- name: rotate-certificates
-  plan:
-    - in_parallel:
-        - get: platform-automation-image
-          params:
-            unpack: true
-        - get: platform-automation-tasks
-          params:
-            unpack: true
-        - get: configuration
-    - task: prepare-tasks-with-secrets
-      <<: *prepare-tasks-with-secrets
-    - task: prepare-image
-      <<: *prepare-image
-    # code_snippet create-root-ca start yaml
-    - task: create-root-ca
-      image: platform-automation-image
-      file: platform-automation-tasks/tasks/generate-certificate-authority.yml
-      input_mapping:
-        env: configuration
-      params:
-        ENV_FILE: foundations/config/env.yml
-      output_mapping:
-        new-ca: new-ca
-    # code_snippet create-root-ca end
-    # code_snippet apply-product-changes start
-    - task: apply-product-changes
-      attempts: 3
-      image: platform-automation-image
-      file: platform-automation-tasks/tasks/apply-changes.yml
-      input_mapping:
-        env: configuration
-      params:
-        ENV_FILE: foundations/config/env.yml
-    # code_snippet apply-product-changes end
-    # code_snippet activate-root-ca start
-    - task: activate-new-ca
-      image: platform-automation-image
-      file: platform-automation-tasks/tasks/activate-certificate-authority.yml
-      input_mapping:
-        env: configuration
-      params:
-        ENV_FILE: foundations/config/env.yml
-    # code_snippet activate-root-ca end
-    # code_snippet regenerate-certificates start
-    - task: regenerate-certificates
-      image: platform-automation-image
-      file: platform-automation-tasks/tasks/regenerate-certificates.yml
-      input_mapping:
-        env: configuration
-      params:
-        ENV_FILE: foundations/config/env.yml
-    # code_snippet regenerate-certificates end
-    # code_snippet apply-product-changes start
-    - task: apply-product-changes
-      attempts: 3
-      image: platform-automation-image
-      file: platform-automation-tasks/tasks/apply-changes.yml
-      input_mapping:
-        env: configuration
-      params:
-        ENV_FILE: foundations/config/env.yml
-    # code_snippet apply-product-changes end
-    # code_snippet delete-certificate-authorities start
-    - task: delete-certificate-authority
-      image: platform-automation-image
-      file: platform-automation-tasks/tasks/delete-certificate-authority.yml
-      input_mapping:
-        env: configuration
-      params:
-        ENV_FILE: foundations/config/env.yml
-    # code_snippet delete-certificate-authorities end
-# code_snippet certificate-rotation end
-  # code_snippet certificate-rotation start
 - name: create-root-ca
   plan:
     - in_parallel:
@@ -1131,17 +1045,11 @@ jobs:
     # code_snippet create-root-ca start yaml
     - task: create-root-ca
       image: platform-automation-image
-      file: platform-automation-tasks/tasks/generate-certificate-authority.yml
+      file: platform-automation-tasks/tasks/configure-new-certificate-authority.yml
       input_mapping:
         env: configuration
       params:
         ENV_FILE: foundations/config/env.yml
-      output_mapping:
-        new-ca: new-ca
-    - put: ca-guid
-      params:
-        file: new-ca/guid
-
     # code_snippet create-root-ca end
 
 - name: apply-new-ca
@@ -1153,7 +1061,6 @@ jobs:
             unpack: true
           passed:
             - create-root-ca
-          trigger: true
         - get: platform-automation-tasks
           params:
             unpack: true
@@ -1162,7 +1069,7 @@ jobs:
       <<: *prepare-tasks-with-secrets
     - task: prepare-image
       <<: *prepare-image
-    # code_snippet apply-changes-usage start yaml
+    # code_snippet apply-changes start yaml
     - task: apply-product-changes
       attempts: 3
       image: platform-automation-image
@@ -1171,9 +1078,9 @@ jobs:
         env: configuration
       params:
         ENV_FILE: foundations/config/env.yml
-    # code_snippet apply-changes-usage end
+    # code_snippet apply-changes end
 
-- name: activate-new-ca
+- name: activate-new-ca-and-regenerate-certs
   serial: true
   plan:
     - in_parallel:
@@ -1182,10 +1089,6 @@ jobs:
             unpack: true
           passed:
             - apply-new-ca
-          trigger: true
-        - get: ca-guid
-          passed: [create-root-ca]
-          trigger: true
         - get: platform-automation-tasks
           params:
             unpack: true
@@ -1194,35 +1097,15 @@ jobs:
       <<: *prepare-tasks-with-secrets
     - task: prepare-image
       <<: *prepare-image
-    # code_snippet apply-changes-usage start yaml
+    # code_snippet activate-certificate-authority start yaml
     - task: activate-new-ca
       image: platform-automation-image
       file: platform-automation-tasks/tasks/activate-certificate-authority.yml
       input_mapping:
         env: configuration
-        new-ca: ca-guid
       params:
         ENV_FILE: foundations/config/env.yml
-    # code_snippet apply-changes-usage end
-
-- name: regenerate-certificates
-  serial: true
-  plan:
-    - in_parallel:
-        - get: platform-automation-image
-          params:
-            unpack: true
-          passed:
-            - activate-new-ca
-          trigger: true
-        - get: platform-automation-tasks
-          params:
-            unpack: true
-        - get: configuration
-    - task: prepare-tasks-with-secrets
-      <<: *prepare-tasks-with-secrets
-    - task: prepare-image
-      <<: *prepare-image
+    # code_snippet activate-certificate-authority end
     # code_snippet regenerate-certificates start yaml
     - task: regenerate-certificates
       image: platform-automation-image
@@ -1241,8 +1124,7 @@ jobs:
           params:
             unpack: true
           passed:
-            - regenerate-certificates
-          trigger: true
+            - activate-new-ca-and-regenerate-certs
         - get: platform-automation-tasks
           params:
             unpack: true
@@ -1251,7 +1133,7 @@ jobs:
       <<: *prepare-tasks-with-secrets
     - task: prepare-image
       <<: *prepare-image
-    # code_snippet apply-changes-usage start yaml
+    # code_snippet apply-changes start yaml
     - task: apply-product-changes
       attempts: 3
       image: platform-automation-image
@@ -1260,9 +1142,9 @@ jobs:
         env: configuration
       params:
         ENV_FILE: foundations/config/env.yml
-    # code_snippet apply-changes-usage end
+    # code_snippet apply-changes end
 
-- name: delete-certificate-authority
+- name: cleanup-certificate-authorities
   serial: true
   plan:
     - in_parallel:
@@ -1271,7 +1153,6 @@ jobs:
             unpack: true
           passed:
             - apply-certificates
-          trigger: true
         - get: platform-automation-tasks
           params:
             unpack: true
@@ -1289,6 +1170,17 @@ jobs:
       params:
         ENV_FILE: foundations/config/env.yml
     # code_snippet delete-certificate-authority end
+    # code_snippet apply-changes start yaml
+    - task: apply-product-changes
+      attempts: 3
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/apply-changes.yml
+      input_mapping:
+        env: configuration
+      params:
+        ENV_FILE: foundations/config/env.yml
+    # code_snippet apply-changes end
+
 # code_snippet certificate-rotation end
 
 # code_snippet reference-jobs end yaml
