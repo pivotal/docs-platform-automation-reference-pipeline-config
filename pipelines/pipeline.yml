@@ -1042,7 +1042,7 @@ jobs:
       <<: *prepare-tasks-with-secrets
     - task: prepare-image
       <<: *prepare-image
-    # code_snippet create-root-ca start yaml
+    # code_snippet configure-new-certificate-authority-usage start yaml
     - task: create-root-ca
       image: platform-automation-image
       file: platform-automation-tasks/tasks/configure-new-certificate-authority.yml
@@ -1050,7 +1050,7 @@ jobs:
         env: configuration
       params:
         ENV_FILE: foundations/config/env.yml
-    # code_snippet create-root-ca end
+    # code_snippet configure-new-certificate-authority-usage end
 
 - name: apply-new-ca
   serial: true
@@ -1069,7 +1069,6 @@ jobs:
       <<: *prepare-tasks-with-secrets
     - task: prepare-image
       <<: *prepare-image
-    # code_snippet apply-changes start yaml
     - task: apply-product-changes
       attempts: 3
       image: platform-automation-image
@@ -1078,7 +1077,7 @@ jobs:
         env: configuration
       params:
         ENV_FILE: foundations/config/env.yml
-    # code_snippet apply-changes end
+        SELECTIVE_DEPLOY_PRODUCTS: "cf,p-bosh,p-healthwatch2,p-healthwatch2-pas-exporter,pivotal-telemetry-om"
 
 - name: activate-new-ca-and-regenerate-certs
   serial: true
@@ -1097,7 +1096,7 @@ jobs:
       <<: *prepare-tasks-with-secrets
     - task: prepare-image
       <<: *prepare-image
-    # code_snippet activate-certificate-authority start yaml
+    # code_snippet activate-certificate-authority-usage start yaml
     - task: activate-new-ca
       image: platform-automation-image
       file: platform-automation-tasks/tasks/activate-certificate-authority.yml
@@ -1105,8 +1104,8 @@ jobs:
         env: configuration
       params:
         ENV_FILE: foundations/config/env.yml
-    # code_snippet activate-certificate-authority end
-    # code_snippet regenerate-certificates start yaml
+    # code_snippet activate-certificate-authority-usage end
+    # code_snippet regenerate-certificates-usage start yaml
     - task: regenerate-certificates
       image: platform-automation-image
       file: platform-automation-tasks/tasks/regenerate-certificates.yml
@@ -1114,7 +1113,7 @@ jobs:
         env: configuration
       params:
         ENV_FILE: foundations/config/env.yml
-    # code_snippet regenerate-certificates end
+    # code_snippet regenerate-certificates-usage end
 
 - name: apply-certificates
   serial: true
@@ -1133,7 +1132,6 @@ jobs:
       <<: *prepare-tasks-with-secrets
     - task: prepare-image
       <<: *prepare-image
-    # code_snippet apply-changes start yaml
     - task: apply-product-changes
       attempts: 3
       image: platform-automation-image
@@ -1142,7 +1140,7 @@ jobs:
         env: configuration
       params:
         ENV_FILE: foundations/config/env.yml
-    # code_snippet apply-changes end
+        SELECTIVE_DEPLOY_PRODUCTS: "cf,p-bosh,p-healthwatch2,p-healthwatch2-pas-exporter,pivotal-telemetry-om"
 
 - name: cleanup-certificate-authorities
   serial: true
@@ -1161,7 +1159,7 @@ jobs:
       <<: *prepare-tasks-with-secrets
     - task: prepare-image
       <<: *prepare-image
-    # code_snippet delete-certificate-authority start yaml
+    # code_snippet delete-certificate-authority-usage start yaml
     - task: delete-certificate-authority
       image: platform-automation-image
       file: platform-automation-tasks/tasks/delete-certificate-authority.yml
@@ -1169,8 +1167,7 @@ jobs:
         env: configuration
       params:
         ENV_FILE: foundations/config/env.yml
-    # code_snippet delete-certificate-authority end
-    # code_snippet apply-changes start yaml
+    # code_snippet delete-certificate-authority-usage end
     - task: apply-product-changes
       attempts: 3
       image: platform-automation-image
@@ -1179,10 +1176,8 @@ jobs:
         env: configuration
       params:
         ENV_FILE: foundations/config/env.yml
-    # code_snippet apply-changes end
-
+        SELECTIVE_DEPLOY_PRODUCTS: "cf,p-bosh,p-healthwatch2,p-healthwatch2-pas-exporter,pivotal-telemetry-om"
 # code_snippet certificate-rotation end
-
 # code_snippet reference-jobs end yaml
 # code_snippet reference-pipeline end
 # The previous line helps maintain current documentation at http://docs.pivotal.io.
