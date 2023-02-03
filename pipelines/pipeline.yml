@@ -31,7 +31,7 @@ groups:
     - activate-new-ca-and-regenerate-certs
     - apply-certificates
     - cleanup-certificate-authorities
-  name: certificate-rotation-multiple-jobs
+  name: certificate-rotation
 # Groups end yaml
 
 # code_snippet reference-resources-s3 start yaml
@@ -1038,10 +1038,6 @@ jobs:
           params:
             unpack: true
         - get: configuration
-    - task: prepare-tasks-with-secrets
-      <<: *prepare-tasks-with-secrets
-    - task: prepare-image
-      <<: *prepare-image
     # code_snippet configure-new-certificate-authority-usage start yaml
     - task: create-root-ca
       image: platform-automation-image
@@ -1065,10 +1061,13 @@ jobs:
           params:
             unpack: true
         - get: configuration
-    - task: prepare-tasks-with-secrets
-      <<: *prepare-tasks-with-secrets
-    - task: prepare-image
-      <<: *prepare-image
+    - task: pre-deploy-check
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/pre-deploy-check.yml
+      input_mapping:
+        env: configuration
+      params:
+        ENV_FILE: foundations/config/env.yml
     - task: apply-product-changes
       attempts: 3
       image: platform-automation-image
@@ -1092,10 +1091,6 @@ jobs:
           params:
             unpack: true
         - get: configuration
-    - task: prepare-tasks-with-secrets
-      <<: *prepare-tasks-with-secrets
-    - task: prepare-image
-      <<: *prepare-image
     # code_snippet activate-certificate-authority-usage start yaml
     - task: activate-new-ca
       image: platform-automation-image
@@ -1128,10 +1123,13 @@ jobs:
           params:
             unpack: true
         - get: configuration
-    - task: prepare-tasks-with-secrets
-      <<: *prepare-tasks-with-secrets
-    - task: prepare-image
-      <<: *prepare-image
+    - task: pre-deploy-check
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/pre-deploy-check.yml
+      input_mapping:
+        env: configuration
+      params:
+        ENV_FILE: foundations/config/env.yml
     - task: apply-product-changes
       attempts: 3
       image: platform-automation-image
@@ -1155,10 +1153,6 @@ jobs:
           params:
             unpack: true
         - get: configuration
-    - task: prepare-tasks-with-secrets
-      <<: *prepare-tasks-with-secrets
-    - task: prepare-image
-      <<: *prepare-image
     # code_snippet delete-certificate-authority-usage start yaml
     - task: delete-certificate-authority
       image: platform-automation-image
@@ -1168,6 +1162,13 @@ jobs:
       params:
         ENV_FILE: foundations/config/env.yml
     # code_snippet delete-certificate-authority-usage end
+    - task: pre-deploy-check
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/pre-deploy-check.yml
+      input_mapping:
+        env: configuration
+      params:
+        ENV_FILE: foundations/config/env.yml
     - task: apply-product-changes
       attempts: 3
       image: platform-automation-image
