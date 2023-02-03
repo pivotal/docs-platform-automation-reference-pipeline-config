@@ -1038,6 +1038,8 @@ jobs:
           params:
             unpack: true
         - get: configuration
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
     # code_snippet configure-new-certificate-authority-usage start yaml
     - task: create-root-ca
       image: platform-automation-image
@@ -1061,6 +1063,8 @@ jobs:
           params:
             unpack: true
         - get: configuration
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
     - task: pre-deploy-check
       image: platform-automation-image
       file: platform-automation-tasks/tasks/pre-deploy-check.yml
@@ -1091,6 +1095,8 @@ jobs:
           params:
             unpack: true
         - get: configuration
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
     # code_snippet activate-certificate-authority-usage start yaml
     - task: activate-new-ca
       image: platform-automation-image
@@ -1123,6 +1129,8 @@ jobs:
           params:
             unpack: true
         - get: configuration
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
     - task: pre-deploy-check
       image: platform-automation-image
       file: platform-automation-tasks/tasks/pre-deploy-check.yml
@@ -1153,6 +1161,8 @@ jobs:
           params:
             unpack: true
         - get: configuration
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
     # code_snippet delete-certificate-authority-usage start yaml
     - task: delete-certificate-authority
       image: platform-automation-image
