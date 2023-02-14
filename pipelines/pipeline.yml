@@ -30,7 +30,7 @@ groups:
     - apply-new-ca
     - activate-new-ca-and-regenerate-certs
     - apply-certificates
-    - cleanup-certificate-authorities
+    - cleanup-ca-certificate-authorities
   name: certificate-rotation
 # Groups end yaml
 
@@ -1148,7 +1148,7 @@ jobs:
         ENV_FILE: foundations/config/env.yml
         SELECTIVE_DEPLOY_PRODUCTS: "cf,p-bosh,p-healthwatch2,p-healthwatch2-pas-exporter,pivotal-telemetry-om"
 
-- name: cleanup-certificate-authorities
+- name: cleanup-ca-certificate-authorities
   serial: true
   plan:
     - in_parallel:
