@@ -1,7 +1,3 @@
-# All infrastructure was created using https://github.com/pivotal/paving for GCP
-# This file was generated from the location of terraform.tfstate:
-# terraform output stable_config_pks > ~/workspace/docs-platform-automation-reference-pipeline-config/foundations/sandbox/vars/pks.yml
-# Secrets are stored in Credhub
 {
   "pks_api_dns_domain": "pks.reference-gcp.gcp.platform-automation.cf-app.com",
   "pks_api_target_pool_name": "reference-gcp-pks-api-lb",
