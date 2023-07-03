@@ -1,3 +1,7 @@
+# All infrastructure was created using https://github.com/pivotal/paving for GCP
+# This file was generated from the location of terraform.tfstate:
+# terraform output stable_config_opsmanager > ~/workspace/docs-platform-automation-reference-pipeline-config/foundations/sandbox/vars/director.yml
+# Secrets are stored in Credhub
 {
   "availability_zones": [
     "us-central1-a",
@@ -16,21 +20,14 @@
   "management_subnet_name": "reference-gcp-management-subnet",
   "management_subnet_reserved_ip_ranges": "10.0.0.1-10.0.0.9",
   "network_name": "reference-gcp-network",
-  "ops_manager_bucket": "cf-norm-ci-reference-gcp-ops-manager-67695",
-  "ops_manager_dns": "opsmanager.reference-gcp.gcp.platform-automation.cf-app.com",
-  "ops_manager_public_ip": "34.172.56.6",
-  ***REMOVED***
-  ***REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED***
-  ***REMOVED******REMOVED******REMOVED******REMOVED******REMOVED***
+  "ops_manager_bucket": "cf-norm-ci-reference-gcp-ops-manager-21888",
+  "ops_manager_public_ip": "34.71.47.108",
   "ops_manager_tags": "reference-gcp-ops-manager",
   "platform_vms_tag": "reference-gcp-vms",
   "project": "cf-norm-ci",
   "region": "us-central1",
-  ***REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED***
   "services_subnet_cidr": "10.0.8.0/24",
   "services_subnet_gateway": "10.0.8.1",
   "services_subnet_name": "reference-gcp-services-subnet",
   "services_subnet_reserved_ip_ranges": "10.0.8.1-10.0.8.9",
-  ***REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED***
-  ***REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED******REMOVED***
 }
