@@ -63,7 +63,7 @@ properties-configuration:
   director_configuration:
     ntp_servers_string: 169.254.169.254
   security_configuration:
-    trusted_certificates: ((ssl_certificate))
+    trusted_certificates: ((ca_certificate.certificate))
     opsmanager_root_ca_trusted_certs: true
     generate_vm_passwords: true
 resource-configuration:
