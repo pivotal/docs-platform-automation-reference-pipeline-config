@@ -481,7 +481,7 @@ jobs:
     params:
       CONFIG_FILE: foundations/((foundation))/config/download-tas.yml
       VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
-      SOURCE: s3
+      SOURCE: pivnet
     output_mapping:
       downloaded-product: tas-product
       downloaded-stemcell: tas-stemcell
