@@ -190,7 +190,7 @@ jobs:
     params:
       CONFIG_FILE: foundations/((foundation))/config/download-opsman.yml
       VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
-      SOURCE: s3
+      SOURCE: pivnet
     output_mapping:
       downloaded-product: opsman-image
   # code_snippet create-vm-usage start yaml
@@ -346,7 +346,7 @@ jobs:
     params:
       CONFIG_FILE: foundations/((foundation))/config/download-opsman.yml
       VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
-      SOURCE: s3
+      SOURCE: pivnet
     output_mapping:
       downloaded-product: opsman-image
   # code_snippet upgrade-opsman-usage start yaml
@@ -428,7 +428,7 @@ jobs:
     params:
       CONFIG_FILE: foundations/((foundation))/config/download-pks.yml
       VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
-      SOURCE: s3
+      SOURCE: pivnet
     output_mapping:
       downloaded-product: pks-product
       downloaded-stemcell: pks-stemcell
@@ -538,7 +538,7 @@ jobs:
       params:
         CONFIG_FILE: foundations/((foundation))/config/download-healthwatch.yml
         VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
-        SOURCE: s3
+        SOURCE: pivnet
       output_mapping:
         downloaded-product: healthwatch-product
         downloaded-stemcell: healthwatch-stemcell
@@ -584,7 +584,7 @@ jobs:
       params:
         CONFIG_FILE: foundations/((foundation))/config/download-healthwatch-pas-exporter.yml
         VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
-        SOURCE: s3
+        SOURCE: pivnet
       output_mapping:
         downloaded-product: healthwatch-pas-exporter
     - task: upload-and-stage-healthwatch-pas-exporter
@@ -621,7 +621,7 @@ jobs:
       params:
         CONFIG_FILE: foundations/((foundation))/config/download-healthwatch-pks-exporter.yml
         VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
-        SOURCE: s3
+        SOURCE: pivnet
       output_mapping:
         downloaded-product: healthwatch-pks-exporter
     - task: upload-and-stage-healthwatch-pks-exporter
