@@ -8,98 +8,113 @@ resource_types:
   source:
     repository: pivotalcf/pivnet-resource
     tag: latest-final
+- name: s3-with-arn
+  type: docker-image
+  source:
+    repository: concourse/s3-resource
+    tag: 1.2.1-ubuntu
 # code_snippet resources-pipeline-resource-types end yaml
 
 # code_snippet resources-pipeline-products start yaml
 resources:
 - name: opsman-product
-  type: s3
+  type: s3-with-arn
   source:
-    access_key_id: ((s3_access_key_id))
+    access_key_id: ((s3_with_role.access_key_id))
+    secret_access_key: ((s3_with_role.secret_access_key))
+    aws_role_arn: ((s3_with_role.role_arn))
     bucket: ((s3_pivnet_products_bucket))
     region_name: ((s3_region_name))
-    secret_access_key: ((s3_secret_access_key))
     regexp: \[ops-manager,(.*)\]ops-manager-gcp.*.yml
 
 - name: pks-product
-  type: s3
+  type: s3-with-arn
   source:
-    access_key_id: ((s3_access_key_id))
+    access_key_id: ((s3_with_role.access_key_id))
+    secret_access_key: ((s3_with_role.secret_access_key))
+    aws_role_arn: ((s3_with_role.role_arn))
     bucket: ((s3_pivnet_products_bucket))
     region_name: ((s3_region_name))
-    secret_access_key: ((s3_secret_access_key))
     regexp: \[pivotal-container-service,(.*)\]pivotal-container-service-.*.pivotal
 
 - name: pks-stemcell
-  type: s3
+  type: s3-with-arn
   source:
-    access_key_id: ((s3_access_key_id))
+    access_key_id: ((s3_with_role.access_key_id))
+    secret_access_key: ((s3_with_role.secret_access_key))
+    aws_role_arn: ((s3_with_role.role_arn))
     bucket: ((s3_pivnet_products_bucket))
     region_name: ((s3_region_name))
-    secret_access_key: ((s3_secret_access_key))
     regexp: pks-stemcell/\[stemcells-ubuntu-xenial,(.*)\]light-bosh-stemcell-.*-google.*\.tgz
 
 - name: tas-product
-  type: s3
+  type: s3-with-arn
   source:
-    access_key_id: ((s3_access_key_id))
+    access_key_id: ((s3_with_role.access_key_id))
+    secret_access_key: ((s3_with_role.secret_access_key))
+    aws_role_arn: ((s3_with_role.role_arn))
     bucket: ((s3_pivnet_products_bucket))
     region_name: ((s3_region_name))
-    secret_access_key: ((s3_secret_access_key))
     regexp: \[elastic-runtime,(.*)\]srt-.*.pivotal
 
 - name: tas-stemcell
-  type: s3
+  type: s3-with-arn
   source:
-    access_key_id: ((s3_access_key_id))
+    access_key_id: ((s3_with_role.access_key_id))
+    secret_access_key: ((s3_with_role.secret_access_key))
+    aws_role_arn: ((s3_with_role.role_arn))
     bucket: ((s3_pivnet_products_bucket))
     region_name: ((s3_region_name))
-    secret_access_key: ((s3_secret_access_key))
     regexp: tas-stemcell/\[stemcells-ubuntu-xenial,(.*)\]light-bosh-stemcell-.*-google.*\.tgz
 
 - name: healthwatch-product
-  type: s3
+  type: s3-with-arn
   source:
-    access_key_id: ((s3_access_key_id))
+    access_key_id: ((s3_with_role.access_key_id))
+    secret_access_key: ((s3_with_role.secret_access_key))
+    aws_role_arn: ((s3_with_role.role_arn))
     bucket: ((s3_pivnet_products_bucket))
     region_name: ((s3_region_name))
-    secret_access_key: ((s3_secret_access_key))
     regexp: \[p-healthwatch,(.*)\]healthwatch-\d.*.pivotal
 
 - name: healthwatch-pas-exporter
-  type: s3
+  type: s3-with-arn
   source:
-    access_key_id: ((s3_access_key_id))
+    access_key_id: ((s3_with_role.access_key_id))
+    secret_access_key: ((s3_with_role.secret_access_key))
+    aws_role_arn: ((s3_with_role.role_arn))
     bucket: ((s3_pivnet_products_bucket))
     region_name: ((s3_region_name))
-    secret_access_key: ((s3_secret_access_key))
     regexp: \[p-healthwatch,(.*)\]healthwatch-pas-exporter.*.pivotal
 
 - name: healthwatch-pks-exporter
-  type: s3
+  type: s3-with-arn
   source:
-    access_key_id: ((s3_access_key_id))
+    access_key_id: ((s3_with_role.access_key_id))
+    secret_access_key: ((s3_with_role.secret_access_key))
+    aws_role_arn: ((s3_with_role.role_arn))
     bucket: ((s3_pivnet_products_bucket))
     region_name: ((s3_region_name))
-    secret_access_key: ((s3_secret_access_key))
     regexp: \[p-healthwatch,(.*)\]healthwatch-pks-exporter.*.pivotal
 
 - name: healthwatch-stemcell
-  type: s3
+  type: s3-with-arn
   source:
-    access_key_id: ((s3_access_key_id))
+    access_key_id: ((s3_with_role.access_key_id))
+    secret_access_key: ((s3_with_role.secret_access_key))
+    aws_role_arn: ((s3_with_role.role_arn))
     bucket: ((s3_pivnet_products_bucket))
     region_name: ((s3_region_name))
-    secret_access_key: ((s3_secret_access_key))
     regexp: healthwatch-stemcell/\[stemcells-ubuntu-xenial,(.*)\]light-bosh-stemcell-.*-google.*\.tgz
 
 - name: telemetry-product
-  type: s3
+  type: s3-with-arn
   source:
-    access_key_id: ((s3_access_key_id))
+    access_key_id: ((s3_with_role.access_key_id))
+    secret_access_key: ((s3_with_role.secret_access_key))
+    aws_role_arn: ((s3_with_role.role_arn))
     bucket: ((s3_pivnet_products_bucket))
     region_name: ((s3_region_name))
-    secret_access_key: ((s3_secret_access_key))
     regexp: \[pivotal-telemetry-collector,(.*)\]telemetry-collector-.*.tgz
 # code_snippet resources-pipeline-products end yaml
 
@@ -113,21 +128,23 @@ resources:
     sort_by: semver
 
 - name: platform-automation-tasks
-  type: s3
+  type: s3-with-arn
   source:
-    access_key_id: ((s3_access_key_id))
+    access_key_id: ((s3_with_role.access_key_id))
+    secret_access_key: ((s3_with_role.secret_access_key))
+    aws_role_arn: ((s3_with_role.role_arn))
     bucket: ((s3_pivnet_products_bucket))
     region_name: ((s3_region_name))
-    secret_access_key: ((s3_secret_access_key))
     regexp: platform-automation-tasks-(.*).zip
 
 - name: platform-automation-image
-  type: s3
+  type: s3-with-arn
   source:
-    access_key_id: ((s3_access_key_id))
+    access_key_id: ((s3_with_role.access_key_id))
+    secret_access_key: ((s3_with_role.secret_access_key))
+    aws_role_arn: ((s3_with_role.role_arn))
     bucket: ((s3_pivnet_products_bucket))
     region_name: ((s3_region_name))
-    secret_access_key: ((s3_secret_access_key))
     regexp: platform-automation-image-(.*).tgz
 # code_snippet resources-pipeline-platform-automation end yaml
 
