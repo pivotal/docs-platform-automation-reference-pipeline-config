@@ -48,25 +48,27 @@ resources:
   source:
     access_key_id: ((s3_with_role.access_key_id))
     secret_access_key: ((s3_with_role.secret_access_key))
-    aws_role_arn: ((s3_with_role.role_arn)
+    aws_role_arn: ((s3_with_role.role_arn))
     region_name: ((s3_region_name))
     bucket: ((s3_pivnet_products_bucket))
     regexp: .*tasks-(.*).zip
 
 - name: platform-automation-image
-  type: s3
+  type: s3-with-arn
   source:
-    access_key_id: ((s3_access_key_id))
-    secret_access_key: ((s3_secret_access_key))
+    access_key_id: ((s3_with_role.access_key_id))
+    secret_access_key: ((s3_with_role.secret_access_key))
+    aws_role_arn: ((s3_with_role.role_arn))
     region_name: ((s3_region_name))
     bucket: ((s3_pivnet_products_bucket))
     regexp: .*image-(.*).tgz
 
 - name: telemetry-collector-binary
-  type: s3
+  type: s3-with-arn
   source:
-    access_key_id: ((s3_access_key_id))
-    secret_access_key: ((s3_secret_access_key))
+    access_key_id: ((s3_with_role.access_key_id))
+    secret_access_key: ((s3_with_role.secret_access_key))
+    aws_role_arn: ((s3_with_role.role_arn))
     region_name: ((s3_region_name))
     bucket: ((s3_pivnet_products_bucket))
     regexp: .*telemetry-(.*).tgz
@@ -74,10 +76,11 @@ resources:
 
 # code_snippet export-installation-resource-usage start yaml
 - name: installation
-  type: s3
+  type: s3-with-arn
   source:
-    access_key_id: ((s3_access_key_id))
-    secret_access_key: ((s3_secret_access_key))
+    access_key_id: ((s3_with_role.access_key_id))
+    secret_access_key: ((s3_with_role.secret_access_key))
+    aws_role_arn: ((s3_with_role.role_arn))
     region_name: ((s3_region_name))
     bucket: ((s3_installation_bucket))
     regexp: ((foundation))-installation-(.*).zip
@@ -86,12 +89,13 @@ resources:
 # code_snippet resources-configurations start yaml
 # VM state and foundation configuration
 - name: state
-  type: s3
+  type: s3-with-arn
   source:
-    access_key_id: ((s3_access_key_id))
+    access_key_id: ((s3_with_role.access_key_id))
+    secret_access_key: ((s3_with_role.secret_access_key))
+    aws_role_arn: ((s3_with_role.role_arn))
     bucket: ((s3_foundation_state_bucket))
     region_name: ((s3_region_name))
-    secret_access_key: ((s3_secret_access_key))
     versioned_file: state-((foundation)).yml
     initial_content_text: '{}'
     initial_version: 'empty-start'
