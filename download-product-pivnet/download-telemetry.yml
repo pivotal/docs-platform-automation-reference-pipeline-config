@@ -4,7 +4,7 @@ pivnet-api-token: ((pivnet_token))
 pivnet-product-slug: pivotal-telemetry-collector
 
 file-glob: "*.tgz"
-product-version-regex: ^1\.1\..*$
+product-version-regex: ^1\.2\..*$
 
 s3-access-key-id: ((s3_access_key_id))
 s3-secret-access-key: ((s3_secret_access_key))
