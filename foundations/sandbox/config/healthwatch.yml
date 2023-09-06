@@ -15,3 +15,6 @@ product-properties:
   .properties.enable_basic_auth:
     selected_option: enabled
     value: enabled
+resource-config:
+  grafana:
+    instances: 0
