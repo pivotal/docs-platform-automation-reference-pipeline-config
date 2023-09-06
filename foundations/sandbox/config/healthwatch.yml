@@ -15,6 +15,9 @@ product-properties:
   .properties.enable_basic_auth:
     selected_option: enabled
     value: enabled
+  .properties.grafana_route:
+    selected_option: tas
+    value: tas
 resource-config:
   grafana:
     instances: 0
