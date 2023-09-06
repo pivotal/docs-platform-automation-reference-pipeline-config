@@ -30,8 +30,6 @@ product-properties:
           secret: 1a2b3c4d5e6f7g8h9i0j
         name: Key
         primary: true
-  .properties.haproxy_forward_tls:
-    value: disable
   .properties.networking_poe_ssl_certs:
     value:
       - certificate:
