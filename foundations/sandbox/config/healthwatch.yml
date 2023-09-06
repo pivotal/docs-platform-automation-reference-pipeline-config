@@ -11,3 +11,7 @@ network-properties:
   - name: ((availability_zones.2))
   singleton_availability_zone:
     name: ((availability_zones.0))
+product-properties:
+  .properties.enable_basic_auth:
+    selected_option: enabled
+    value: enabled
