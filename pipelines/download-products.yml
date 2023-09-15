@@ -45,7 +45,7 @@ resources:
     aws_role_arn: ((s3_with_role.role_arn))
     bucket: ((s3_pivnet_products_bucket))
     region_name: ((s3_region_name))
-    regexp: pks-stemcell/\[stemcells-ubuntu-xenial,(.*)\]light-bosh-stemcell-.*-google.*\.tgz
+    regexp: pks-stemcell/\[stemcells-ubuntu-jammy,(.*)\]light-bosh-stemcell-.*-google.*\.tgz
 
 - name: tas-product
   type: s3-with-arn
@@ -65,7 +65,7 @@ resources:
     aws_role_arn: ((s3_with_role.role_arn))
     bucket: ((s3_pivnet_products_bucket))
     region_name: ((s3_region_name))
-    regexp: tas-stemcell/\[stemcells-ubuntu-xenial,(.*)\]light-bosh-stemcell-.*-google.*\.tgz
+    regexp: tas-stemcell/\[stemcells-ubuntu-jammy,(.*)\]light-bosh-stemcell-.*-google.*\.tgz
 
 - name: healthwatch-product
   type: s3-with-arn
@@ -105,7 +105,7 @@ resources:
     aws_role_arn: ((s3_with_role.role_arn))
     bucket: ((s3_pivnet_products_bucket))
     region_name: ((s3_region_name))
-    regexp: healthwatch-stemcell/\[stemcells-ubuntu-xenial,(.*)\]light-bosh-stemcell-.*-google.*\.tgz
+    regexp: healthwatch-stemcell/\[stemcells-ubuntu-jammy,(.*)\]light-bosh-stemcell-.*-google.*\.tgz
 
 - name: telemetry-product
   type: s3-with-arn
