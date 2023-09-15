@@ -14,3 +14,9 @@ network-properties:
 product-properties:
   .bosh-health-exporter.health_check_az:
     value: ((availability_zones.0))
+resource-config:
+  pks-exporter:
+    instances: 0
+errand-config:
+  smoke-test:
+    post-deploy-state: false
