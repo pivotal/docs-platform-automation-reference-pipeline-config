@@ -8,7 +8,7 @@
     "us-central1-b",
     "us-central1-c"
   ],
-  "environment_name": "reference-gcp",
+  "environment_name": "reference-rmt-gcp",
   "hosted_zone_name_servers": [
     "ns-cloud-c1.googledomains.com.",
     "ns-cloud-c2.googledomains.com.",
@@ -17,17 +17,17 @@
   ],
   "management_subnet_cidr": "10.0.0.0/26",
   "management_subnet_gateway": "10.0.0.1",
-  "management_subnet_name": "reference-gcp-management-subnet",
+  "management_subnet_name": "reference-rmt-gcp-management-subnet",
   "management_subnet_reserved_ip_ranges": "10.0.0.1-10.0.0.9",
-  "network_name": "reference-gcp-network",
-  "ops_manager_bucket": "cf-norm-ci-reference-gcp-ops-manager-17391",
+  "network_name": "reference-rmt-gcp-network",
+  "ops_manager_bucket": "cf-norm-ci-reference-rmt-gcp-ops-manager-17391",
   "ops_manager_public_ip": "34.170.152.208",
-  "ops_manager_tags": "reference-gcp-ops-manager",
-  "platform_vms_tag": "reference-gcp-vms",
+  "ops_manager_tags": "reference-rmt-gcp-ops-manager",
+  "platform_vms_tag": "reference-rmt-gcp-vms",
   "project": "cf-norm-ci",
   "region": "us-central1",
   "services_subnet_cidr": "10.0.8.0/24",
   "services_subnet_gateway": "10.0.8.1",
-  "services_subnet_name": "reference-gcp-services-subnet",
+  "services_subnet_name": "reference-rmt-gcp-services-subnet",
   "services_subnet_reserved_ip_ranges": "10.0.8.1-10.0.8.9"
 }
