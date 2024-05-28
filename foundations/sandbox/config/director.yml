@@ -58,7 +58,7 @@ networks-configuration:
 properties-configuration:
   iaas_configuration:
     project: ((project))
-    auth_json: ((ops_manager_rmt_service_account_key))
+    auth_json: ((ops_manager_service_account_key))
     default_deployment_tag: ((platform_vms_tag))
   director_configuration:
     ntp_servers_string: 169.254.169.254
