@@ -92,7 +92,7 @@ resources:
     aws_role_arn: ((s3_with_role.role_arn))
     bucket: ((s3_foundation_state_bucket))
     region_name: ((s3_region_name))
-    versioned_file: rmt-state-((foundation)).yml
+    versioned_file: state-((foundation)).yml
     initial_content_text: '{}'
     initial_version: 'empty-start'
 
