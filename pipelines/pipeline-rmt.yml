@@ -58,14 +58,14 @@ resources:
 - name: platform-automation-image
   type: pivnet
   source:
-    endpoint: https://api-devlvn.broadcom.net
+    endpoint: https://eapi-gcpstg.broadcom.com
     api_token: ((rmt_token))
     product_slug: platform-automation
 
 - name: telemetry-collector-binary
   type: pivnet
   source:
-    endpoint: https://api-devlvn.broadcom.net
+    endpoint: https://eapi-gcpstg.broadcom.com
     api_token: ((rmt_token))
     product_slug: pivotal-telemetry-collector
 # code_snippet reference-resources-s3 end yaml
@@ -201,7 +201,7 @@ jobs:
       CONFIG_FILE: foundations/((foundation))/config/download-opsman.yml
       VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
       SOURCE: pivnet
-      HOST: "https://api-devlvn.broadcom.net"
+      HOST: "https://eapi-gcpstg.broadcom.com"
     output_mapping:
       downloaded-product: opsman-image
   # code_snippet create-vm-usage start yaml
@@ -360,7 +360,7 @@ jobs:
       CONFIG_FILE: foundations/((foundation))/config/download-opsman.yml
       VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
       SOURCE: pivnet
-      HOST: "https://api-devlvn.broadcom.net"
+      HOST: "https://eapi-gcpstg.broadcom.com"
     output_mapping:
       downloaded-product: opsman-image
   # code_snippet upgrade-opsman-usage start yaml
@@ -444,7 +444,7 @@ jobs:
       CONFIG_FILE: foundations/((foundation))/config/download-pks.yml
       VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
       SOURCE: pivnet
-      HOST: "https://api-devlvn.broadcom.net"
+      HOST: "https://eapi-gcpstg.broadcom.com"
     output_mapping:
       downloaded-product: pks-product
       downloaded-stemcell: pks-stemcell
@@ -499,7 +499,7 @@ jobs:
       CONFIG_FILE: foundations/((foundation))/config/download-tas.yml
       VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
       SOURCE: pivnet
-      HOST: "https://api-devlvn.broadcom.net"
+      HOST: "https://eapi-gcpstg.broadcom.com"
     output_mapping:
       downloaded-product: tas-product
       downloaded-stemcell: tas-stemcell
@@ -558,7 +558,7 @@ jobs:
         CONFIG_FILE: foundations/((foundation))/config/download-healthwatch.yml
         VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
         SOURCE: pivnet
-        HOST: "https://api-devlvn.broadcom.net"
+        HOST: "https://eapi-gcpstg.broadcom.com"
       output_mapping:
         downloaded-product: healthwatch-product
         downloaded-stemcell: healthwatch-stemcell
@@ -606,7 +606,7 @@ jobs:
         CONFIG_FILE: foundations/((foundation))/config/download-healthwatch-pas-exporter.yml
         VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
         SOURCE: pivnet
-        HOST: "https://api-devlvn.broadcom.net"
+        HOST: "https://eapi-gcpstg.broadcom.com"
       output_mapping:
         downloaded-product: healthwatch-pas-exporter
     - task: upload-and-stage-healthwatch-pas-exporter
@@ -645,7 +645,7 @@ jobs:
         CONFIG_FILE: foundations/((foundation))/config/download-healthwatch-pks-exporter.yml
         VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
         SOURCE: pivnet
-        HOST: "https://api-devlvn.broadcom.net"
+        HOST: "https://eapi-gcpstg.broadcom.com"
       output_mapping:
         downloaded-product: healthwatch-pks-exporter
     - task: upload-and-stage-healthwatch-pks-exporter
