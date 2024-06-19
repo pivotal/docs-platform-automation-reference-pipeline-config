@@ -59,14 +59,14 @@ resources:
   type: pivnet
   source:
     endpoint: https://eapi-gcpstg.broadcom.com
-    api_token: ((rmt_token))
+    api_token: ((pivnet_token))
     product_slug: platform-automation
 
 - name: telemetry-collector-binary
   type: pivnet
   source:
     endpoint: https://eapi-gcpstg.broadcom.com
-    api_token: ((rmt_token))
+    api_token: ((pivnet_token))
     product_slug: pivotal-telemetry-collector
 # code_snippet reference-resources-s3 end yaml
 
