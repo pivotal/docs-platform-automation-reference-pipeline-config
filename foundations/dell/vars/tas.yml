@@ -1,0 +1,21 @@
+{
+  "apps_dns_domain": "apps.reference-dell.gcp.platform-automation.cf-app.com",
+  "backup_bucket_name": "cf-norm-ci-reference-dell-backup-34217",
+  "buildpacks_bucket_name": "cf-norm-ci-reference-dell-buildpacks-34217",
+  "doppler_dns": "doppler.sys.reference-dell.gcp.platform-automation.cf-app.com",
+  "droplets_bucket_name": "cf-norm-ci-reference-dell-droplets-34217",
+  "http_backend_service_name": "reference-dell-http-lb",
+  "loggregator_dns": "loggregator.sys.reference-dell.gcp.platform-automation.cf-app.com",
+  "packages_bucket_name": "cf-norm-ci-reference-dell-packages-34217",
+  "pas_subnet_cidr": "10.0.4.0/24",
+  "pas_subnet_gateway": "10.0.4.1",
+  "pas_subnet_name": "reference-dell-pas-subnet",
+  "pas_subnet_reserved_ip_ranges": "10.0.4.1-10.0.4.9",
+  "resources_bucket_name": "cf-norm-ci-reference-dell-resources-34217",
+  "ssh_dns": "ssh.sys.reference-dell.gcp.platform-automation.cf-app.com",
+  "ssh_target_pool_name": "reference-dell-ssh-lb",
+  "sys_dns_domain": "sys.reference-dell.gcp.platform-automation.cf-app.com",
+  "tcp_dns": "tcp.reference-dell.gcp.platform-automation.cf-app.com",
+  "tcp_target_pool_name": "reference-dell-tcp-lb",
+  "web_target_pool_name": "reference-dell-websocket-lb"
+}
