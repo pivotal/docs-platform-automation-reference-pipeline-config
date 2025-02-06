@@ -258,7 +258,6 @@ jobs:
       VARS_FILES: |
         vars/foundations/((foundation))/vars/director.yml
         vars/foundations/((foundation))/vars/tas.yml
-        vars/foundations/((foundation))/vars/pks.yml
   # code_snippet configure-director-usage end
   # code_snippet apply-director-changes-usage start yaml
   - task: apply-director-changes
