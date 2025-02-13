@@ -1,7 +1,7 @@
 ---
 pivnet-product-slug: p-healthwatch
 
-file-glob: "healthwatch-pas-exporter*.pivotal"
+file-glob: "p-healthwatch2-pas-exporter*.pivotal"
 product-version: ((healthwatch-version))
 stemcell-iaas: google
 
