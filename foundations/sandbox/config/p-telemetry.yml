@@ -8,25 +8,16 @@ product-properties:
     value: false
   .properties.collector_cron_schedule:
     value: random
-  .properties.data_collection_multi_select_options:
-    value:
-    - operational_data
-    - ceip_data
   .properties.endpoint:
     value: https://telemetry.pivotal.io
   .properties.env_type:
     value: sandbox
   .properties.eula_acceptance:
     value:
-    - agree
+      - agree
   .properties.flush_interval:
     value: 3600
   .properties.opsmanager_insecure_skip_tls_verify:
-    value: true
-  .properties.proxy_selector:
-    selected_option: disabled
-    value: Disabled
-  .properties.usage_service_insecure_skip_tls_verify:
     value: true
 network-properties:
   network:
