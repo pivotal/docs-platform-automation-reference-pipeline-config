@@ -1,5 +1,5 @@
 product-name: pivotal-telemetry-om
-product-version: 2.0.6
+product-version: 2.0.6-build.10
 product-properties:
   .properties.api_key:
     value:
