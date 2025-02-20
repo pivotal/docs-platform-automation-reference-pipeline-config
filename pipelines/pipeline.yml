@@ -42,31 +42,31 @@ resources:
 - name: platform-automation-tasks
   type: s3-with-arn
   source:
-    access_key_id: ((s3_with_role.access_key_id))
-    secret_access_key: ((s3_with_role.secret_access_key))
-    aws_role_arn: ((s3_with_role.role_arn))
-    region_name: ((s3_region_name))
-    bucket: ((s3_pivnet_products_bucket))
+    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
+    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
+    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
+    region_name: ((platform-automation/main.s3_region_name))
+    bucket: ((platform-automation/main.s3_pivnet_products_bucket))
     regexp: .*tasks-(.*).zip
 
 - name: platform-automation-image
   type: s3-with-arn
   source:
-    access_key_id: ((s3_with_role.access_key_id))
-    secret_access_key: ((s3_with_role.secret_access_key))
-    aws_role_arn: ((s3_with_role.role_arn))
-    region_name: ((s3_region_name))
-    bucket: ((s3_pivnet_products_bucket))
+    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
+    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
+    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
+    region_name: ((platform-automation/main.s3_region_name))
+    bucket: ((platform-automation/main.s3_pivnet_products_bucket))
     regexp: .*image-(.*).tgz
 
 - name: telemetry-collector-binary
   type: s3-with-arn
   source:
-    access_key_id: ((s3_with_role.access_key_id))
-    secret_access_key: ((s3_with_role.secret_access_key))
-    aws_role_arn: ((s3_with_role.role_arn))
-    region_name: ((s3_region_name))
-    bucket: ((s3_pivnet_products_bucket))
+    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
+    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
+    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
+    region_name: ((platform-automation/main.s3_region_name))
+    bucket: ((platform-automation/main.s3_pivnet_products_bucket))
     regexp: .*telemetry-(.*).tgz
 # code_snippet reference-resources-s3 end yaml
 
@@ -74,11 +74,11 @@ resources:
 - name: installation
   type: s3-with-arn
   source:
-    access_key_id: ((s3_with_role.access_key_id))
-    secret_access_key: ((s3_with_role.secret_access_key))
-    aws_role_arn: ((s3_with_role.role_arn))
-    region_name: ((s3_region_name))
-    bucket: ((s3_installation_bucket))
+    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
+    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
+    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
+    region_name: ((platform-automation/main.s3_region_name))
+    bucket: ((platform-automation/main/reference-pipeline.s3_installation_bucket))
     regexp: ((foundation))-installation-(.*).zip
 # code_snippet export-installation-resource-usage end
 
@@ -87,11 +87,11 @@ resources:
 - name: state
   type: s3-with-arn
   source:
-    access_key_id: ((s3_with_role.access_key_id))
-    secret_access_key: ((s3_with_role.secret_access_key))
-    aws_role_arn: ((s3_with_role.role_arn))
-    bucket: ((s3_foundation_state_bucket))
-    region_name: ((s3_region_name))
+    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
+    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
+    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
+    bucket: ((platform-automation/main/reference-pipeline.s3_foundation_state_bucket))
+    region_name: ((platform-automation/main.s3_region_name))
     versioned_file: state-((foundation)).yml
     initial_content_text: '{}'
     initial_version: 'empty-start'
@@ -100,8 +100,8 @@ resources:
 - name: configuration
   type: git
   source:
-    private_key: ((docs-ref-pipeline-repo-key.private_key))
-    uri: ((docs-ref-pipeline-repo-uri))
+    private_key: ((platform-automation/main/docs-ref-pipeline-repo-key.private_key))
+    uri: ((platform-automation/main.docs-ref-pipeline-repo-uri))
     branch: develop
 # code_snippet resources-configurations end yaml
 
@@ -139,7 +139,7 @@ prepare-image: &prepare-image
   image: platform-automation-image
   file: platform-automation-tasks/tasks/prepare-image.yml
   params:
-    CA_CERTS: ((opsman-ssl.ca))
+    CA_CERTS: ((platform-automation/main/reference-pipeline/opsman-ssl.ca))
 # code_snippet prepare-image-usage end yaml
 # code_snippet reference-jobs start yaml
 jobs:
@@ -729,7 +729,7 @@ jobs:
       PRODUCT_NAME: cf
       ERRAND_NAME: smoke_tests
       ENV_FILE: foundations/config/env.yml
-      OPSMAN_SSH_PRIVATE_KEY: ((ops_manager_ssh_private_key))
+      OPSMAN_SSH_PRIVATE_KEY: ((platform-automation/main/reference-pipeline.ops_manager_ssh_private_key))
   # code_snippet run-bosh-errand-usage end
 - name: collect-telemetry
   serial: true
