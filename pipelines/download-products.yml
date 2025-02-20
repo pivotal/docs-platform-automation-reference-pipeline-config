@@ -20,101 +20,101 @@ resources:
 - name: opsman-product
   type: s3-with-arn
   source:
-    access_key_id: ((s3_with_role.access_key_id))
-    secret_access_key: ((s3_with_role.secret_access_key))
-    aws_role_arn: ((s3_with_role.role_arn))
-    bucket: ((s3_pivnet_products_bucket))
-    region_name: ((s3_region_name))
+    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
+    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
+    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
+    bucket: ((platform-automation/main.s3_pivnet_products_bucket))
+    region_name: ((platform-automation/main.s3_region_name))
     regexp: \[ops-manager,(.*)\]ops-manager-gcp.*.yml
 
 - name: pks-product
   type: s3-with-arn
   source:
-    access_key_id: ((s3_with_role.access_key_id))
-    secret_access_key: ((s3_with_role.secret_access_key))
-    aws_role_arn: ((s3_with_role.role_arn))
-    bucket: ((s3_pivnet_products_bucket))
-    region_name: ((s3_region_name))
+    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
+    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
+    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
+    bucket: ((platform-automation/main.s3_pivnet_products_bucket))
+    region_name: ((platform-automation/main.s3_region_name))
     regexp: \[pivotal-container-service,(.*)\]pivotal-container-service-.*.pivotal
 
 - name: pks-stemcell
   type: s3-with-arn
   source:
-    access_key_id: ((s3_with_role.access_key_id))
-    secret_access_key: ((s3_with_role.secret_access_key))
-    aws_role_arn: ((s3_with_role.role_arn))
-    bucket: ((s3_pivnet_products_bucket))
-    region_name: ((s3_region_name))
+    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
+    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
+    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
+    bucket: ((platform-automation/main.s3_pivnet_products_bucket))
+    region_name: ((platform-automation/main.s3_region_name))
     regexp: pks-stemcell/\[stemcells-ubuntu-jammy,(.*)\]light-bosh-stemcell-.*-google.*\.tgz
 
 - name: tas-product
   type: s3-with-arn
   source:
-    access_key_id: ((s3_with_role.access_key_id))
-    secret_access_key: ((s3_with_role.secret_access_key))
-    aws_role_arn: ((s3_with_role.role_arn))
-    bucket: ((s3_pivnet_products_bucket))
-    region_name: ((s3_region_name))
+    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
+    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
+    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
+    bucket: ((platform-automation/main.s3_pivnet_products_bucket))
+    region_name: ((platform-automation/main.s3_region_name))
     regexp: \[elastic-runtime,(.*)\]srt-.*.pivotal
 
 - name: tas-stemcell
   type: s3-with-arn
   source:
-    access_key_id: ((s3_with_role.access_key_id))
-    secret_access_key: ((s3_with_role.secret_access_key))
-    aws_role_arn: ((s3_with_role.role_arn))
-    bucket: ((s3_pivnet_products_bucket))
-    region_name: ((s3_region_name))
+    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
+    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
+    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
+    bucket: ((platform-automation/main.s3_pivnet_products_bucket))
+    region_name: ((platform-automation/main.s3_region_name))
     regexp: tas-stemcell/\[stemcells-ubuntu-jammy,(.*)\]light-bosh-stemcell-.*-google.*\.tgz
 
 - name: healthwatch-product
   type: s3-with-arn
   source:
-    access_key_id: ((s3_with_role.access_key_id))
-    secret_access_key: ((s3_with_role.secret_access_key))
-    aws_role_arn: ((s3_with_role.role_arn))
-    bucket: ((s3_pivnet_products_bucket))
-    region_name: ((s3_region_name))
+    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
+    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
+    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
+    bucket: ((platform-automation/main.s3_pivnet_products_bucket))
+    region_name: ((platform-automation/main.s3_region_name))
     regexp: \[p-healthwatch,(.*)\]healthwatch-\d.*.pivotal
 
 - name: healthwatch-pas-exporter
   type: s3-with-arn
   source:
-    access_key_id: ((s3_with_role.access_key_id))
-    secret_access_key: ((s3_with_role.secret_access_key))
-    aws_role_arn: ((s3_with_role.role_arn))
-    bucket: ((s3_pivnet_products_bucket))
-    region_name: ((s3_region_name))
+    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
+    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
+    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
+    bucket: ((platform-automation/main.s3_pivnet_products_bucket))
+    region_name: ((platform-automation/main.s3_region_name))
     regexp: \[p-healthwatch,(.*)\]healthwatch-pas-exporter.*.pivotal
 
 - name: healthwatch-pks-exporter
   type: s3-with-arn
   source:
-    access_key_id: ((s3_with_role.access_key_id))
-    secret_access_key: ((s3_with_role.secret_access_key))
-    aws_role_arn: ((s3_with_role.role_arn))
-    bucket: ((s3_pivnet_products_bucket))
-    region_name: ((s3_region_name))
+    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
+    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
+    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
+    bucket: ((platform-automation/main.s3_pivnet_products_bucket))
+    region_name: ((platform-automation/main.s3_region_name))
     regexp: \[p-healthwatch,(.*)\]healthwatch-pks-exporter.*.pivotal
 
 - name: healthwatch-stemcell
   type: s3-with-arn
   source:
-    access_key_id: ((s3_with_role.access_key_id))
-    secret_access_key: ((s3_with_role.secret_access_key))
-    aws_role_arn: ((s3_with_role.role_arn))
-    bucket: ((s3_pivnet_products_bucket))
-    region_name: ((s3_region_name))
+    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
+    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
+    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
+    bucket: ((platform-automation/main.s3_pivnet_products_bucket))
+    region_name: ((platform-automation/main.s3_region_name))
     regexp: healthwatch-stemcell/\[stemcells-ubuntu-jammy,(.*)\]light-bosh-stemcell-.*-google.*\.tgz
 
 - name: telemetry-product
   type: s3-with-arn
   source:
-    access_key_id: ((s3_with_role.access_key_id))
-    secret_access_key: ((s3_with_role.secret_access_key))
-    aws_role_arn: ((s3_with_role.role_arn))
-    bucket: ((s3_pivnet_products_bucket))
-    region_name: ((s3_region_name))
+    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
+    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
+    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
+    bucket: ((platform-automation/main.s3_pivnet_products_bucket))
+    region_name: ((platform-automation/main.s3_region_name))
     regexp: \[pivotal-telemetry-collector,(.*)\]telemetry-collector-.*.tgz
 # code_snippet resources-pipeline-products end yaml
 
@@ -122,7 +122,7 @@ resources:
 - name: platform-automation-pivnet
   type: pivnet
   source:
-    api_token: ((pivnet_token))
+    api_token: ((platform-automation/main.pivnet_token))
     product_slug: platform-automation
     product_version: 2\.(.*)
     sort_by: semver
@@ -130,21 +130,21 @@ resources:
 - name: platform-automation-tasks
   type: s3-with-arn
   source:
-    access_key_id: ((s3_with_role.access_key_id))
-    secret_access_key: ((s3_with_role.secret_access_key))
-    aws_role_arn: ((s3_with_role.role_arn))
-    bucket: ((s3_pivnet_products_bucket))
-    region_name: ((s3_region_name))
+    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
+    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
+    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
+    bucket: ((platform-automation/main.s3_pivnet_products_bucket))
+    region_name: ((platform-automation/main.s3_region_name))
     regexp: platform-automation-tasks-(.*).zip
 
 - name: platform-automation-image
   type: s3-with-arn
   source:
-    access_key_id: ((s3_with_role.access_key_id))
-    secret_access_key: ((s3_with_role.secret_access_key))
-    aws_role_arn: ((s3_with_role.role_arn))
-    bucket: ((s3_pivnet_products_bucket))
-    region_name: ((s3_region_name))
+    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
+    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
+    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
+    bucket: ((platform-automation/main.s3_pivnet_products_bucket))
+    region_name: ((platform-automation/main.s3_region_name))
     regexp: platform-automation-image-(.*).tgz
 # code_snippet resources-pipeline-platform-automation end yaml
 
@@ -152,8 +152,8 @@ resources:
 - name: configuration
   type: git
   source:
-    private_key: ((docs-ref-pipeline-repo-key.private_key))
-    uri: ((docs-ref-pipeline-repo-uri))
+    private_key: ((platform-automation/main/docs-ref-pipeline-repo-key.private_key))
+    uri: ((platform-automation/main.docs-ref-pipeline-repo-uri))
     branch: develop
     submodules: all
     depth: 1
