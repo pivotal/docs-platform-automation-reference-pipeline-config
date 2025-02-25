@@ -6,12 +6,16 @@ resource_types:
 - name: pivnet
   type: docker-image
   source:
-    repository: pivotalcf/pivnet-resource
+    repository: ((concourse-team/dev_image_registry.url))/pivotalcf/pivnet-resource
+    username: ((concourse-team/dev_image_registry.username))
+    password: ((concourse-team/dev_image_registry.password))
     tag: latest-final
 - name: s3-with-arn
   type: docker-image
   source:
-    repository: concourse/s3-resource
+    repository: ((concourse-team/dev_image_registry.url))/concourse/s3-resource
+    username: ((concourse-team/dev_image_registry.username))
+    password: ((concourse-team/dev_image_registry.password))
     tag: 1.2.1-ubuntu
 # code_snippet resources-pipeline-resource-types end yaml
 
