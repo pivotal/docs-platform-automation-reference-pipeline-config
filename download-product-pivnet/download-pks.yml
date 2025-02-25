@@ -1,15 +1,15 @@
 # code_snippet download-pks-from-pivnet-usage start yaml
 ---
-pivnet-api-token: ((platform-automation/main.pivnet_token))
+pivnet-api-token: ((pivnet_token))
 pivnet-product-slug: pivotal-container-service
 
 file-glob: "pivotal-container-service*.pivotal"
 product-version-regex: ^1\.16\..*$
 stemcell-iaas: google
 
-s3-access-key-id: ((platform-automation/main.s3_access_key_id))
-s3-secret-access-key: ((platform-automation/main.s3_secret_access_key ))
-s3-bucket: ((platform-automation/main.s3_pivnet_products_bucket))
-s3-region-name: ((platform-automation/main.s3_region_name))
+s3-access-key-id: ((s3_access_key_id))
+s3-secret-access-key: ((s3_secret_access_key))
+s3-bucket: ((s3_pivnet_products_bucket))
+s3-region-name: ((s3_region_name))
 s3-stemcell-path: pks-stemcell
 # code_snippet download-pks-from-pivnet-usage end
