@@ -5,7 +5,7 @@ pivnet-product-slug: p-healthwatch
 
 file-glob: "healthwatch-pks-exporter*.pivotal"
 product-version-regex: ^2\.2\..*$
-stemcell-iaas: google
+stemcell-iaas: vsphere
 
 s3-access-key-id: ((s3_access_key_id))
 s3-secret-access-key: ((s3_secret_access_key))

@@ -29,7 +29,7 @@ resources:
     aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
     bucket: ((platform-automation/main.s3_pivnet_products_bucket))
     region_name: ((platform-automation/main.s3_region_name))
-    regexp: \[ops-manager,(.*)\]ops-manager-gcp.*.yml
+    regexp: \[ops-manager,(.*?)\]ops-manager.*?\.yml
 
 - name: pks-product
   type: s3-with-arn
@@ -39,7 +39,7 @@ resources:
     aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
     bucket: ((platform-automation/main.s3_pivnet_products_bucket))
     region_name: ((platform-automation/main.s3_region_name))
-    regexp: \[pivotal-container-service,(.*)\]pivotal-container-service-.*.pivotal
+    regexp: \[pivotal-container-service,(.*?)\]pivotal-container-service-.*?\.pivotal
 
 - name: pks-stemcell
   type: s3-with-arn
@@ -49,7 +49,7 @@ resources:
     aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
     bucket: ((platform-automation/main.s3_pivnet_products_bucket))
     region_name: ((platform-automation/main.s3_region_name))
-    regexp: pks-stemcell/\[stemcells-ubuntu-jammy,(.*)\]light-bosh-stemcell-.*-google.*\.tgz
+    regexp: pks-stemcell/\[stemcells-ubuntu-jammy,(.*?)\]bosh-stemcell-.*?\-vsphere.*?\.tgz
 
 - name: tas-product
   type: s3-with-arn
@@ -59,7 +59,7 @@ resources:
     aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
     bucket: ((platform-automation/main.s3_pivnet_products_bucket))
     region_name: ((platform-automation/main.s3_region_name))
-    regexp: \[elastic-runtime,(.*)\]srt-.*.pivotal
+    regexp: \[elastic-runtime,(.*?)\]srt-.*?\.pivotal
 
 - name: tas-stemcell
   type: s3-with-arn
@@ -69,7 +69,7 @@ resources:
     aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
     bucket: ((platform-automation/main.s3_pivnet_products_bucket))
     region_name: ((platform-automation/main.s3_region_name))
-    regexp: tas-stemcell/\[stemcells-ubuntu-jammy,(.*)\]light-bosh-stemcell-.*-google.*\.tgz
+    regexp: tas-stemcell/\[stemcells-ubuntu-jammy,(.*?)\]bosh-stemcell-.*?\-vsphere.*?\.tgz
 
 - name: healthwatch-product
   type: s3-with-arn
@@ -79,7 +79,7 @@ resources:
     aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
     bucket: ((platform-automation/main.s3_pivnet_products_bucket))
     region_name: ((platform-automation/main.s3_region_name))
-    regexp: \[p-healthwatch,(.*)\]healthwatch-\d.*.pivotal
+    regexp: \[p-healthwatch,(.*?)\]healthwatch-\d.*?\.pivotal
 
 - name: healthwatch-pas-exporter
   type: s3-with-arn
@@ -89,7 +89,7 @@ resources:
     aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
     bucket: ((platform-automation/main.s3_pivnet_products_bucket))
     region_name: ((platform-automation/main.s3_region_name))
-    regexp: \[p-healthwatch,(.*)\]healthwatch-pas-exporter.*.pivotal
+    regexp: \[p-healthwatch,(.*?)\]healthwatch-pas-exporter.*?\.pivotal
 
 - name: healthwatch-pks-exporter
   type: s3-with-arn
@@ -99,7 +99,7 @@ resources:
     aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
     bucket: ((platform-automation/main.s3_pivnet_products_bucket))
     region_name: ((platform-automation/main.s3_region_name))
-    regexp: \[p-healthwatch,(.*)\]healthwatch-pks-exporter.*.pivotal
+    regexp: \[p-healthwatch,(.*?)\]healthwatch-pks-exporter.*?\.pivotal
 
 - name: healthwatch-stemcell
   type: s3-with-arn
@@ -109,7 +109,7 @@ resources:
     aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
     bucket: ((platform-automation/main.s3_pivnet_products_bucket))
     region_name: ((platform-automation/main.s3_region_name))
-    regexp: healthwatch-stemcell/\[stemcells-ubuntu-jammy,(.*)\]light-bosh-stemcell-.*-google.*\.tgz
+    regexp: healthwatch-stemcell/\[stemcells-ubuntu-jammy,(.*?)\]bosh-stemcell-.*?\-vsphere.*?\.tgz
 
 - name: telemetry-product
   type: s3-with-arn
@@ -119,7 +119,7 @@ resources:
     aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
     bucket: ((platform-automation/main.s3_pivnet_products_bucket))
     region_name: ((platform-automation/main.s3_region_name))
-    regexp: \[pivotal-telemetry-collector,(.*)\]telemetry-collector-.*.tgz
+    regexp: \[pivotal-telemetry-collector,(.*?)\]telemetry-collector-.*?\.tgz
 # code_snippet resources-pipeline-products end yaml
 
 # code_snippet resources-pipeline-platform-automation start yaml
