@@ -1,0 +1,4 @@
+product-name: tpsm
+product-properties:
+  .properties.license_key:
+    value: ((license_key))
