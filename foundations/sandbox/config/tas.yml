@@ -12,6 +12,8 @@ network-properties:
   singleton_availability_zone:
     name: ((availability_zones.0))
 product-properties:
+  .properties.license_key:
+    value: ((license_key))
   .cloud_controller.apps_domain:
     value: ((apps_dns_domain))
   .cloud_controller.system_domain:

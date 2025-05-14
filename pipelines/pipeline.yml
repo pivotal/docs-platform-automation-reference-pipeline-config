@@ -105,6 +105,13 @@ resources:
     private_key: ((platform-automation/main/docs-ref-pipeline-repo-key.private_key))
     uri: ((platform-automation/main.docs-ref-pipeline-repo-uri))
     branch: develop
+
+- name: credentials
+  type: git
+  source:
+    private_key: ((platform-automation/main/docs-ref-pipeline-repo-key.private_key))
+    uri: ((platform-automation/main.platform_automation_deployments_ghe_uri))
+    branch: license_key_changes
 # code_snippet resources-configurations end yaml
 
 # code_snippet resources-triggers start yaml
@@ -574,12 +581,14 @@ jobs:
         config: configuration
         env: configuration
         vars: configuration
+        secrets: credentials
       params:
         CONFIG_FILE: foundations/((foundation))/config/tas.yml
         ENV_FILE: foundations/config/env.yml
         VARS_FILES: |
           vars/foundations/((foundation))/vars/tas.yml
           vars/foundations/((foundation))/vars/director.yml
+          secrets/reference-gcp/secrets/creds-tas.yml
 
 - name: configure-healthwatch
   serial: true
@@ -605,11 +614,13 @@ jobs:
         config: configuration
         env: configuration
         vars: configuration
+        secrets: credentials
       params:
         CONFIG_FILE: foundations/((foundation))/config/healthwatch.yml
         ENV_FILE: foundations/config/env.yml
         VARS_FILES: |
           vars/foundations/((foundation))/vars/director.yml
+          secrets/reference-gcp/secrets/creds-healthwatch.yml
 
 - name: configure-healthwatch-pas-exporter
   serial: true
@@ -635,11 +646,13 @@ jobs:
         config: configuration
         env: configuration
         vars: configuration
+        secrets: credentials
       params:
         CONFIG_FILE: foundations/((foundation))/config/healthwatch-pas-exporter.yml
         ENV_FILE: foundations/config/env.yml
         VARS_FILES: |
           vars/foundations/((foundation))/vars/director.yml
+          secrets/reference-gcp/secrets/creds-healthwatch-pas-exporter.yml
 
 - name: apply-product-changes
   serial: true
