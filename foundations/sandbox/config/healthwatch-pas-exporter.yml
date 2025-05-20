@@ -12,5 +12,7 @@ network-properties:
   singleton_availability_zone:
     name: ((availability_zones.0))
 product-properties:
+  .properties.license_key:
+    value: ((license_key))
   .bosh-health-exporter.health_check_az:
     value: ((availability_zones.0))
