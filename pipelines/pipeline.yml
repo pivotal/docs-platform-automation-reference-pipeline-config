@@ -893,6 +893,7 @@ jobs:
             unpack: true
         - get: configuration
         - get: state
+        - get: credentials
     - task: prepare-tasks-with-secrets
       <<: *prepare-tasks-with-secrets
     # code_snippet expiring-certificates-usage start yaml
