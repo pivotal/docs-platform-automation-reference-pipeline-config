@@ -6,6 +6,7 @@ groups:
 - jobs:
     - install-opsman
     - expiring-certificates
+    - expiring-licenses
     - delete-installation
     - test-platform-automation
     - export-installation
@@ -13,9 +14,11 @@ groups:
     - download-upload-and-stage-healthwatch-pas-exporter
     - download-upload-and-stage-healthwatch
     - download-upload-and-stage-tas
+    - download-upload-and-stage-example-licensed-product
     - configure-healthwatch-pas-exporter
     - configure-healthwatch
     - configure-tas
+    - configure-example-licensed-product
     - apply-product-changes
     - run-tas-smoketest-errand
     - collect-telemetry
@@ -48,8 +51,8 @@ resources:
     secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
     aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
     region_name: ((platform-automation/main.s3_region_name))
-    bucket: ((platform-automation/main.s3_pivnet_products_bucket))
-    regexp: .*tasks-(.*).zip
+    bucket: ref-pipeline-product-staging
+    regexp: platform-automation-tasks-(.*).zip
 
 - name: platform-automation-image
   type: s3-with-arn
@@ -61,6 +64,14 @@ resources:
     bucket: ((platform-automation/main.s3_pivnet_products_bucket))
     regexp: .*image-(.*).tgz
 
+- name: pa-dev-image
+  type: registry-image
+  source:
+    repository: ((concourse-team/dev_image_registry.dev_url))/internalpcfplatformautomation/platform-automation-dev
+    username: ((concourse-team/dev_image_registry.username))
+    password: ((concourse-team/dev_image_registry.password))
+    tag: dev
+
 - name: telemetry-collector-binary
   type: s3-with-arn
   source:
@@ -70,7 +81,28 @@ resources:
     region_name: ((platform-automation/main.s3_region_name))
     bucket: ((platform-automation/main.s3_pivnet_products_bucket))
     regexp: .*telemetry-(.*).tgz
-# code_snippet reference-resources-s3 end yaml
+
+- name: example-licensed-product
+  type: s3-with-arn
+  source:
+    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
+    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
+    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
+    region_name: ((platform-automation/main.s3_region_name))
+    bucket: ref-pipeline-product-staging
+    regexp: example-licensed-product-tpsm-(.*).pivotal
+
+- name: opsman-image-file
+  type: s3-with-arn
+  source:
+    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
+    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
+    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
+    region_name: ((platform-automation/main.s3_region_name))
+    bucket: ref-pipeline-product-staging
+    regexp: ops-manager-gcp-(.*).yml
+
+  # code_snippet reference-resources-s3 end yaml
 
 # code_snippet export-installation-resource-usage start yaml
 - name: installation
@@ -105,6 +137,20 @@ resources:
     private_key: ((platform-automation/main/docs-ref-pipeline-repo-key.private_key))
     uri: ((platform-automation/main.docs-ref-pipeline-repo-uri))
     branch: develop
+
+- name: configuration-lkc
+  type: git
+  source:
+    private_key: ((platform-automation/main/docs-ref-pipeline-repo-key.private_key))
+    uri: ((platform-automation/main.docs-ref-pipeline-repo-uri))
+    branch: license_key_changes
+
+- name: credentials
+  type: git
+  source:
+    private_key: ((platform-automation/main/platform_automation_deployments_ghe_deploy_key.private_key))
+    uri: ((platform-automation/main.platform_automation_deployments_ghe_uri))
+    branch: main
 # code_snippet resources-configurations end yaml
 
 # code_snippet resources-triggers start yaml
@@ -342,28 +388,17 @@ jobs:
       passed: [ export-installation ]
     - get: configuration
     - get: state
+    - get: opsman-image-file
   - task: prepare-tasks-with-secrets
     <<: *prepare-tasks-with-secrets
   - task: prepare-image
     <<: *prepare-image
-  - task: download-opsman-image
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/download-product.yml
-    input_mapping:
-      config: configuration
-      vars: configuration
-    params:
-      CONFIG_FILE: foundations/((foundation))/config/download-opsman.yml
-      VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
-      SOURCE: pivnet
-    output_mapping:
-      downloaded-product: opsman-image
   # code_snippet upgrade-opsman-usage start yaml
   - task: upgrade-opsman
     image: platform-automation-image
     file: platform-automation-tasks/tasks/upgrade-opsman.yml
     input_mapping:
-      image: opsman-image
+      image: opsman-image-file
       config: configuration
       env: configuration
       vars: configuration
@@ -550,6 +585,32 @@ jobs:
       params:
         ENV_FILE: foundations/config/env.yml
 
+- name: download-upload-and-stage-example-licensed-product
+  serial: true
+  serial_groups: [ products ]
+  plan:
+    - in_parallel:
+      - get: platform-automation-image
+        params:
+          unpack: true
+        trigger: true
+        passed: [ "upgrade-opsman" ]
+      - get: platform-automation-tasks
+        params:
+          unpack: true
+      - get: configuration
+      - get: example-licensed-product
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
+    - task: upload-and-stage-example-licensed-product
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/upload-and-stage-product.yml
+      input_mapping:
+        product: example-licensed-product
+        env: configuration
+      params:
+        ENV_FILE: foundations/config/env.yml
+
 - name: configure-tas
   serial: true
   serial_groups: [ install ]
@@ -640,6 +701,38 @@ jobs:
         ENV_FILE: foundations/config/env.yml
         VARS_FILES: |
           vars/foundations/((foundation))/vars/director.yml
+
+- name: configure-example-licensed-product
+  serial: true
+  serial_groups: [ install ]
+  plan:
+    - in_parallel:
+        - get: platform-automation-image
+          params:
+            unpack: true
+        - get: pa-dev-image
+        - get: platform-automation-tasks
+          params:
+            unpack: true
+          passed:
+            - download-upload-and-stage-example-licensed-product
+        - get: configuration
+        - get: configuration-lkc
+        - get: credentials
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
+    - task: configure-example-licensed-product
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/configure-product.yml
+      input_mapping:
+        config: configuration-lkc
+        env: configuration
+        secrets: credentials
+      params:
+        CONFIG_FILE: foundations/((foundation))/config/example-licensed-product.yml
+        ENV_FILE: foundations/config/env.yml
+        VARS_FILES: |
+          secrets/reference-gcp/secrets/creds-example-licensed-product.yml
 
 - name: apply-product-changes
   serial: true
@@ -802,6 +895,33 @@ jobs:
         ENV_FILE: foundations/config/env.yml
         EXPIRES_WITHIN: 2m
     # code_snippet expiring-certificates-usage end
+- name: expiring-licenses
+  serial: true
+  serial_groups: [ install ]
+  plan:
+    - in_parallel:
+        - get: daily-trigger
+          trigger: true
+        - get: platform-automation-tasks
+          params:
+            unpack: true
+        - get: platform-automation-image
+          params:
+            unpack: true
+        - get: configuration
+        - get: state
+        - get: pa-dev-image
+    - task: prepare-tasks-with-secrets
+      <<: *prepare-tasks-with-secrets
+    # code_snippet expiring-certificates-usage start yaml
+    - task: expiring-licenses
+      image: pa-dev-image
+      file: platform-automation-tasks/tasks/expiring-licenses.yml
+      input_mapping:
+        env: configuration
+      params:
+        ENV_FILE: foundations/config/env.yml
+        EXPIRES_WITHIN: 3m
 - name: stage-configure-apply-telemetry
   serial_groups: [install]
   plan:
