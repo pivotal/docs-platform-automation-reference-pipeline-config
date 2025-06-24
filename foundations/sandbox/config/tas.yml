@@ -51,12 +51,11 @@ resource-config:
     instances: 5
   control:
     elb_names:
-      - tcp:((ssh_target_pool_name))
+      - http:((ssh_target_pool_name))
   router:
     elb_names:
       - http:((http_backend_service_name))
-      - tcp:((web_target_pool_name))
     instances: 1
   tcp_router:
     elb_names:
-      - tcp:((tcp_target_pool_name))
+      - http:((tcp_target_pool_name))
