@@ -4,30 +4,24 @@
 # Secrets are stored in Vault
 {
   "availability_zones": [
-    "us-central1-a",
-    "us-central1-b",
-    "us-central1-c"
+    "us-west1-a",
+    "us-west1-b",
+    "us-west1-c"
   ],
-  "environment_name": "reference-gcp",
-  "hosted_zone_name_servers": [
-    "ns-cloud-c1.googledomains.com.",
-    "ns-cloud-c2.googledomains.com.",
-    "ns-cloud-c3.googledomains.com.",
-    "ns-cloud-c4.googledomains.com."
-  ],
-  "management_subnet_cidr": "10.0.0.0/26",
-  "management_subnet_gateway": "10.0.0.1",
-  "management_subnet_name": "reference-gcp-management-subnet",
-  "management_subnet_reserved_ip_ranges": "10.0.0.1-10.0.0.9",
-  "network_name": "reference-gcp-network",
-  "ops_manager_bucket": "cf-norm-ci-reference-gcp-ops-manager-10348",
-  "ops_manager_public_ip": "34.56.140.144",
-  "ops_manager_tags": "reference-gcp-ops-manager",
-  "platform_vms_tag": "reference-gcp-vms",
-  "project": "cf-norm-ci",
-  "region": "us-central1",
-  "services_subnet_cidr": "10.0.8.0/24",
-  "services_subnet_gateway": "10.0.8.1",
-  "services_subnet_name": "reference-gcp-services-subnet",
-  "services_subnet_reserved_ip_ranges": "10.0.8.1-10.0.8.9"
+  "environment_name": "ppe-reference",
+  "management_subnet_cidr": "10.31.186.192/26",
+  "management_subnet_gateway": "10.31.186.193",
+  "management_subnet_name": "ltnz001-tas-be-usw1",
+  "management_subnet_reserved_ip_ranges": "10.31.186.193-10.31.186.197",
+  "network_name": "ltnz001-vpc",
+  "ops_manager_bucket": "tnz001-tas-be-ppe-reference-ops-manager-63187",
+  "ops_manager_public_ip": "34.168.72.206",
+  "ops_manager_tags": "ppe-reference-ops-manager",
+  "platform_vms_tag": "ppe-reference-vms",
+  "project": "ltnz001-tas-be",
+  "region": "us-west1",
+  "services_subnet_cidr": "10.31.186.192/26",
+  "services_subnet_gateway": "10.31.186.193",
+  "services_subnet_name": "ltnz001-tas-be-usw1",
+  "services_subnet_reserved_ip_ranges": "10.31.186.246-10.31.186.250"
 }
