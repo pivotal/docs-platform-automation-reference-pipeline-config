@@ -23,5 +23,5 @@
   "services_subnet_cidr": "10.31.186.192/26",
   "services_subnet_gateway": "10.31.186.193",
   "services_subnet_name": "ltnz001-tas-be-usw1",
-  "services_subnet_reserved_ip_ranges": "10.31.186.193-10.31.186.197"
+  "services_subnet_reserved_ip_ranges": "10.31.186.246-10.31.186.250"
 }
