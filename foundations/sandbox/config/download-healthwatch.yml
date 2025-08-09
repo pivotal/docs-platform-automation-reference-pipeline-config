@@ -3,6 +3,6 @@ pivnet-product-slug: p-healthwatch
 
 file-glob: "healthwatch-2*.pivotal"
 product-version: ((healthwatch-version))
-stemcell-iaas: google
+stemcell-iaas: vsphere
 
 pivnet-api-token: ((pivnet_token))

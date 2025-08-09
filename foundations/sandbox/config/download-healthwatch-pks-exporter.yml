@@ -1,8 +1,0 @@
----
-pivnet-product-slug: p-healthwatch
-
-file-glob: "healthwatch-pks-exporter*.pivotal"
-product-version: ((healthwatch-version))
-stemcell-iaas: google
-
-pivnet-api-token: ((pivnet_token))

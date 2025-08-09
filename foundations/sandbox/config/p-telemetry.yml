@@ -28,7 +28,7 @@ product-properties:
       - ceip_data
 network-properties:
   network:
-    name: management
+    name: deployment
   other_availability_zones:
     - name: ((availability_zones.0))
   singleton_availability_zone:
@@ -38,11 +38,14 @@ resource-config:
     max_in_flight: 1
     additional_networks: []
     additional_vm_extensions: []
-    elb_names: []
     instance_type:
       id: automatic
     instances: automatic
-    internet_connected: true
     persistent_disk:
       size_mb: automatic
     swap_as_percent_of_memory_size: automatic
+syslog-properties:
+  enabled: false
+  forward_debug_logs: false
+  tls_enabled: false
+  transport_protocol: tcp

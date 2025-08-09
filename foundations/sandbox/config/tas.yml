@@ -2,13 +2,9 @@
 product-name: cf
 network-properties:
   network:
-    name: pas
-  service_network:
-    name: services
+    name: deployment
   other_availability_zones:
     - name: ((availability_zones.0))
-    - name: ((availability_zones.1))
-    - name: ((availability_zones.2))
   singleton_availability_zone:
     name: ((availability_zones.0))
 product-properties:
@@ -16,14 +12,12 @@ product-properties:
     value: ((apps_dns_domain))
   .cloud_controller.system_domain:
     value: ((sys_dns_domain))
-  .mysql_monitor.recipient_email:
-    value: cf-infra@pivotal.io
   .uaa.service_provider_key_credentials:
     value:
       cert_pem: |
-        ((ssl_certificate))
+        ((uaa_ssl_certificate))
       private_key_pem: |
-        ((ssl_private_key))
+        ((uaa_ssl_private_key))
   .properties.credhub_internal_provider_keys:
     value:
       - key:
@@ -34,9 +28,9 @@ product-properties:
     value:
       - certificate:
           cert_pem: |
-            ((ssl_certificate))
+            ((networking_ssl_certificate))
           private_key_pem: |
-            ((ssl_private_key))
+            ((networking_ssl_private_key))
         name: Certificate
   .properties.security_acknowledgement:
     value: X
@@ -44,19 +38,16 @@ product-properties:
     value: internal
   .properties.tcp_routing:
     value: enable
-  .properties.tcp_routing.enable.reservable_ports:
-    value: 1024-1123
 resource-config:
   compute:
     instances: 5
   control:
-    elb_names:
-      - tcp:((ssh_target_pool_name))
+    nsxt:
+      lb:
+        server_pools:
+          - name: server_pool-tas-ssh
   router:
-    elb_names:
-      - http:((http_backend_service_name))
-      - tcp:((web_target_pool_name))
-    instances: 1
-  tcp_router:
-    elb_names:
-      - tcp:((tcp_target_pool_name))
+    nsxt:
+      lb:
+        server_pools:
+          - name: server_pool-tas-web

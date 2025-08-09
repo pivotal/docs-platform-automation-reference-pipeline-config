@@ -1,7 +1,7 @@
 ---
 pivnet-product-slug: ops-manager
 
-file-glob: "ops-manager-gcp*.yml"
+file-glob: "*.ova"
 product-version: ((opsman-version))
 
 pivnet-api-token: ((pivnet_token))
