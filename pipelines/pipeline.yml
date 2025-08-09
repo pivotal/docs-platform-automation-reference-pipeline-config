@@ -105,6 +105,13 @@ resources:
     private_key: ((platform-automation/main/docs-ref-pipeline-repo-key.private_key))
     uri: ((platform-automation/main.docs-ref-pipeline-repo-uri))
     branch: develop
+
+- name: credentials
+  type: git
+  source:
+    private_key: ((platform-automation/main/platform_automation_deployments_ghe_deploy_key.private_key))
+    uri: ((platform-automation/main.platform_automation_deployments_ghe_uri))
+    branch: reference-epc
 # code_snippet resources-configurations end yaml
 
 # code_snippet resources-triggers start yaml
@@ -129,10 +136,10 @@ prepare-tasks-with-secrets: &prepare-tasks-with-secrets
   input_mapping:
     tasks: platform-automation-tasks
     config: configuration
-    vars: configuration
+    vars: credentials
   params:
     CONFIG_PATHS: config/foundations/config config/foundations/((foundation))/config
-    VARS_PATHS: vars/foundations/((foundation))/vars
+    VARS_PATHS: vars/reference-gcp/((foundation))/secrets
   output_mapping:
     tasks: platform-automation-tasks
 # code_snippet prepare-tasks-with-secrets-usage end yaml
