@@ -104,7 +104,7 @@ resources:
   source:
     private_key: ((platform-automation/main/docs-ref-pipeline-repo-key.private_key))
     uri: ((platform-automation/main.docs-ref-pipeline-repo-uri))
-    branch: develop
+    branch: migrate-to-epc-1
 
 - name: credentials
   type: git
@@ -185,33 +185,44 @@ jobs:
   plan:
   - in_parallel:
     - get: platform-automation-image
+      tags: [platform-automation]
       params:
         unpack: true
     - get: one-time-trigger
+      tags: [platform-automation]
       trigger: true
     - get: platform-automation-tasks
+      tags: [platform-automation]
       params:
         unpack: true
     - get: configuration
+      tags: [platform-automation]
     - get: state
+      tags: [platform-automation]
+    - get: credentials
+      tags: [platform-automation]
   - task: prepare-tasks-with-secrets
+    tags: [platform-automation]
     <<: *prepare-tasks-with-secrets
   - task: prepare-image
+    tags: [platform-automation]
     <<: *prepare-image
   - task: download-opsman-image
+    tags: [platform-automation]
     image: platform-automation-image
     file: platform-automation-tasks/tasks/download-product.yml
     input_mapping:
       config: configuration
-      vars: configuration
+      vars: credentials
     params:
       CONFIG_FILE: foundations/((foundation))/config/download-opsman.yml
-      VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
+      VARS_FILES: vars/reference-gcp/secrets/((foundation))/versions.yml
       SOURCE: pivnet
     output_mapping:
       downloaded-product: opsman-image
   # code_snippet create-vm-usage start yaml
   - task: create-vm
+    tags: [platform-automation]
     image: platform-automation-image
     file: platform-automation-tasks/tasks/create-vm.yml
     input_mapping:
@@ -230,6 +241,7 @@ jobs:
   # code_snippet create-vm-usage end
   # code_snippet configure-authentication-usage start yaml
   - task: configure-authentication
+    tags: [platform-automation]
     image: platform-automation-image
     file: platform-automation-tasks/tasks/configure-authentication.yml
     attempts: 10
@@ -242,6 +254,7 @@ jobs:
   # code_snippet configure-authentication-usage end
   # code_snippet configure-opsman-usage start yaml
   - task: configure-opsman
+    tags: [platform-automation]
     image: platform-automation-image
     file: platform-automation-tasks/tasks/configure-opsman.yml
     input_mapping:

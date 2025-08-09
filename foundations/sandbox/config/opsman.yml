@@ -1,15 +1,20 @@
 ---
 opsman-configuration:
-  gcp:
-    boot_disk_size: 100
-    custom_cpu: 4
-    custom_memory: 16
-    gcp_service_account: ((service_account_key))
-    project: ((project))
-    public_ip: ((ops_manager_public_ip))
-    region: ((region))
+  vsphere:
+    vcenter:
+      datacenter: ((vcenter_datacenter))
+      datastore: ((vcenter_datastore))
+      url: ((vcenter_host))
+      username: ((vcenter_username))
+      password: ((vcenter_password))
+      resource_pool: ((vcenter_resource_pool))
+      insecure: ((allow_unverified_ssl))
+    disk_type: thin
+    dns: ((ops_manager_dns_servers))
+    gateway: ((management_subnet_gateway))
+    hostname: ((ops_manager_dns))
+    netmask: ((ops_manager_netmask))
+    network: ((management_subnet_name))
+    ntp: ((ops_manager_ntp))
+    private_ip: ((ops_manager_private_ip))
     ssh_public_key: ((ops_manager_ssh_public_key))
-    tags: ((ops_manager_tags))
-    vm_name: ((environment_name))-ops-manager-vm
-    vpc_subnet: ((management_subnet_name))
-    zone: ((availability_zones.0))
