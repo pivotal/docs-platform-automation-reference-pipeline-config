@@ -238,7 +238,7 @@ jobs:
       - put: state
         tags: [platform-automation]
         params:
-          file: generated-state/state-((foundation)).yml
+          file: generated-state/state-((foundation))-new.yml
   # code_snippet create-vm-usage end
   # code_snippet configure-authentication-usage start yaml
   - task: configure-authentication
@@ -326,6 +326,8 @@ jobs:
         unpack: true
     - get: configuration
       tags: [platform-automation]
+    - get: credentials
+      tags: [platform-automation]
   - task: prepare-tasks-with-secrets
     tags: [platform-automation]
     <<: *prepare-tasks-with-secrets
@@ -348,7 +350,7 @@ jobs:
     image: platform-automation-image
     file: platform-automation-tasks/tasks/export-installation.yml
     input_mapping:
-      env: configuration
+      env: credentials
     params:
       ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
       INSTALLATION_FILE: ((foundation))-installation-$timestamp.zip
@@ -379,6 +381,8 @@ jobs:
       tags: [platform-automation]
     - get: state
       tags: [platform-automation]
+    - get: credentials
+      tags: [platform-automation]
   - task: prepare-tasks-with-secrets
     tags: [platform-automation]
     <<: *prepare-tasks-with-secrets
@@ -391,10 +395,10 @@ jobs:
     file: platform-automation-tasks/tasks/download-product.yml
     input_mapping:
       config: configuration
-      vars: configuration
+      vars: credentials
     params:
       CONFIG_FILE: foundations/((foundation))/config/download-opsman.yml
-      VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
+      VARS_FILES: vars/reference-gcp/((foundation))/secrets/versions.yml
       SOURCE: pivnet
     output_mapping:
       downloaded-product: opsman-image
@@ -406,14 +410,14 @@ jobs:
     input_mapping:
       image: opsman-image
       config: configuration
-      env: configuration
-      vars: configuration
+      env: credentials
+      vars: credentials
     params:
-      ENV_FILE: foundations/config/env.yml
+      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
       OPSMAN_CONFIG_FILE: foundations/((foundation))/config/opsman.yml
-      STATE_FILE: state-((foundation)).yml
+      STATE_FILE: state-((foundation))-new.yml
       INSTALLATION_FILE: ((foundation))-installation*.zip
-      VARS_FILES: vars/foundations/((foundation))/vars/director.yml
+      VARS_FILES: vars/reference-gcp/((foundation))/secrets/opsman.yml
     ensure: *put-state
   # code_snippet upgrade-opsman-usage end
   - task: configure-director
@@ -421,32 +425,29 @@ jobs:
     image: platform-automation-image
     file: platform-automation-tasks/tasks/configure-director.yml
     input_mapping:
-      config: configuration
-      env: configuration
-      vars: configuration
+      config: credentials
+      env: credentials
+      vars: credentials
     params:
-      ENV_FILE: foundations/config/env.yml
-      DIRECTOR_CONFIG_FILE: foundations/((foundation))/config/director.yml
-      VARS_FILES: |
-        vars/foundations/((foundation))/vars/director.yml
-        vars/foundations/((foundation))/vars/tas.yml
+      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+      DIRECTOR_CONFIG_FILE: reference-gcp/((foundation))/secrets/director.yml
   - task: apply-director-changes
     tags: [platform-automation]
     image: platform-automation-image
     file: platform-automation-tasks/tasks/apply-director-changes.yml
     attempts: 3
     input_mapping:
-      env: configuration
+      env: credentials
     params:
-      ENV_FILE: foundations/config/env.yml
+      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
   - task: export-installation
     tags: [platform-automation]
     image: platform-automation-image
     file: platform-automation-tasks/tasks/export-installation.yml
     input_mapping:
-      env: configuration
+      env: credentials
     params:
-      ENV_FILE: foundations/config/env.yml
+      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
       INSTALLATION_FILE: ((foundation))-installation-$timestamp.zip
   - put: installation
     tags: [platform-automation]
@@ -919,7 +920,7 @@ jobs:
         do:
         - put: state
           params:
-            file: generated-state/state-((foundation)).yml
+            file: generated-state/state-((foundation))-new.yml
     # code_snippet delete-vm-usage end
 
 # code_snippet certificate-rotation start
