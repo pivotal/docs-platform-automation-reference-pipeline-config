@@ -10,7 +10,7 @@ opsman-configuration:
       resource_pool: ((vcenter_resource_pool))
       insecure: ((allow_unverified_ssl))
     disk_type: thin
-    vm_name: reference-opsman-epc
+    vm_name: ((vm_name))
     dns: ((ops_manager_dns_servers))
     gateway: ((management_subnet_gateway))
     hostname: ((ops_manager_dns))
