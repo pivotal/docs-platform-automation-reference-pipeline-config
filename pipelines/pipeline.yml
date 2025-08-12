@@ -94,7 +94,7 @@ resources:
     aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
     bucket: ((platform-automation/main/reference-pipeline.s3_foundation_state_bucket))
     region_name: ((platform-automation/main.s3_region_name))
-    versioned_file: state-((foundation)).yml
+    versioned_file: state-((foundation))-new.yml
     initial_content_text: '{}'
     initial_version: 'empty-start'
 
@@ -216,7 +216,7 @@ jobs:
       vars: credentials
     params:
       CONFIG_FILE: foundations/((foundation))/config/download-opsman.yml
-      VARS_FILES: vars/reference-gcp/secrets/((foundation))/versions.yml
+      VARS_FILES: vars/reference-gcp/((foundation))/secrets/versions.yml
       SOURCE: pivnet
     output_mapping:
       downloaded-product: opsman-image
@@ -228,14 +228,15 @@ jobs:
     input_mapping:
       image: opsman-image
       config: configuration
-      vars: configuration
+      vars: credentials
     params:
       OPSMAN_CONFIG_FILE: foundations/((foundation))/config/opsman.yml
       STATE_FILE: state-((foundation)).yml
-      VARS_FILES: vars/foundations/((foundation))/vars/director.yml
+      VARS_FILES: vars/reference-gcp/((foundation))/secrets/opsman.yml
     ensure: &put-state
       do:
       - put: state
+        tags: [platform-automation]
         params:
           file: generated-state/state-((foundation)).yml
   # code_snippet create-vm-usage end
@@ -246,11 +247,11 @@ jobs:
     file: platform-automation-tasks/tasks/configure-authentication.yml
     attempts: 10
     input_mapping:
-      env: configuration
-      config: configuration
+      env: credentials
+      config: credentials
     params:
-      ENV_FILE: foundations/config/env.yml
-      AUTH_CONFIG_FILE: foundations/config/auth.yml
+      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+      AUTH_CONFIG_FILE: reference-gcp/((foundation))/secrets/auth.yml
   # code_snippet configure-authentication-usage end
   # code_snippet configure-opsman-usage start yaml
   - task: configure-opsman
@@ -258,48 +259,49 @@ jobs:
     image: platform-automation-image
     file: platform-automation-tasks/tasks/configure-opsman.yml
     input_mapping:
-      env: configuration
+      env: credentials
       config: configuration
-      vars: configuration
+      vars: credentials
     params:
-      ENV_FILE: foundations/config/env.yml
+      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
       OPSMAN_CONFIG_FILE: foundations/((foundation))/config/opsman.yml
-      VARS_FILES: vars/foundations/((foundation))/vars/director.yml
+      VARS_FILES: vars/reference-gcp/((foundation))/secrets/opsman.yml
   # code_snippet configure-opsman-usage end
   # code_snippet configure-director-usage start yaml
   - task: configure-director
+    tags: [platform-automation]
     image: platform-automation-image
     file: platform-automation-tasks/tasks/configure-director.yml
     input_mapping:
-      config: configuration
-      env: configuration
-      vars: configuration
+      config: credentials
+      env: credentials
+      vars: credentials
     params:
-      ENV_FILE: foundations/config/env.yml
-      DIRECTOR_CONFIG_FILE: foundations/((foundation))/config/director.yml
-      VARS_FILES: |
-        vars/foundations/((foundation))/vars/director.yml
-        vars/foundations/((foundation))/vars/tas.yml
+      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+      DIRECTOR_CONFIG_FILE: reference-gcp/((foundation))/secrets/director.yml
   # code_snippet configure-director-usage end
   # code_snippet apply-director-changes-usage start yaml
   - task: apply-director-changes
+    tags: [platform-automation]
     image: platform-automation-image
     attempts: 3
     file: platform-automation-tasks/tasks/apply-director-changes.yml
     input_mapping:
-      env: configuration
+      env: credentials
     params:
-      ENV_FILE: foundations/config/env.yml
+      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
   # code_snippet apply-director-changes-usage end
   - task: export-installation
+    tags: [platform-automation]
     image: platform-automation-image
     file: platform-automation-tasks/tasks/export-installation.yml
     input_mapping:
-      env: configuration
+      env: credentials
     params:
       INSTALLATION_FILE: ((foundation))-installation-$timestamp.zip
-      ENV_FILE: foundations/config/env.yml
+      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
   - put: installation
+    tags: [platform-automation]
     params:
       file: installation/((foundation))-installation*.zip
 
@@ -309,40 +311,50 @@ jobs:
   plan:
   - in_parallel:
     - get: state
+      tags: [platform-automation]
       passed: [ install-opsman ]
     - get: daily-trigger
+      tags: [platform-automation]
       trigger: true
     - get: platform-automation-image
+      tags: [platform-automation]
       params:
         unpack: true
     - get: platform-automation-tasks
+      tags: [platform-automation]
       params:
         unpack: true
     - get: configuration
+      tags: [platform-automation]
   - task: prepare-tasks-with-secrets
+    tags: [platform-automation]
     <<: *prepare-tasks-with-secrets
   - task: prepare-image
+    tags: [platform-automation]
     <<: *prepare-image
   # code_snippet revert-staged-changes-usage start yaml
   - task: revert-staged-changes
+    tags: [platform-automation]
     image: platform-automation-image
     file: platform-automation-tasks/tasks/revert-staged-changes.yml
     input_mapping:
-      env: configuration
+      env: credentials
     params:
-      ENV_FILE: foundations/config/env.yml
+      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
   # code_snippet revert-staged-changes-usage end
   # code_snippet export-installation-usage start yaml
   - task: export-installation
+    tags: [platform-automation]
     image: platform-automation-image
     file: platform-automation-tasks/tasks/export-installation.yml
     input_mapping:
       env: configuration
     params:
-      ENV_FILE: foundations/config/env.yml
+      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
       INSTALLATION_FILE: ((foundation))-installation-$timestamp.zip
   # code_snippet export-installation-usage end
   - put: installation
+    tags: [platform-automation]
     params:
       file: installation/((foundation))-installation*.zip
 
@@ -352,21 +364,29 @@ jobs:
   plan:
   - in_parallel:
     - get: platform-automation-image
+      tags: [platform-automation]
       params:
         unpack: true
       trigger: true
     - get: platform-automation-tasks
+      tags: [platform-automation]
       params:
         unpack: true
     - get: installation
+      tags: [platform-automation]
       passed: [ export-installation ]
     - get: configuration
+      tags: [platform-automation]
     - get: state
+      tags: [platform-automation]
   - task: prepare-tasks-with-secrets
+    tags: [platform-automation]
     <<: *prepare-tasks-with-secrets
   - task: prepare-image
+    tags: [platform-automation]
     <<: *prepare-image
   - task: download-opsman-image
+    tags: [platform-automation]
     image: platform-automation-image
     file: platform-automation-tasks/tasks/download-product.yml
     input_mapping:
@@ -380,6 +400,7 @@ jobs:
       downloaded-product: opsman-image
   # code_snippet upgrade-opsman-usage start yaml
   - task: upgrade-opsman
+    tags: [platform-automation]
     image: platform-automation-image
     file: platform-automation-tasks/tasks/upgrade-opsman.yml
     input_mapping:
@@ -396,6 +417,7 @@ jobs:
     ensure: *put-state
   # code_snippet upgrade-opsman-usage end
   - task: configure-director
+    tags: [platform-automation]
     image: platform-automation-image
     file: platform-automation-tasks/tasks/configure-director.yml
     input_mapping:
@@ -409,6 +431,7 @@ jobs:
         vars/foundations/((foundation))/vars/director.yml
         vars/foundations/((foundation))/vars/tas.yml
   - task: apply-director-changes
+    tags: [platform-automation]
     image: platform-automation-image
     file: platform-automation-tasks/tasks/apply-director-changes.yml
     attempts: 3
@@ -417,6 +440,7 @@ jobs:
     params:
       ENV_FILE: foundations/config/env.yml
   - task: export-installation
+    tags: [platform-automation]
     image: platform-automation-image
     file: platform-automation-tasks/tasks/export-installation.yml
     input_mapping:
@@ -425,6 +449,7 @@ jobs:
       ENV_FILE: foundations/config/env.yml
       INSTALLATION_FILE: ((foundation))-installation-$timestamp.zip
   - put: installation
+    tags: [platform-automation]
     params:
       file: installation/((foundation))-installation*.zip
 
