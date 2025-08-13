@@ -3,6 +3,5 @@ pivnet-product-slug: elastic-runtime
 
 file-glob: "srt*.pivotal"
 product-version: ((tas-version))
-stemcell-iaas: vSphere
 
 pivnet-api-token: ((pivnet_token))
