@@ -94,7 +94,7 @@ resources:
     aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
     bucket: ((platform-automation/main/reference-pipeline.s3_foundation_state_bucket))
     region_name: ((platform-automation/main.s3_region_name))
-    versioned_file: state-((foundation))-new.yml
+    versioned_file: state-((foundation)).yml
     initial_content_text: '{}'
     initial_version: 'empty-start'
 
@@ -238,7 +238,7 @@ jobs:
       - put: state
         tags: [platform-automation]
         params:
-          file: generated-state/state-((foundation))-new.yml
+          file: generated-state/state-((foundation)).yml
   # code_snippet create-vm-usage end
   # code_snippet configure-authentication-usage start yaml
   - task: configure-authentication
@@ -415,7 +415,7 @@ jobs:
     params:
       ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
       OPSMAN_CONFIG_FILE: foundations/((foundation))/config/opsman.yml
-      STATE_FILE: state-((foundation))-new.yml
+      STATE_FILE: state-((foundation)).yml
       INSTALLATION_FILE: ((foundation))-installation*.zip
       VARS_FILES: vars/reference-gcp/((foundation))/secrets/opsman.yml
     ensure: *put-state
@@ -460,58 +460,69 @@ jobs:
   plan:
   - in_parallel:
     - get: platform-automation-image
+      tags: [platform-automation]
       params:
         unpack: true
       trigger: true
       passed: [ "upgrade-opsman" ]
     - get: platform-automation-tasks
+      tags: [platform-automation]
       params:
         unpack: true
     - get: configuration
+      tags: [platform-automation]
+    - get: credentials
+      tags: [platform-automation]
   - task: prepare-tasks-with-secrets
+    tags: [platform-automation]
     <<: *prepare-tasks-with-secrets
   - task: prepare-image
+    tags: [platform-automation]
     <<: *prepare-image
   - task: download-tas
+    tags: [platform-automation]
     image: platform-automation-image
     file: platform-automation-tasks/tasks/download-product.yml
     input_mapping:
       config: configuration
-      vars: configuration
+      vars: credentials
     params:
       CONFIG_FILE: foundations/((foundation))/config/download-tas.yml
-      VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
+      VARS_FILES: vars/reference-gcp/((foundation))/secrets/versions.yml
       SOURCE: pivnet
     output_mapping:
       downloaded-product: tas-product
       downloaded-stemcell: tas-stemcell
   # code_snippet upload-product-usage start yaml
   - task: upload-tas-product
+    tags: [platform-automation]
     image: platform-automation-image
     file: platform-automation-tasks/tasks/upload-product.yml
     input_mapping:
       product: tas-product
-      env: configuration
+      env: credentials
     params:
-      ENV_FILE: foundations/config/env.yml
+      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
   # code_snippet upload-product-usage end
   - task: upload-tas-stemcell
+    tags: [platform-automation]
     image: platform-automation-image
     file: platform-automation-tasks/tasks/upload-stemcell.yml
     input_mapping:
-      env: configuration
+      env: credentials
       stemcell: tas-stemcell
     params:
-      ENV_FILE: foundations/config/env.yml
+      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
   # code_snippet stage-product-usage start yaml
   - task: upload-and-stage-tas
+    tags: [platform-automation]
     image: platform-automation-image
     file: platform-automation-tasks/tasks/stage-product.yml
     input_mapping:
       product: tas-product
-      env: configuration
+      env: credentials
     params:
-      ENV_FILE: foundations/config/env.yml
+      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
   # code_snippet stage-product-usage end
 - name: download-upload-and-stage-healthwatch
   serial: true
@@ -920,7 +931,7 @@ jobs:
         do:
         - put: state
           params:
-            file: generated-state/state-((foundation))-new.yml
+            file: generated-state/state-((foundation)).yml
     # code_snippet delete-vm-usage end
 
 # code_snippet certificate-rotation start
