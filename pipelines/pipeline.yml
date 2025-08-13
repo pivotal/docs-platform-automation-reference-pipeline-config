@@ -142,6 +142,7 @@ prepare-tasks-with-secrets: &prepare-tasks-with-secrets
     VARS_PATHS: vars/reference-gcp/((foundation))/secrets
   output_mapping:
     tasks: platform-automation-tasks
+  tags: [platform-automation]
 # code_snippet prepare-tasks-with-secrets-usage end yaml
 # code_snippet prepare-image-usage start yaml
 prepare-image: &prepare-image
@@ -202,7 +203,6 @@ jobs:
     - get: credentials
       tags: [platform-automation]
   - task: prepare-tasks-with-secrets
-    tags: [platform-automation]
     <<: *prepare-tasks-with-secrets
   - task: prepare-image
     tags: [platform-automation]
@@ -329,7 +329,6 @@ jobs:
     - get: credentials
       tags: [platform-automation]
   - task: prepare-tasks-with-secrets
-    tags: [platform-automation]
     <<: *prepare-tasks-with-secrets
   - task: prepare-image
     tags: [platform-automation]
@@ -384,7 +383,6 @@ jobs:
     - get: credentials
       tags: [platform-automation]
   - task: prepare-tasks-with-secrets
-    tags: [platform-automation]
     <<: *prepare-tasks-with-secrets
   - task: prepare-image
     tags: [platform-automation]
@@ -474,7 +472,6 @@ jobs:
     - get: credentials
       tags: [platform-automation]
   - task: prepare-tasks-with-secrets
-    tags: [platform-automation]
     <<: *prepare-tasks-with-secrets
   - task: prepare-image
     tags: [platform-automation]
@@ -534,10 +531,15 @@ jobs:
             unpack: true
           trigger: true
           passed: [ "upgrade-opsman" ]
+          tags: [platform-automation]
         - get: platform-automation-tasks
           params:
             unpack: true
+          tags: [platform-automation]
         - get: configuration
+          tags: [platform-automation]
+        - get: credentials
+          tags: [platform-automation]
     - task: prepare-tasks-with-secrets
       <<: *prepare-tasks-with-secrets
     - task: download-healthwatch
@@ -553,23 +555,26 @@ jobs:
       output_mapping:
         downloaded-product: healthwatch-product
         downloaded-stemcell: healthwatch-stemcell
+      tags: [platform-automation]
     - task: upload-and-stage-healthwatch
       image: platform-automation-image
       file: platform-automation-tasks/tasks/upload-and-stage-product.yml
       input_mapping:
         product: healthwatch-product
-        env: configuration
+        env: credentials
       params:
-        ENV_FILE: foundations/config/env.yml
+        ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+      tags: [platform-automation]
     - task: upload-healthwatch-stemcell
       image: platform-automation-image
       file: platform-automation-tasks/tasks/upload-stemcell.yml
       input_mapping:
-        env: configuration
+        env: credentials
         stemcell: healthwatch-stemcell
       params:
-        ENV_FILE: foundations/config/env.yml
-
+        ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+      tags: [platform-automation]
+    
 - name: download-upload-and-stage-healthwatch-pas-exporter
   serial: true
   serial_groups: [ products ]
@@ -580,10 +585,14 @@ jobs:
             unpack: true
           trigger: true
           passed: [ "upgrade-opsman" ]
+          tags: [platform-automation]
         - get: platform-automation-tasks
           params:
             unpack: true
         - get: configuration
+          tags: [platform-automation]
+        - get: credentials
+          tags: [platform-automation]
     - task: prepare-tasks-with-secrets
       <<: *prepare-tasks-with-secrets
     - task: download-healthwatch
@@ -598,14 +607,16 @@ jobs:
         SOURCE: pivnet
       output_mapping:
         downloaded-product: healthwatch-pas-exporter
+      tags: [platform-automation]
     - task: upload-and-stage-healthwatch-pas-exporter
       image: platform-automation-image
       file: platform-automation-tasks/tasks/upload-and-stage-product.yml
       input_mapping:
         product: healthwatch-pas-exporter
-        env: configuration
+        env: credentials
       params:
-        ENV_FILE: foundations/config/env.yml
+        ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+      tags: [platform-automation]
 
 - name: configure-tas
   serial: true
@@ -618,10 +629,15 @@ jobs:
         passed:
           - download-upload-and-stage-tas
         trigger: true
+        tags: [platform-automation]
       - get: platform-automation-tasks
         params:
           unpack: true
+        tags: [platform-automation]
       - get: configuration
+        tags: [platform-automation]
+      - get: credentials
+        tags: [platform-automation]
     - task: prepare-tasks-with-secrets
       <<: *prepare-tasks-with-secrets
     - task: configure-tas
@@ -637,7 +653,8 @@ jobs:
         VARS_FILES: |
           vars/foundations/((foundation))/vars/tas.yml
           vars/foundations/((foundation))/vars/director.yml
-
+      tags: [platform-automation]
+    
 - name: configure-healthwatch
   serial: true
   serial_groups: [ install ]
@@ -649,10 +666,14 @@ jobs:
         passed:
           - download-upload-and-stage-healthwatch
         trigger: true
+        tags: [platform-automation]
       - get: platform-automation-tasks
         params:
           unpack: true
       - get: configuration
+        tags: [platform-automation]
+      - get: credentials
+        tags: [platform-automation]
     - task: prepare-tasks-with-secrets
       <<: *prepare-tasks-with-secrets
     - task: configure-healthwatch
@@ -667,6 +688,7 @@ jobs:
         ENV_FILE: foundations/config/env.yml
         VARS_FILES: |
           vars/foundations/((foundation))/vars/director.yml
+      tags: [platform-automation]
 
 - name: configure-healthwatch-pas-exporter
   serial: true
@@ -679,10 +701,15 @@ jobs:
         passed:
           - download-upload-and-stage-healthwatch-pas-exporter
         trigger: true
+        tags: [platform-automation]
       - get: platform-automation-tasks
         params:
           unpack: true
+        tags: [platform-automation]
       - get: configuration
+        tags: [platform-automation]
+      - get: credentials
+        tags: [platform-automation]
     - task: prepare-tasks-with-secrets
       <<: *prepare-tasks-with-secrets
     - task: configure-healthwatch
@@ -697,6 +724,7 @@ jobs:
         ENV_FILE: foundations/config/env.yml
         VARS_FILES: |
           vars/foundations/((foundation))/vars/director.yml
+      tags: [platform-automation]
 
 - name: apply-product-changes
   serial: true
@@ -711,14 +739,20 @@ jobs:
       - configure-healthwatch
       - configure-healthwatch-pas-exporter
       trigger: true
+      tags: [platform-automation]
     - get: platform-automation-tasks
       params:
         unpack: true
+      tags: [platform-automation]
     - get: configuration
+      tags: [platform-automation]
+    - get: credentials
+      tags: [platform-automation]
   - task: prepare-tasks-with-secrets
     <<: *prepare-tasks-with-secrets
   - task: prepare-image
     <<: *prepare-image
+    tags: [platform-automation]
   # code_snippet pre-deploy-check-usage start yaml
   - task: pre-deploy-check
     image: platform-automation-image
@@ -727,6 +761,7 @@ jobs:
       env: configuration
     params:
       ENV_FILE: foundations/config/env.yml
+    tags: [platform-automation]
   # code_snippet pre-deploy-check-usage end
   # code_snippet apply-changes-usage start yaml
   - task: apply-product-changes
@@ -737,6 +772,7 @@ jobs:
       env: configuration
     params:
       ENV_FILE: foundations/config/env.yml
+    tags: [platform-automation]
   # code_snippet apply-changes-usage end
   # code_snippet check-pending-changes-usage start yaml
   - task: check-pending-changes
@@ -747,6 +783,7 @@ jobs:
     params:
       ENV_FILE: foundations/config/env.yml
       ALLOW_PENDING_CHANGES: true
+    tags: [platform-automation]
   # code_snippet check-pending-changes-usage end
   - task: export-installation
     image: platform-automation-image
@@ -756,9 +793,11 @@ jobs:
     params:
       ENV_FILE: foundations/config/env.yml
       INSTALLATION_FILE: ((foundation))-installation-$timestamp.zip
+    tags: [platform-automation]
   - put: installation
     params:
       file: installation/((foundation))-installation*.zip
+    tags: [platform-automation]
 - name: run-tas-smoketest-errand
   serial: true
   plan:
@@ -839,14 +878,21 @@ jobs:
     - in_parallel:
       - get: daily-trigger
         trigger: true
+        tags: [platform-automation]
       - get: platform-automation-image
         params:
           unpack: true
+        tags: [platform-automation]
       - get: platform-automation-tasks
         params:
           unpack: true
+        tags: [platform-automation]
       - get: configuration
+        tags: [platform-automation]
       - get: state
+        tags: [platform-automation]
+      - get: credentials
+        tags: [platform-automation]
     - task: prepare-tasks-with-secrets
       <<: *prepare-tasks-with-secrets
     # code_snippet expiring-certificates-usage start yaml
@@ -854,10 +900,11 @@ jobs:
       image: platform-automation-image
       file: platform-automation-tasks/tasks/expiring-certificates.yml
       input_mapping:
-        env: configuration
+        env: credentials
       params:
-        ENV_FILE: foundations/config/env.yml
+        ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
         EXPIRES_WITHIN: 2m
+      tags: [platform-automation]
     # code_snippet expiring-certificates-usage end
 - name: stage-configure-apply-telemetry
   serial_groups: [install]
@@ -869,14 +916,20 @@ jobs:
         passed:
           - apply-product-changes
         trigger: true
+        tags: [platform-automation]
       - get: platform-automation-tasks
         params:
           unpack: true
+        tags: [platform-automation]
       - get: configuration
+        tags: [platform-automation]
+      - get: credentials
+        tags: [platform-automation]
     - task: prepare-tasks-with-secrets
       <<: *prepare-tasks-with-secrets
     - task: prepare-image
       <<: *prepare-image
+      tags: [platform-automation]
     # code_snippet stage-configure-apply-usage start yaml
     - task: stage-configure-apply
       image: platform-automation-image
@@ -885,13 +938,14 @@ jobs:
       params:
         CONFIG_FILE: foundations/((foundation))/config/p-telemetry.yml
         STAGE_PRODUCT_CONFIG_FILE: foundations/((foundation))/config/p-telemetry.yml
-        ENV_FILE: foundations/config/env.yml
+        ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
         VARS_FILES: |
           vars/foundations/((foundation))/vars/director.yml
       input_mapping:
-        env: configuration
+        env: credentials
         config: configuration
         vars: configuration
+      tags: [platform-automation]
     # code_snippet stage-configure-apply-usage end
 - name: delete-installation
   serial: true
