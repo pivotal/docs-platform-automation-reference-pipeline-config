@@ -3,6 +3,6 @@ pivnet-product-slug: pivotal-container-service
 
 file-glob: "pivotal-container-service*.pivotal"
 product-version: ((pks-version))
-stemcell-iaas: google
+stemcell-iaas: vsphere
 
 pivnet-api-token: ((pivnet_token))
