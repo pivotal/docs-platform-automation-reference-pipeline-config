@@ -139,7 +139,7 @@ prepare-tasks-with-secrets: &prepare-tasks-with-secrets
     vars: credentials
   params:
     CONFIG_PATHS: config/foundations/config config/foundations/((foundation))/config
-    VARS_PATHS: vars/reference-gcp/((foundation))/secrets
+    VARS_PATHS: vars/reference-epc/((foundation))/secrets
   output_mapping:
     tasks: platform-automation-tasks
   tags: [platform-automation]
@@ -216,7 +216,7 @@ jobs:
       vars: credentials
     params:
       CONFIG_FILE: foundations/((foundation))/config/download-opsman.yml
-      VARS_FILES: vars/reference-gcp/((foundation))/secrets/versions.yml
+      VARS_FILES: vars/reference-epc/((foundation))/secrets/versions.yml
       SOURCE: pivnet
     output_mapping:
       downloaded-product: opsman-image
@@ -232,7 +232,7 @@ jobs:
     params:
       OPSMAN_CONFIG_FILE: foundations/((foundation))/config/opsman.yml
       STATE_FILE: state-((foundation)).yml
-      VARS_FILES: vars/reference-gcp/((foundation))/secrets/opsman.yml
+      VARS_FILES: vars/reference-epc/((foundation))/secrets/opsman.yml
     ensure: &put-state
       do:
       - put: state
@@ -250,8 +250,8 @@ jobs:
       env: credentials
       config: credentials
     params:
-      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
-      AUTH_CONFIG_FILE: reference-gcp/((foundation))/secrets/auth.yml
+      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
+      AUTH_CONFIG_FILE: reference-epc/((foundation))/secrets/auth.yml
   # code_snippet configure-authentication-usage end
   # code_snippet configure-opsman-usage start yaml
   - task: configure-opsman
@@ -263,9 +263,9 @@ jobs:
       config: configuration
       vars: credentials
     params:
-      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
       OPSMAN_CONFIG_FILE: foundations/((foundation))/config/opsman.yml
-      VARS_FILES: vars/reference-gcp/((foundation))/secrets/opsman.yml
+      VARS_FILES: vars/reference-epc/((foundation))/secrets/opsman.yml
   # code_snippet configure-opsman-usage end
   # code_snippet configure-director-usage start yaml
   - task: configure-director
@@ -277,8 +277,8 @@ jobs:
       env: credentials
       vars: credentials
     params:
-      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
-      DIRECTOR_CONFIG_FILE: reference-gcp/((foundation))/secrets/director.yml
+      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
+      DIRECTOR_CONFIG_FILE: reference-epc/((foundation))/secrets/director.yml
   # code_snippet configure-director-usage end
   # code_snippet apply-director-changes-usage start yaml
   - task: apply-director-changes
@@ -289,7 +289,7 @@ jobs:
     input_mapping:
       env: credentials
     params:
-      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
   # code_snippet apply-director-changes-usage end
   - task: export-installation
     tags: [platform-automation]
@@ -299,7 +299,7 @@ jobs:
       env: credentials
     params:
       INSTALLATION_FILE: ((foundation))-installation-$timestamp.zip
-      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
   - put: installation
     tags: [platform-automation]
     params:
@@ -341,7 +341,7 @@ jobs:
     input_mapping:
       env: credentials
     params:
-      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
   # code_snippet revert-staged-changes-usage end
   # code_snippet export-installation-usage start yaml
   - task: export-installation
@@ -351,7 +351,7 @@ jobs:
     input_mapping:
       env: credentials
     params:
-      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
       INSTALLATION_FILE: ((foundation))-installation-$timestamp.zip
   # code_snippet export-installation-usage end
   - put: installation
@@ -396,7 +396,7 @@ jobs:
       vars: credentials
     params:
       CONFIG_FILE: foundations/((foundation))/config/download-opsman.yml
-      VARS_FILES: vars/reference-gcp/((foundation))/secrets/versions.yml
+      VARS_FILES: vars/reference-epc/((foundation))/secrets/versions.yml
       SOURCE: pivnet
     output_mapping:
       downloaded-product: opsman-image
@@ -411,11 +411,11 @@ jobs:
       env: credentials
       vars: credentials
     params:
-      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
       OPSMAN_CONFIG_FILE: foundations/((foundation))/config/opsman.yml
       STATE_FILE: state-((foundation)).yml
       INSTALLATION_FILE: ((foundation))-installation*.zip
-      VARS_FILES: vars/reference-gcp/((foundation))/secrets/opsman.yml
+      VARS_FILES: vars/reference-epc/((foundation))/secrets/opsman.yml
     ensure: *put-state
   # code_snippet upgrade-opsman-usage end
   - task: configure-director
@@ -427,8 +427,8 @@ jobs:
       env: credentials
       vars: credentials
     params:
-      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
-      DIRECTOR_CONFIG_FILE: reference-gcp/((foundation))/secrets/director.yml
+      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
+      DIRECTOR_CONFIG_FILE: reference-epc/((foundation))/secrets/director.yml
   - task: apply-director-changes
     tags: [platform-automation]
     image: platform-automation-image
@@ -437,7 +437,7 @@ jobs:
     input_mapping:
       env: credentials
     params:
-      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
   - task: export-installation
     tags: [platform-automation]
     image: platform-automation-image
@@ -445,7 +445,7 @@ jobs:
     input_mapping:
       env: credentials
     params:
-      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
       INSTALLATION_FILE: ((foundation))-installation-$timestamp.zip
   - put: installation
     tags: [platform-automation]
@@ -485,7 +485,7 @@ jobs:
       vars: credentials
     params:
       CONFIG_FILE: foundations/((foundation))/config/download-tas.yml
-      VARS_FILES: vars/reference-gcp/((foundation))/secrets/versions.yml
+      VARS_FILES: vars/reference-epc/((foundation))/secrets/versions.yml
       SOURCE: pivnet
     output_mapping:
       downloaded-product: tas-product
@@ -499,7 +499,7 @@ jobs:
       product: tas-product
       env: credentials
     params:
-      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
   # code_snippet upload-product-usage end
   - task: upload-tas-stemcell
     tags: [platform-automation]
@@ -509,7 +509,7 @@ jobs:
       env: credentials
       stemcell: tas-stemcell
     params:
-      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
   # code_snippet stage-product-usage start yaml
   - task: upload-and-stage-tas
     tags: [platform-automation]
@@ -519,7 +519,7 @@ jobs:
       product: tas-product
       env: credentials
     params:
-      ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
   # code_snippet stage-product-usage end
 - name: download-upload-and-stage-healthwatch
   serial: true
@@ -563,7 +563,7 @@ jobs:
         product: healthwatch-product
         env: credentials
       params:
-        ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
       tags: [platform-automation]
     - task: upload-healthwatch-stemcell
       image: platform-automation-image
@@ -572,7 +572,7 @@ jobs:
         env: credentials
         stemcell: healthwatch-stemcell
       params:
-        ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
       tags: [platform-automation]
     
 - name: download-upload-and-stage-healthwatch-pas-exporter
@@ -615,7 +615,7 @@ jobs:
         product: healthwatch-pas-exporter
         env: credentials
       params:
-        ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
       tags: [platform-automation]
 
 - name: configure-tas
@@ -902,7 +902,7 @@ jobs:
       input_mapping:
         env: credentials
       params:
-        ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
         EXPIRES_WITHIN: 2m
       tags: [platform-automation]
     # code_snippet expiring-certificates-usage end
@@ -938,7 +938,7 @@ jobs:
       params:
         CONFIG_FILE: foundations/((foundation))/config/p-telemetry.yml
         STAGE_PRODUCT_CONFIG_FILE: foundations/((foundation))/config/p-telemetry.yml
-        ENV_FILE: reference-gcp/((foundation))/secrets/env.yml
+        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
         VARS_FILES: |
           vars/foundations/((foundation))/vars/director.yml
       input_mapping:
