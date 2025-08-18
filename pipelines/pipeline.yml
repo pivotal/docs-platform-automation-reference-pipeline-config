@@ -645,11 +645,11 @@ jobs:
       file: platform-automation-tasks/tasks/configure-product.yml
       input_mapping:
         config: configuration
-        env: configuration
+        env: credentials
         vars: configuration
       params:
         CONFIG_FILE: foundations/((foundation))/config/tas.yml
-        ENV_FILE: foundations/config/env.yml
+        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
         VARS_FILES: |
           vars/foundations/((foundation))/vars/tas.yml
           vars/foundations/((foundation))/vars/director.yml
@@ -681,11 +681,11 @@ jobs:
       file: platform-automation-tasks/tasks/configure-product.yml
       input_mapping:
         config: configuration
-        env: configuration
+        env: credentials
         vars: configuration
       params:
         CONFIG_FILE: foundations/((foundation))/config/healthwatch.yml
-        ENV_FILE: foundations/config/env.yml
+        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
         VARS_FILES: |
           vars/foundations/((foundation))/vars/director.yml
       tags: [platform-automation]
@@ -717,11 +717,11 @@ jobs:
       file: platform-automation-tasks/tasks/configure-product.yml
       input_mapping:
         config: configuration
-        env: configuration
+        env: credentials
         vars: configuration
       params:
         CONFIG_FILE: foundations/((foundation))/config/healthwatch-pas-exporter.yml
-        ENV_FILE: foundations/config/env.yml
+        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
         VARS_FILES: |
           vars/foundations/((foundation))/vars/director.yml
       tags: [platform-automation]
@@ -758,9 +758,9 @@ jobs:
     image: platform-automation-image
     file: platform-automation-tasks/tasks/pre-deploy-check.yml
     input_mapping:
-      env: configuration
+      env: credentials
     params:
-      ENV_FILE: foundations/config/env.yml
+      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
     tags: [platform-automation]
   # code_snippet pre-deploy-check-usage end
   # code_snippet apply-changes-usage start yaml
@@ -769,9 +769,9 @@ jobs:
     image: platform-automation-image
     file: platform-automation-tasks/tasks/apply-changes.yml
     input_mapping:
-      env: configuration
+      env: credentials
     params:
-      ENV_FILE: foundations/config/env.yml
+      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
     tags: [platform-automation]
   # code_snippet apply-changes-usage end
   # code_snippet check-pending-changes-usage start yaml
@@ -779,9 +779,9 @@ jobs:
     image: platform-automation-image
     file: platform-automation-tasks/tasks/check-pending-changes.yml
     input_mapping:
-      env: configuration
+      env: credentials
     params:
-      ENV_FILE: foundations/config/env.yml
+      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
       ALLOW_PENDING_CHANGES: true
     tags: [platform-automation]
   # code_snippet check-pending-changes-usage end
@@ -789,9 +789,9 @@ jobs:
     image: platform-automation-image
     file: platform-automation-tasks/tasks/export-installation.yml
     input_mapping:
-      env: configuration
+      env: credentials
     params:
-      ENV_FILE: foundations/config/env.yml
+      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
       INSTALLATION_FILE: ((foundation))-installation-$timestamp.zip
     tags: [platform-automation]
   - put: installation
@@ -809,25 +809,33 @@ jobs:
       - configure-tas
       - configure-healthwatch
       trigger: true
+      tags: [platform-automation]
     - get: platform-automation-tasks
       params:
         unpack: true
+      tags: [platform-automation]
     - get: configuration
+      tags: [platform-automation]
+    - get: credentials
+      tags: [platform-automation]
   - task: prepare-tasks-with-secrets
     <<: *prepare-tasks-with-secrets
+    tags: [platform-automation]
   - task: prepare-image
     <<: *prepare-image
+    tags: [platform-automation]
   # code_snippet run-bosh-errand-usage start yaml
   - task: run-bosh-errand
     image: platform-automation-image
     file: platform-automation-tasks/tasks/run-bosh-errand.yml
     input_mapping:
-      env: configuration
+      env: credentials
     params:
       PRODUCT_NAME: cf
       ERRAND_NAME: smoke_tests
-      ENV_FILE: foundations/config/env.yml
+      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
       OPSMAN_SSH_PRIVATE_KEY: ((platform-automation/main/reference-pipeline.ops_manager_ssh_private_key))
+    tags: [platform-automation]
   # code_snippet run-bosh-errand-usage end
 - name: collect-telemetry
   serial: true
@@ -837,30 +845,39 @@ jobs:
     - get: telemetry-collector-binary
       params:
         unpack: true
+      tags: [platform-automation]
     - get: platform-automation-image
       params:
         unpack: true
       passed:
       - apply-product-changes
       trigger: true
+      tags: [platform-automation]
     - get: platform-automation-tasks
       params:
         unpack: true
+      tags: [platform-automation]
     - get: configuration
+      tags: [platform-automation]
+    - get: credentials
+      tags: [platform-automation]
   - task: prepare-tasks-with-secrets
     <<: *prepare-tasks-with-secrets
+    tags: [platform-automation]
   - task: prepare-image
     <<: *prepare-image
+    tags: [platform-automation]
   # code_snippet collect-telemetry-usage start yaml
   - task: collect-telemetry-data
     image: platform-automation-image
     file: platform-automation-tasks/tasks/collect-telemetry.yml
     input_mapping:
-      env: configuration
+      env: credentials
       config: configuration
     params:
       CONFIG_FILE: foundations/((foundation))/config/telemetry.yml
-      ENV_FILE: foundations/config/env.yml
+      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
+    tags: [platform-automation]
   # code_snippet collect-telemetry-usage end
   # code_snippet send-telemetry-usage start yaml
   - task: send-telemetry-data
@@ -870,6 +887,7 @@ jobs:
     params:
       API_KEY: no-op-test-key
       DATA_FILE_PATH: collected-telemetry-data/FoundationDetails*.tar
+    tags: [platform-automation]
 # code_snippet send-telemetry-usage end
 - name: expiring-certificates
   serial: true
@@ -955,21 +973,29 @@ jobs:
       - get: platform-automation-image
         params:
           unpack: true
+        tags: [platform-automation]
       - get: platform-automation-tasks
         params:
           unpack: true
+        tags: [platform-automation]
       - get: configuration
+        tags: [platform-automation]
       - get: state
+        tags: [platform-automation]
+      - get: credentials
+        tags: [platform-automation]
     - task: prepare-tasks-with-secrets
       <<: *prepare-tasks-with-secrets
+      tags: [platform-automation]
     # code_snippet delete-installation-usage start yaml
     - task: delete-installation
       image: platform-automation-image
       file: platform-automation-tasks/tasks/delete-installation.yml
       input_mapping:
-        env: configuration
+        env: credentials
       params:
-        ENV_FILE: foundations/config/env.yml
+        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
+      tags: [platform-automation]
       # code_snippet delete-installation-usage end yaml
     # code_snippet delete-vm-usage start yaml
     - task: delete-vm
@@ -981,11 +1007,13 @@ jobs:
         OPSMAN_CONFIG_FILE: foundations/((foundation))/config/opsman.yml
         STATE_FILE: state-((foundation)).yml
         VARS_FILES: config/foundations/((foundation))/vars/director.yml
+      tags: [platform-automation]
       ensure:
         do:
         - put: state
           params:
             file: generated-state/state-((foundation)).yml
+          tags: [platform-automation]
     # code_snippet delete-vm-usage end
 
 # code_snippet certificate-rotation start
@@ -995,20 +1023,27 @@ jobs:
         - get: platform-automation-image
           params:
             unpack: true
+          tags: [platform-automation]
         - get: platform-automation-tasks
           params:
             unpack: true
+          tags: [platform-automation]
         - get: configuration
+          tags: [platform-automation]
+        - get: credentials
+          tags: [platform-automation]
     - task: prepare-tasks-with-secrets
       <<: *prepare-tasks-with-secrets
+      tags: [platform-automation]
     # code_snippet configure-new-certificate-authority-usage start yaml
     - task: create-root-ca
       image: platform-automation-image
       file: platform-automation-tasks/tasks/configure-new-certificate-authority.yml
       input_mapping:
-        env: configuration
+        env: credentials
       params:
-        ENV_FILE: foundations/config/env.yml
+        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
+      tags: [platform-automation]
     # code_snippet configure-new-certificate-authority-usage end
 
 - name: apply-new-ca
@@ -1020,28 +1055,36 @@ jobs:
             unpack: true
           passed:
             - create-root-ca
+          tags: [platform-automation]
         - get: platform-automation-tasks
           params:
             unpack: true
+          tags: [platform-automation]
         - get: configuration
+          tags: [platform-automation]
+        - get: credentials
+          tags: [platform-automation]
     - task: prepare-tasks-with-secrets
       <<: *prepare-tasks-with-secrets
+      tags: [platform-automation]
     - task: pre-deploy-check
       image: platform-automation-image
       file: platform-automation-tasks/tasks/pre-deploy-check.yml
       input_mapping:
-        env: configuration
+        env: credentials
       params:
-        ENV_FILE: foundations/config/env.yml
+        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
+      tags: [platform-automation]
     - task: apply-product-changes
       attempts: 3
       image: platform-automation-image
       file: platform-automation-tasks/tasks/apply-changes.yml
       input_mapping:
-        env: configuration
+        env: credentials
       params:
-        ENV_FILE: foundations/config/env.yml
+        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
         SELECTIVE_DEPLOY_PRODUCTS: "cf,p-bosh,p-healthwatch2,p-healthwatch2-pas-exporter,pivotal-telemetry-om"
+      tags: [platform-automation]
 
 - name: activate-new-ca-and-regenerate-certs
   serial: true
@@ -1052,29 +1095,37 @@ jobs:
             unpack: true
           passed:
             - apply-new-ca
+          tags: [platform-automation]
         - get: platform-automation-tasks
           params:
             unpack: true
+          tags: [platform-automation]
         - get: configuration
+          tags: [platform-automation]
+        - get: credentials
+          tags: [platform-automation]
     - task: prepare-tasks-with-secrets
       <<: *prepare-tasks-with-secrets
+      tags: [platform-automation]
     # code_snippet activate-certificate-authority-usage start yaml
     - task: activate-new-ca
       image: platform-automation-image
       file: platform-automation-tasks/tasks/activate-certificate-authority.yml
       input_mapping:
-        env: configuration
+        env: credentials
       params:
-        ENV_FILE: foundations/config/env.yml
+        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
+      tags: [platform-automation]
     # code_snippet activate-certificate-authority-usage end
     # code_snippet regenerate-certificates-usage start yaml
     - task: regenerate-certificates
       image: platform-automation-image
       file: platform-automation-tasks/tasks/regenerate-certificates.yml
       input_mapping:
-        env: configuration
+        env: credentials
       params:
-        ENV_FILE: foundations/config/env.yml
+        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
+      tags: [platform-automation]
     # code_snippet regenerate-certificates-usage end
 
 - name: apply-certificates
@@ -1086,69 +1137,86 @@ jobs:
             unpack: true
           passed:
             - activate-new-ca-and-regenerate-certs
+          tags: [platform-automation]
         - get: platform-automation-tasks
           params:
             unpack: true
+          tags: [platform-automation]
         - get: configuration
+          tags: [platform-automation]
+        - get: credentials
+          tags: [platform-automation]
     - task: prepare-tasks-with-secrets
       <<: *prepare-tasks-with-secrets
+      tags: [platform-automation]
     - task: pre-deploy-check
       image: platform-automation-image
       file: platform-automation-tasks/tasks/pre-deploy-check.yml
       input_mapping:
-        env: configuration
+        env: credentials
       params:
-        ENV_FILE: foundations/config/env.yml
+        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
+      tags: [platform-automation]
     - task: apply-product-changes
       attempts: 3
       image: platform-automation-image
       file: platform-automation-tasks/tasks/apply-changes.yml
       input_mapping:
-        env: configuration
+        env: credentials
       params:
-        ENV_FILE: foundations/config/env.yml
+        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
         SELECTIVE_DEPLOY_PRODUCTS: "cf,p-bosh,p-healthwatch2,p-healthwatch2-pas-exporter,pivotal-telemetry-om"
+      tags: [platform-automation]
 
 - name: cleanup-ca-certificate-authorities
   serial: true
   plan:
     - in_parallel:
         - get: platform-automation-image
+          tags: [platform-automation]
           params:
             unpack: true
           passed:
             - apply-certificates
         - get: platform-automation-tasks
+          tags: [platform-automation]
           params:
             unpack: true
         - get: configuration
+          tags: [platform-automation]
+        - get: credentials
+          tags: [platform-automation]
     - task: prepare-tasks-with-secrets
       <<: *prepare-tasks-with-secrets
+      tags: [platform-automation]
     # code_snippet delete-certificate-authority-usage start yaml
     - task: delete-certificate-authority
       image: platform-automation-image
       file: platform-automation-tasks/tasks/delete-certificate-authority.yml
       input_mapping:
-        env: configuration
+        env: credentials
       params:
-        ENV_FILE: foundations/config/env.yml
+        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
+      tags: [platform-automation]
     # code_snippet delete-certificate-authority-usage end
     - task: pre-deploy-check
       image: platform-automation-image
       file: platform-automation-tasks/tasks/pre-deploy-check.yml
       input_mapping:
-        env: configuration
+        env: credentials
       params:
-        ENV_FILE: foundations/config/env.yml
+        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
+      tags: [platform-automation]
     - task: apply-product-changes
       attempts: 3
       image: platform-automation-image
       file: platform-automation-tasks/tasks/apply-changes.yml
       input_mapping:
-        env: configuration
+        env: credentials
       params:
-        ENV_FILE: foundations/config/env.yml
+        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
         SELECTIVE_DEPLOY_PRODUCTS: "cf,p-bosh,p-healthwatch2,p-healthwatch2-pas-exporter,pivotal-telemetry-om"
+      tags: [platform-automation]
 # code_snippet certificate-rotation end
 # code_snippet reference-jobs end yaml
 # code_snippet reference-pipeline end
