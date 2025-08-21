@@ -2,15 +2,14 @@
 product-name: p-healthwatch2-pas-exporter
 network-properties:
   network:
-    name: pas
-  service_network:
-    name: services
-  other_availability_zones:
-  - name: ((availability_zones.0))
-  - name: ((availability_zones.1))
-  - name: ((availability_zones.2))
+    name: deployment
+  other_availability_zones: []
   singleton_availability_zone:
-    name: ((availability_zones.0))
+    name: zone1
 product-properties:
-  .bosh-health-exporter.health_check_az:
-    value: ((availability_zones.0))
+  .properties.enable_basic_auth:
+    selected_option: enabled
+    value: enabled
+  .properties.grafana_route:
+    selected_option: tas
+    value: tas
