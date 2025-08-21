@@ -682,12 +682,9 @@ jobs:
       input_mapping:
         config: configuration
         env: credentials
-        vars: configuration
       params:
         CONFIG_FILE: foundations/((foundation))/config/healthwatch.yml
         ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-        VARS_FILES: |
-          vars/foundations/((foundation))/vars/director.yml
       tags: [platform-automation]
 
 - name: configure-healthwatch-pas-exporter
@@ -718,12 +715,9 @@ jobs:
       input_mapping:
         config: configuration
         env: credentials
-        vars: configuration
       params:
         CONFIG_FILE: foundations/((foundation))/config/healthwatch-pas-exporter.yml
         ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-        VARS_FILES: |
-          vars/foundations/((foundation))/vars/director.yml
       tags: [platform-automation]
 
 - name: apply-product-changes
@@ -1001,13 +995,13 @@ jobs:
     - task: delete-vm
       image: platform-automation-image
       file: platform-automation-tasks/tasks/delete-vm.yml
+      tags: [platform-automation]
       input_mapping:
         config: configuration
+        vars: credentials
       params:
         OPSMAN_CONFIG_FILE: foundations/((foundation))/config/opsman.yml
         STATE_FILE: state-((foundation)).yml
-        VARS_FILES: config/foundations/((foundation))/vars/director.yml
-      tags: [platform-automation]
       ensure:
         do:
         - put: state
