@@ -3,9 +3,10 @@ product-name: p-healthwatch2-pas-exporter
 network-properties:
   network:
     name: deployment
-  other_availability_zones: []
+  other_availability_zones:
+    - name: ((availability_zones.0))
   singleton_availability_zone:
-    name: zone1
+    name: ((availability_zones.0))
 product-properties:
   .properties.enable_basic_auth:
     selected_option: enabled
