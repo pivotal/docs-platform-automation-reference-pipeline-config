@@ -547,10 +547,10 @@ jobs:
       file: platform-automation-tasks/tasks/download-product.yml
       input_mapping:
         config: configuration
-        vars: configuration
+        vars: credentials
       params:
         CONFIG_FILE: foundations/((foundation))/config/download-healthwatch.yml
-        VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
+        VARS_FILES: vars/reference-epc/((foundation))/secrets/versions.yml
         SOURCE: pivnet
       output_mapping:
         downloaded-product: healthwatch-product
@@ -646,13 +646,11 @@ jobs:
       input_mapping:
         config: configuration
         env: credentials
-        vars: configuration
+        vars: credentials
       params:
         CONFIG_FILE: foundations/((foundation))/config/tas.yml
         ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-        VARS_FILES: |
-          vars/foundations/((foundation))/vars/tas.yml
-          vars/foundations/((foundation))/vars/director.yml
+        VARS_FILES: vars/reference-epc/((foundation))/secrets/tas.yml
       tags: [platform-automation]
     
 - name: configure-healthwatch
@@ -682,9 +680,11 @@ jobs:
       input_mapping:
         config: configuration
         env: credentials
+        vars: credentials
       params:
         CONFIG_FILE: foundations/((foundation))/config/healthwatch.yml
         ENV_FILE: reference-epc/((foundation))/secrets/env.yml
+        VARS_FILES: vars/reference-epc/((foundation))/secrets/tas.yml
       tags: [platform-automation]
 
 - name: configure-healthwatch-pas-exporter
@@ -715,9 +715,12 @@ jobs:
       input_mapping:
         config: configuration
         env: credentials
+        vars: credentials
       params:
         CONFIG_FILE: foundations/((foundation))/config/healthwatch-pas-exporter.yml
         ENV_FILE: reference-epc/((foundation))/secrets/env.yml
+        VARS_FILES: |
+          VARS_FILES: vars/reference-epc/((foundation))/secrets/tas.yml
       tags: [platform-automation]
 
 - name: apply-product-changes
@@ -728,10 +731,6 @@ jobs:
     - get: platform-automation-image
       params:
         unpack: true
-      passed:
-      - configure-tas
-      - configure-healthwatch
-      - configure-healthwatch-pas-exporter
       trigger: true
       tags: [platform-automation]
     - get: platform-automation-tasks
