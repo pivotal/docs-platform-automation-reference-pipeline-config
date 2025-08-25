@@ -38,7 +38,6 @@ resource-config:
     max_in_flight: 1
     additional_networks: []
     additional_vm_extensions: []
-    elb_names: []
     instance_type:
       id: automatic
     instances: automatic
