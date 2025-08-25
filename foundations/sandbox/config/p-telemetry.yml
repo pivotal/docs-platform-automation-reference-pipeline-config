@@ -41,7 +41,6 @@ resource-config:
     instance_type:
       id: automatic
     instances: automatic
-    internet_connected: true
     persistent_disk:
       size_mb: automatic
     swap_as_percent_of_memory_size: automatic
