@@ -44,3 +44,8 @@ resource-config:
     persistent_disk:
       size_mb: automatic
     swap_as_percent_of_memory_size: automatic
+syslog-properties:
+  enabled: false
+  forward_debug_logs: false
+  tls_enabled: false
+  transport_protocol: tcp
