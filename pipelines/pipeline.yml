@@ -600,10 +600,10 @@ jobs:
       file: platform-automation-tasks/tasks/download-product.yml
       input_mapping:
         config: configuration
-        vars: configuration
+        vars: credentials
       params:
         CONFIG_FILE: foundations/((foundation))/config/download-healthwatch-pas-exporter.yml
-        VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
+        VARS_FILES: vars/reference-epc/((foundation))/secrets/versions.yml
         SOURCE: pivnet
       output_mapping:
         downloaded-product: healthwatch-pas-exporter
@@ -719,8 +719,7 @@ jobs:
       params:
         CONFIG_FILE: foundations/((foundation))/config/healthwatch-pas-exporter.yml
         ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-        VARS_FILES: |
-          VARS_FILES: vars/reference-epc/((foundation))/secrets/tas.yml
+        VARS_FILES: vars/reference-epc/((foundation))/secrets/tas.yml
       tags: [platform-automation]
 
 - name: apply-product-changes
@@ -731,6 +730,10 @@ jobs:
     - get: platform-automation-image
       params:
         unpack: true
+      passed:
+      - configure-tas
+      - configure-healthwatch
+      - configure-healthwatch-pas-exporter
       trigger: true
       tags: [platform-automation]
     - get: platform-automation-tasks
@@ -827,7 +830,6 @@ jobs:
       PRODUCT_NAME: cf
       ERRAND_NAME: smoke_tests
       ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-      OPSMAN_SSH_PRIVATE_KEY: ((platform-automation/main/reference-pipeline.ops_manager_ssh_private_key))
     tags: [platform-automation]
   # code_snippet run-bosh-errand-usage end
 - name: collect-telemetry

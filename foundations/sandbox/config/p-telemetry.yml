@@ -28,7 +28,7 @@ product-properties:
       - ceip_data
 network-properties:
   network:
-    name: management
+    name: deployment
   other_availability_zones:
     - name: ((availability_zones.0))
   singleton_availability_zone:
