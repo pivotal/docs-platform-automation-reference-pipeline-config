@@ -160,10 +160,13 @@ jobs:
       - get: platform-automation-image
         params:
           unpack: true
+        tags: [platform-automation]
       - get: platform-automation-tasks
         params:
           unpack: true
+        tags: [platform-automation]
       - get: configuration
+        tags: [platform-automation]
     # code_snippet test-interpolate-usage start yaml
     - task: test-interpolate
       image: platform-automation-image
@@ -173,11 +176,13 @@ jobs:
         SKIP_MISSING: true
       input_mapping:
         config: configuration
+      tags: [platform-automation]
     # code_snippet test-interpolate-usage end
     # code_snippet test-usage start yaml
     - task: test
       file: platform-automation-tasks/tasks/test.yml
       image: platform-automation-image
+      tags: [platform-automation]
   # code_snippet test-usage end
 
 - name: install-opsman
@@ -953,11 +958,11 @@ jobs:
         STAGE_PRODUCT_CONFIG_FILE: foundations/((foundation))/config/p-telemetry.yml
         ENV_FILE: reference-epc/((foundation))/secrets/env.yml
         VARS_FILES: |
-          vars/foundations/((foundation))/vars/director.yml
+          vars/reference-epc/((foundation))/secrets/tas.yml
       input_mapping:
         env: credentials
         config: configuration
-        vars: configuration
+        vars: credentials
       tags: [platform-automation]
     # code_snippet stage-configure-apply-usage end
 - name: delete-installation
