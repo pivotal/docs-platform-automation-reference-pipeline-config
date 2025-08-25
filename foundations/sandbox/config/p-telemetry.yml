@@ -8,6 +8,8 @@ product-properties:
     value: false
   .properties.collector_cron_schedule:
     value: random
+  .properties.endpoint:
+    value: https://telemetry.pivotal.io
   .properties.env_type:
     value: sandbox
   .properties.eula_acceptance:
