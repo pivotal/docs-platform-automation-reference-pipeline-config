@@ -1,61 +1,145 @@
----
 az-configuration:
   - name: ((availability_zones.0))
+    iaas_configuration_name: default
+    clusters:
+      - cluster: ((cluster_name))
+        drs_rule: MUST
+        host_group: null
+        resource_pool: ((resource_pools.1))
   - name: ((availability_zones.1))
-  - name: ((availability_zones.2))
+    iaas_configuration_name: default
+    clusters:
+      - cluster: ((cluster_name))
+        drs_rule: MUST
+        host_group: null
+        resource_pool: ((resource_pools.1))
+iaas-configurations:
+  - additional_cloud_properties: {}
+    bosh_disk_path: ((bosh_disk_path))
+    bosh_template_folder: ((bosh_template_folder))
+    bosh_vm_folder: ((bosh_vm_folder))
+    datacenter: ((datacenter))
+    disk_type: thin
+    enable_human_readable_name: true
+    ensure_no_ip_conflicts: true
+    ephemeral_datastore_clusters_string: ""
+    ephemeral_datastores_string: ((datastore))
+    name: default
+    nsx_address: ((nsx_address))
+    nsx_ca_certificate: ((nsx_ca_certificate))
+    nsx_mode: nsx-t
+    nsx_networking_enabled: true
+    nsx_password: ((nsx_password))
+    nsx_t_auth_type: local_user
+    nsx_t_tag_nsx_vm_objects: false
+    nsx_t_use_policy_api: true
+    nsx_t_use_policy_api_migration_mode: false
+    nsx_username: ((nsx_username))
+    persistent_datastore_clusters_string: ""
+    persistent_datastores_string: ((datastore))
+    ssl_verification_enabled: false
+    vcenter_host: ((vcenter_host))
+    vcenter_password: ((vcenter_password))
+    vcenter_username: ((vcenter_username))
 network-assignment:
   network:
-    name: management
+    name: deployment
+  other_availability_zones: []
   singleton_availability_zone:
     name: ((availability_zones.0))
 networks-configuration:
-  icmp_checks_enabled: false
+  icmp_checks_enabled: true
   networks:
-    - name: management
+    - name: deployment
       subnets:
-        - availability_zone_names:
+        - iaas_identifier: ((deployment_network.iaas_identifier))
+          cidr: ((deployment_network.cidr))
+          dns: ((deployment_network.dns))
+          gateway: ((deployment_network.gateway))
+          reserved_ip_ranges: ((deployment_network.reserved_ip_ranges))
+          availability_zone_names:
             - ((availability_zones.0))
-            - ((availability_zones.1))
-            - ((availability_zones.2))
-          cidr: ((management_subnet_cidr))
-          dns: 169.254.169.254
-          gateway: ((management_subnet_gateway))
-          iaas_identifier: ((network_name))/((management_subnet_name))/((region))
-          reserved_ip_ranges: ((management_subnet_reserved_ip_ranges))
-    - name: pas
+    - name: infra
       subnets:
-        - availability_zone_names:
-            - ((availability_zones.0))
+        - iaas_identifier: ((infra_network.iaas_identifier))
+          cidr: ((infra_network.cidr))
+          dns: ((infra_network.dns))
+          gateway: ((infra_network.gateway))
+          reserved_ip_ranges: ((infra_network.reserved_ip_ranges))
+          availability_zone_names:
             - ((availability_zones.1))
-            - ((availability_zones.2))
-          cidr: ((pas_subnet_cidr))
-          dns: 169.254.169.254
-          gateway: ((pas_subnet_gateway))
-          iaas_identifier: ((network_name))/((pas_subnet_name))/((region))
-          reserved_ip_ranges: ((pas_subnet_reserved_ip_ranges))
-    - name: services
-      subnets:
-        - availability_zone_names:
-            - ((availability_zones.0))
-            - ((availability_zones.1))
-            - ((availability_zones.2))
-          cidr: ((services_subnet_cidr))
-          dns: 169.254.169.254
-          gateway: ((services_subnet_gateway))
-          iaas_identifier: ((network_name))/((services_subnet_name))/((region))
-          reserved_ip_ranges: ((services_subnet_reserved_ip_ranges))
 properties-configuration:
-  iaas_configuration:
-    project: ((project))
-    auth_json: ((ops_manager_service_account_key))
-    default_deployment_tag: ((platform_vms_tag))
   director_configuration:
-    ntp_servers_string: 169.254.169.254
+    additional_ssh_users: []
+    automatic_certificate_rotation_enabled: false
+    blobstore_type: local
+    bosh_director_recreate_on_next_deploy: false
+    bosh_log_level: none
+    bosh_recreate_on_next_deploy: false
+    bosh_recreate_persistent_disks_on_next_deploy: false
+    ca_certificate_duration: 1460
+    database_type: internal
+    director_metrics_server_enabled: true
+    director_worker_count: 5
+    duration_overrides_enabled: false
+    encryption:
+      keys: []
+      providers: []
+    hm_emailer_options:
+      enabled: false
+    hm_pager_duty_options:
+      enabled: false
+    identification_tags: {}
+    job_configuration_on_tmpfs: false
+    keep_unreachable_vms: false
+    leaf_certificate_duration: 730
+    local_blobstore_options:
+      enable_signed_urls: true
+    ntp_servers_string: ((ntp_servers))
+    post_deploy_enabled: false
+    resurrector_enabled: false
+    retry_bosh_deploys: false
+    short_lived_nats_bootstrap_credentials_enabled: false
+    skip_director_drain: false
+    system_metrics_runtime_enabled: true
+  dns_configuration:
+    excluded_recursors: []
+    handlers: []
   security_configuration:
-    trusted_certificates: ((ca_certificate.certificate))
-    opsmanager_root_ca_trusted_certs: true
+    clear_default_trusted_certificates_store: false
     generate_vm_passwords: true
-# resource-configuration:
-#  compilation:
-#    instance_type:
-#      id: xlarge.disk
+    opsmanager_root_ca_trusted_certs: true
+  syslog_configuration:
+    enabled: false
+resource-configuration:
+  compilation:
+    additional_networks: []
+    additional_vm_extensions: []
+    avi:
+      pools: []
+    instance_type:
+      id: automatic
+    instances: automatic
+    nsxt:
+      lb:
+        server_pools: []
+      ns_groups: []
+    swap_as_percent_of_memory_size: automatic
+  director:
+    additional_networks: []
+    additional_vm_extensions: []
+    avi:
+      pools: []
+    instance_type:
+      id: automatic
+    instances: automatic
+    nsxt:
+      lb:
+        server_pools: []
+      ns_groups: []
+    persistent_disk:
+      name: automatic
+      size_mb: automatic
+    swap_as_percent_of_memory_size: automatic
+vmextensions-configuration: []
+vmtypes-configuration: {}

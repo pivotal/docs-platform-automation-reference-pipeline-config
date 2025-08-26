@@ -2,13 +2,11 @@
 product-name: p-healthwatch2
 network-properties:
   network:
-    name: pas
+    name: deployment
   service_network:
-    name: services
+    name: deployment
   other_availability_zones:
-  - name: ((availability_zones.0))
-  - name: ((availability_zones.1))
-  - name: ((availability_zones.2))
+    - name: ((availability_zones.0))
   singleton_availability_zone:
     name: ((availability_zones.0))
 product-properties:
