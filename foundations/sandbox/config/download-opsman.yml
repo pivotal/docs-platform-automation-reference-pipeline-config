@@ -5,3 +5,4 @@ file-glob: "*.ova"
 product-version: ((opsman-version))
 
 pivnet-api-token: ((pivnet_token))
+
