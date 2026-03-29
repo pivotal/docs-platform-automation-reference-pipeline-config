@@ -5,22 +5,15 @@
 groups:
 - jobs:
     - install-opsman
-    - expiring-certificates
     - delete-installation
     - test-platform-automation
     - export-installation
-    - upgrade-opsman
-    - download-upload-and-stage-healthwatch-pas-exporter
-    - download-upload-and-stage-healthwatch
-    - download-upload-and-stage-tas
-    - configure-healthwatch-pas-exporter
-    - configure-healthwatch
-    - configure-tas
     - apply-product-changes
-    - run-tas-smoketest-errand
-    - collect-telemetry
-    - stage-configure-apply-telemetry
     - hello-world-job
+    - download-upload-and-stage-example-product
+    - configure-example-product
+    - configure-example-product-foo
+    - configure-example-product-bar
   name: reference-pipeline
 - jobs:
     - create-root-ca
@@ -56,26 +49,17 @@ resources:
     access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
     secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
     aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
-    region_name: ((platform-automation/main.s3_region_name))
-    bucket: ((platform-automation/main.s3_pivnet_products_bucket))
-    regexp: .*tasks-(.*).zip
+    bucket: ((platform-automation/main/s3_with_role.buckets.release_candidate))
+    regexp: platform-automation-tasks-(.*).zip
+    region_name: ((platform-automation/main/s3_with_role.region_name))
 
 - name: platform-automation-image
-  type: s3-with-arn
+  type: registry-image
   source:
-    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
-    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
-    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
-    region_name: ((platform-automation/main.s3_region_name))
-    bucket: ((platform-automation/main.s3_pivnet_products_bucket))
-    regexp: .*image-(.*).tgz
-
-- name: telemetry-collector-binary
-  type: pivnet
-  source:
-    api_token: ((platform-automation/main.pivnet_token))
-    product_slug: pivotal-telemetry-collector
-# code_snippet reference-resources-s3 end yaml
+    repository: ((concourse-team/dev_image_registry.url))/internalpcfplatformautomation/platform-automation
+    tag: testing
+    username: ((concourse-team/dev_image_registry.username))
+    password: ((concourse-team/dev_image_registry.password))
 
 # code_snippet export-installation-resource-usage start yaml
 - name: installation
@@ -163,8 +147,6 @@ jobs:
   plan:
     - in_parallel:
       - get: platform-automation-image
-        params:
-          unpack: true
         tags: [reference-pipeline-worker]
       - get: platform-automation-tasks
         params:
@@ -197,8 +179,6 @@ jobs:
   - in_parallel:
     - get: platform-automation-image
       tags: [reference-pipeline-worker]
-      params:
-        unpack: true
     - get: one-time-trigger
       tags: [reference-pipeline-worker]
       trigger: true
@@ -234,7 +214,7 @@ jobs:
           - |
             curl -L -u "${USERNAME}:${PASSWORD}" \
               -o opsman-image/ops-manager.ova \
-              https://usw1.packages.broadcom.com/tas-bosh-generic-prod-local/ops-manager-dev-builds/pivotal-ops-manager-3.3.0-build.176-20260323t130112-148cba8c5c.ova
+              https://usw1.packages.broadcom.com/artifactory/tas-bosh-generic-prod-local/ops-manager-dev-builds/pivotal-ops-manager-3.3.0-build.198-20260328t192409-cbddbdb5e8.ova
   # code_snippet create-vm-usage start yaml
   - task: create-vm
     tags: [reference-pipeline-worker]
@@ -342,8 +322,6 @@ jobs:
       trigger: true
     - get: platform-automation-image
       tags: [reference-pipeline-worker]
-      params:
-        unpack: true
     - get: platform-automation-tasks
       tags: [reference-pipeline-worker]
       params:
@@ -383,281 +361,116 @@ jobs:
     params:
       file: installation/((foundation))-installation*.zip
 
-- name: upgrade-opsman
-  serial: true
-  serial_groups: [ install ]
-  plan:
-  - in_parallel:
-    - get: platform-automation-image
-      tags: [reference-pipeline-worker]
-      params:
-        unpack: true
-      trigger: true
-    - get: platform-automation-tasks
-      tags: [reference-pipeline-worker]
-      params:
-        unpack: true
-    - get: installation
-      tags: [reference-pipeline-worker]
-      passed: [ export-installation ]
-    - get: configuration
-      tags: [reference-pipeline-worker]
-    - get: state
-      tags: [reference-pipeline-worker]
-    - get: foundation-secrets
-      tags: [reference-pipeline-worker]
-  - task: prepare-tasks-with-secrets
-    <<: *prepare-tasks-with-secrets
-  - task: prepare-image
-    tags: [reference-pipeline-worker]
-    <<: *prepare-image
-  - task: download-opsman-image
-    tags: [reference-pipeline-worker]
-    image: platform-automation-image
-    config:
-      platform: linux
-      params:
-        USERNAME: ((concourse-team/dev_image_registry.username))
-        PASSWORD: ((concourse-team/dev_image_registry.password))
-      outputs:
-        - name: opsman-image
-      run:
-        path: sh
-        args:
-          - -c
-          - |
-            curl -L -u "${USERNAME}:${PASSWORD}" \
-              -o opsman-image/ops-manager.ova \
-              https://usw1.packages.broadcom.com/tas-bosh-generic-prod-local/ops-manager-dev-builds/pivotal-ops-manager-3.3.0-build.176-20260323t130112-148cba8c5c.ova
-  # code_snippet upgrade-opsman-usage start yaml
-  - task: upgrade-opsman
-    tags: [reference-pipeline-worker]
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/upgrade-opsman.yml
-    input_mapping:
-      image: opsman-image
-      config: configuration
-      env: foundation-secrets
-      vars: foundation-secrets
-    params:
-      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-      OPSMAN_CONFIG_FILE: foundations/((foundation))/config/opsman.yml
-      STATE_FILE: state-((foundation)).yml
-      INSTALLATION_FILE: ((foundation))-installation*.zip
-      VARS_FILES: vars/reference-epc/((foundation))/secrets/opsman.yml
-    ensure: *put-state
-  # code_snippet upgrade-opsman-usage end
-  - task: configure-director
-    tags: [reference-pipeline-worker]
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/configure-director.yml
-    input_mapping:
-      config: configuration
-      env: foundation-secrets
-      vars: foundation-secrets
-    params:
-      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-      DIRECTOR_CONFIG_FILE: foundations/((foundation))/config/director.yml
-      VARS_FILES: vars/reference-epc/((foundation))/secrets/director.yml
-  - task: apply-director-changes
-    tags: [reference-pipeline-worker]
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/apply-director-changes.yml
-    attempts: 3
-    input_mapping:
-      env: foundation-secrets
-    params:
-      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-  - task: export-installation
-    tags: [reference-pipeline-worker]
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/export-installation.yml
-    input_mapping:
-      env: foundation-secrets
-    params:
-      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-      INSTALLATION_FILE: ((foundation))-installation-$timestamp.zip
-  - put: installation
-    tags: [reference-pipeline-worker]
-    params:
-      file: installation/((foundation))-installation*.zip
-
-- name: download-upload-and-stage-tas
-  serial: true
-  serial_groups: [ products ]
-  plan:
-  - in_parallel:
-    - get: platform-automation-image
-      tags: [reference-pipeline-worker]
-      params:
-        unpack: true
-      trigger: true
-      passed: [ "upgrade-opsman" ]
-    - get: platform-automation-tasks
-      tags: [reference-pipeline-worker]
-      params:
-        unpack: true
-    - get: configuration
-      tags: [reference-pipeline-worker]
-    - get: foundation-secrets
-      tags: [reference-pipeline-worker]
-  - task: prepare-tasks-with-secrets
-    <<: *prepare-tasks-with-secrets
-  - task: prepare-image
-    tags: [reference-pipeline-worker]
-    <<: *prepare-image
-  - task: download-tas
-    tags: [reference-pipeline-worker]
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/download-product.yml
-    input_mapping:
-      config: configuration
-      vars: configuration
-    params:
-      CONFIG_FILE: foundations/((foundation))/config/download-tas.yml
-      VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
-      SOURCE: pivnet
-    output_mapping:
-      downloaded-product: tas-product
-      downloaded-stemcell: tas-stemcell
-  # code_snippet upload-product-usage start yaml
-  - task: upload-tas-product
-    tags: [reference-pipeline-worker]
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/upload-product.yml
-    input_mapping:
-      product: tas-product
-      env: foundation-secrets
-    params:
-      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-  # code_snippet upload-product-usage end
-  - task: upload-tas-stemcell
-    tags: [reference-pipeline-worker]
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/upload-stemcell.yml
-    input_mapping:
-      env: foundation-secrets
-      stemcell: tas-stemcell
-    params:
-      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-  # code_snippet stage-product-usage start yaml
-  - task: upload-and-stage-tas
-    tags: [reference-pipeline-worker]
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/stage-product.yml
-    input_mapping:
-      product: tas-product
-      env: foundation-secrets
-    params:
-      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-  # code_snippet stage-product-usage end
-- name: download-upload-and-stage-healthwatch
+- name: download-upload-and-stage-example-product
   serial: true
   serial_groups: [ products ]
   plan:
     - in_parallel:
-        - get: platform-automation-image
-          params:
-            unpack: true
-          trigger: true
-          passed: [ "upgrade-opsman" ]
-          tags: [reference-pipeline-worker]
-        - get: platform-automation-tasks
-          params:
-            unpack: true
-          tags: [reference-pipeline-worker]
-        - get: configuration
-          tags: [reference-pipeline-worker]
-        - get: foundation-secrets
-          tags: [reference-pipeline-worker]
+      - get: platform-automation-image
+        trigger: true
+        passed: [ install-opsman ]
+        tags: [reference-pipeline-worker]
+      - get: platform-automation-tasks
+        params:
+          unpack: true
+        tags: [reference-pipeline-worker]
+      - get: configuration
+        tags: [reference-pipeline-worker]
+      - get: foundation-secrets
+        tags: [reference-pipeline-worker]
     - task: prepare-tasks-with-secrets
       <<: *prepare-tasks-with-secrets
-    - task: download-healthwatch
+    - task: download-example-product
       image: platform-automation-image
-      file: platform-automation-tasks/tasks/download-product.yml
-      input_mapping:
-        config: configuration
-        vars: configuration
-      params:
-        CONFIG_FILE: foundations/((foundation))/config/download-healthwatch.yml
-        VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
-        SOURCE: pivnet
-      output_mapping:
-        downloaded-product: healthwatch-product
-        downloaded-stemcell: healthwatch-stemcell
       tags: [reference-pipeline-worker]
-    - task: upload-and-stage-healthwatch
+      config:
+        platform: linux
+        params:
+          USERNAME: ((concourse-team/dev_image_registry.username))
+          PASSWORD: ((concourse-team/dev_image_registry.password))
+        outputs:
+          - name: example-product
+        run:
+          path: sh
+          args:
+            - -c
+            - |
+              curl -L -u "${USERNAME}:${PASSWORD}" \
+                -o example-product/example-product.pivotal \
+                https://usw1.packages.broadcom.com/artifactory/tas-operability-generic-dev-local/test/example-product-1.0-build.0.pivotal
+    - task: upload-and-stage-example-product
+      tags: [reference-pipeline-worker]
       image: platform-automation-image
       file: platform-automation-tasks/tasks/upload-and-stage-product.yml
       input_mapping:
-        product: healthwatch-product
+        product: example-product
         env: foundation-secrets
       params:
         ENV_FILE: reference-epc/((foundation))/secrets/env.yml
+    # code_snippet replicate-uploaded-product-usage start yaml
+    - task: replicate-uploaded-example-product
       tags: [reference-pipeline-worker]
-    - task: upload-healthwatch-stemcell
       image: platform-automation-image
-      file: platform-automation-tasks/tasks/upload-stemcell.yml
+      file: platform-automation-tasks/tasks/replicate-uploaded-product.yml
       input_mapping:
+        product: example-product
         env: foundation-secrets
-        stemcell: healthwatch-stemcell
       params:
         ENV_FILE: reference-epc/((foundation))/secrets/env.yml
+        REPLICA_SUFFIX: foo
+    - task: replicate-uploaded-example-product-2
       tags: [reference-pipeline-worker]
-    
-- name: download-upload-and-stage-healthwatch-pas-exporter
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/replicate-uploaded-product.yml
+      input_mapping:
+        product: example-product
+        env: foundation-secrets
+      params:
+        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
+        REPLICA_SUFFIX: bar
+    # code_snippet replicate-uploaded-product-usage end
+
+- name: configure-example-product
   serial: true
-  serial_groups: [ products ]
+  serial_groups: [ install ]
   plan:
     - in_parallel:
-        - get: platform-automation-image
-          params:
-            unpack: true
-          trigger: true
-          passed: [ "upgrade-opsman" ]
-          tags: [reference-pipeline-worker]
-        - get: platform-automation-tasks
-          params:
-            unpack: true
-        - get: configuration
-          tags: [reference-pipeline-worker]
-        - get: foundation-secrets
-          tags: [reference-pipeline-worker]
+      - get: platform-automation-image
+        passed:
+          - download-upload-and-stage-example-product
+        trigger: true
+        tags: [reference-pipeline-worker]
+      - get: platform-automation-tasks
+        params:
+          unpack: true
+        tags: [reference-pipeline-worker]
+      - get: configuration
+        tags: [reference-pipeline-worker]
+      - get: foundation-secrets
+        tags: [reference-pipeline-worker]
     - task: prepare-tasks-with-secrets
       <<: *prepare-tasks-with-secrets
-    - task: download-healthwatch
+    - task: configure-example-product
       image: platform-automation-image
-      file: platform-automation-tasks/tasks/download-product.yml
+      file: platform-automation-tasks/tasks/configure-product.yml
       input_mapping:
         config: configuration
-        vars: configuration
-      params:
-        CONFIG_FILE: foundations/((foundation))/config/download-healthwatch-pas-exporter.yml
-        VARS_FILES: vars/foundations/((foundation))/vars/versions.yml
-        SOURCE: pivnet
-      output_mapping:
-        downloaded-product: healthwatch-pas-exporter
-      tags: [reference-pipeline-worker]
-    - task: upload-and-stage-healthwatch-pas-exporter
-      image: platform-automation-image
-      file: platform-automation-tasks/tasks/upload-and-stage-product.yml
-      input_mapping:
-        product: healthwatch-pas-exporter
         env: foundation-secrets
+        vars: foundation-secrets
       params:
+        CONFIG_FILE: foundations/((foundation))/config/example-product.yml
         ENV_FILE: reference-epc/((foundation))/secrets/env.yml
+        VARS_FILES: vars/reference-epc/((foundation))/secrets/example-product.yml
       tags: [reference-pipeline-worker]
 
-- name: configure-tas
+- name: configure-example-product-foo
   serial: true
   serial_groups: [ install ]
   plan:
     - in_parallel:
       - get: platform-automation-image
-        params:
-          unpack: true
         passed:
-          - download-upload-and-stage-tas
+          - download-upload-and-stage-example-product
         trigger: true
         tags: [reference-pipeline-worker]
       - get: platform-automation-tasks
@@ -670,7 +483,7 @@ jobs:
         tags: [reference-pipeline-worker]
     - task: prepare-tasks-with-secrets
       <<: *prepare-tasks-with-secrets
-    - task: configure-tas
+    - task: configure-example-product-foo
       image: platform-automation-image
       file: platform-automation-tasks/tasks/configure-product.yml
       input_mapping:
@@ -678,55 +491,19 @@ jobs:
         env: foundation-secrets
         vars: foundation-secrets
       params:
-        CONFIG_FILE: foundations/((foundation))/config/tas.yml
+        CONFIG_FILE: foundations/((foundation))/config/example-product-foo.yml
         ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-        VARS_FILES: vars/reference-epc/((foundation))/secrets/tas.yml
-      tags: [reference-pipeline-worker]
-    
-- name: configure-healthwatch
-  serial: true
-  serial_groups: [ install ]
-  plan:
-    - in_parallel:
-      - get: platform-automation-image
-        params:
-          unpack: true
-        passed:
-          - download-upload-and-stage-healthwatch
-        trigger: true
-        tags: [reference-pipeline-worker]
-      - get: platform-automation-tasks
-        params:
-          unpack: true
-      - get: configuration
-        tags: [reference-pipeline-worker]
-      - get: foundation-secrets
-        tags: [reference-pipeline-worker]
-    - task: prepare-tasks-with-secrets
-      <<: *prepare-tasks-with-secrets
-    - task: configure-healthwatch
-      image: platform-automation-image
-      file: platform-automation-tasks/tasks/configure-product.yml
-      input_mapping:
-        config: configuration
-        env: foundation-secrets
-        vars: foundation-secrets
-      params:
-        CONFIG_FILE: foundations/((foundation))/config/healthwatch.yml
-        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-        VARS_FILES: vars/reference-epc/((foundation))/secrets/tas.yml
+        VARS_FILES: vars/reference-epc/((foundation))/secrets/example-product-foo.yml
       tags: [reference-pipeline-worker]
 
-- name: configure-healthwatch-pas-exporter
+- name: configure-example-product-bar
   serial: true
   serial_groups: [ install ]
   plan:
     - in_parallel:
       - get: platform-automation-image
-        params:
-          unpack: true
         passed:
-          - download-upload-and-stage-healthwatch-pas-exporter
+          - download-upload-and-stage-example-product
         trigger: true
         tags: [reference-pipeline-worker]
       - get: platform-automation-tasks
@@ -739,7 +516,7 @@ jobs:
         tags: [reference-pipeline-worker]
     - task: prepare-tasks-with-secrets
       <<: *prepare-tasks-with-secrets
-    - task: configure-healthwatch
+    - task: configure-example-product-bar
       image: platform-automation-image
       file: platform-automation-tasks/tasks/configure-product.yml
       input_mapping:
@@ -747,9 +524,9 @@ jobs:
         env: foundation-secrets
         vars: foundation-secrets
       params:
-        CONFIG_FILE: foundations/((foundation))/config/healthwatch-pas-exporter.yml
+        CONFIG_FILE: foundations/((foundation))/config/example-product-bar.yml
         ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-        VARS_FILES: vars/reference-epc/((foundation))/secrets/tas.yml
+        VARS_FILES: vars/reference-epc/((foundation))/secrets/example-product-bar.yml
       tags: [reference-pipeline-worker]
 
 - name: apply-product-changes
@@ -758,12 +535,10 @@ jobs:
   plan:
   - in_parallel:
     - get: platform-automation-image
-      params:
-        unpack: true
       passed:
-      - configure-tas
-      - configure-healthwatch
-      - configure-healthwatch-pas-exporter
+      - configure-example-product
+      - configure-example-product-foo
+      - configure-example-product-bar
       trigger: true
       tags: [reference-pipeline-worker]
     - get: platform-automation-tasks
@@ -824,180 +599,15 @@ jobs:
     params:
       file: installation/((foundation))-installation*.zip
     tags: [reference-pipeline-worker]
-- name: run-tas-smoketest-errand
-  serial: true
-  plan:
-  - in_parallel:
-    - get: platform-automation-image
-      params:
-        unpack: true
-      passed:
-      - configure-tas
-      - configure-healthwatch
-      trigger: true
-      tags: [reference-pipeline-worker]
-    - get: platform-automation-tasks
-      params:
-        unpack: true
-      tags: [reference-pipeline-worker]
-    - get: configuration
-      tags: [reference-pipeline-worker]
-    - get: foundation-secrets
-      tags: [reference-pipeline-worker]
-  - task: prepare-tasks-with-secrets
-    <<: *prepare-tasks-with-secrets
-    tags: [reference-pipeline-worker]
-  - task: prepare-image
-    <<: *prepare-image
-    tags: [reference-pipeline-worker]
-  # code_snippet run-bosh-errand-usage start yaml
-  - task: run-bosh-errand
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/run-bosh-errand.yml
-    input_mapping:
-      env: foundation-secrets
-    params:
-      PRODUCT_NAME: cf
-      ERRAND_NAME: smoke_tests
-      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-    tags: [reference-pipeline-worker]
-  # code_snippet run-bosh-errand-usage end
-- name: collect-telemetry
-  serial: true
-  serial_groups: [ install ]
-  plan:
-  - in_parallel:
-    - get: telemetry-collector-binary
-      params:
-        unpack: true
-      tags: [reference-pipeline-worker]
-    - get: platform-automation-image
-      params:
-        unpack: true
-      passed:
-      - apply-product-changes
-      trigger: true
-      tags: [reference-pipeline-worker]
-    - get: platform-automation-tasks
-      params:
-        unpack: true
-      tags: [reference-pipeline-worker]
-    - get: configuration
-      tags: [reference-pipeline-worker]
-    - get: foundation-secrets
-      tags: [reference-pipeline-worker]
-  - task: prepare-tasks-with-secrets
-    <<: *prepare-tasks-with-secrets
-    tags: [reference-pipeline-worker]
-  - task: prepare-image
-    <<: *prepare-image
-    tags: [reference-pipeline-worker]
-  # code_snippet collect-telemetry-usage start yaml
-  - task: collect-telemetry-data
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/collect-telemetry.yml
-    input_mapping:
-      env: foundation-secrets
-      config: configuration
-    params:
-      CONFIG_FILE: foundations/((foundation))/config/telemetry.yml
-      ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-    tags: [reference-pipeline-worker]
-  # code_snippet collect-telemetry-usage end
-  # code_snippet send-telemetry-usage start yaml
-  - task: send-telemetry-data
-    attempts: 3
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/send-telemetry.yml
-    params:
-      API_KEY: no-op-test-key
-      DATA_FILE_PATH: collected-telemetry-data/FoundationDetails*.tar
-    tags: [reference-pipeline-worker]
+
 # code_snippet send-telemetry-usage end
-- name: expiring-certificates
-  serial: true
-  serial_groups: [ install ]
-  plan:
-    - in_parallel:
-      - get: daily-trigger
-        trigger: true
-        tags: [reference-pipeline-worker]
-      - get: platform-automation-image
-        params:
-          unpack: true
-        tags: [reference-pipeline-worker]
-      - get: platform-automation-tasks
-        params:
-          unpack: true
-        tags: [reference-pipeline-worker]
-      - get: configuration
-        tags: [reference-pipeline-worker]
-      - get: state
-        tags: [reference-pipeline-worker]
-      - get: foundation-secrets
-        tags: [reference-pipeline-worker]
-    - task: prepare-tasks-with-secrets
-      <<: *prepare-tasks-with-secrets
-    # code_snippet expiring-certificates-usage start yaml
-    - task: expiring-certificates
-      image: platform-automation-image
-      file: platform-automation-tasks/tasks/expiring-certificates.yml
-      input_mapping:
-        env: foundation-secrets
-      params:
-        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-        EXPIRES_WITHIN: 2m
-      tags: [reference-pipeline-worker]
-    # code_snippet expiring-certificates-usage end
-- name: stage-configure-apply-telemetry
-  serial_groups: [install]
-  plan:
-    - in_parallel:
-      - get: platform-automation-image
-        params:
-          unpack: true
-        passed:
-          - apply-product-changes
-        trigger: true
-        tags: [reference-pipeline-worker]
-      - get: platform-automation-tasks
-        params:
-          unpack: true
-        tags: [reference-pipeline-worker]
-      - get: configuration
-        tags: [reference-pipeline-worker]
-      - get: foundation-secrets
-        tags: [reference-pipeline-worker]
-    - task: prepare-tasks-with-secrets
-      <<: *prepare-tasks-with-secrets
-    - task: prepare-image
-      <<: *prepare-image
-      tags: [reference-pipeline-worker]
-    # code_snippet stage-configure-apply-usage start yaml
-    - task: stage-configure-apply
-      image: platform-automation-image
-      file: platform-automation-tasks/tasks/stage-configure-apply.yml
-      attempts: 3
-      params:
-        CONFIG_FILE: foundations/((foundation))/config/p-telemetry.yml
-        STAGE_PRODUCT_CONFIG_FILE: foundations/((foundation))/config/p-telemetry.yml
-        ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-        VARS_FILES: |
-          vars/reference-epc/((foundation))/secrets/tas.yml
-      input_mapping:
-        env: foundation-secrets
-        config: configuration
-        vars: foundation-secrets
-      tags: [reference-pipeline-worker]
-    # code_snippet stage-configure-apply-usage end
+
 - name: delete-installation
   serial: true
   serial_groups: [install]
   plan:
     - in_parallel:
       - get: platform-automation-image
-        params:
-          unpack: true
         tags: [reference-pipeline-worker]
       - get: platform-automation-tasks
         params:
@@ -1046,8 +656,6 @@ jobs:
   plan:
     - in_parallel:
         - get: platform-automation-image
-          params:
-            unpack: true
           tags: [reference-pipeline-worker]
         - get: platform-automation-tasks
           params:
@@ -1076,8 +684,6 @@ jobs:
   plan:
     - in_parallel:
         - get: platform-automation-image
-          params:
-            unpack: true
           passed:
             - create-root-ca
           tags: [reference-pipeline-worker]
@@ -1116,8 +722,6 @@ jobs:
   plan:
     - in_parallel:
         - get: platform-automation-image
-          params:
-            unpack: true
           passed:
             - apply-new-ca
           tags: [reference-pipeline-worker]
@@ -1158,8 +762,6 @@ jobs:
   plan:
     - in_parallel:
         - get: platform-automation-image
-          params:
-            unpack: true
           passed:
             - activate-new-ca-and-regenerate-certs
           tags: [reference-pipeline-worker]
@@ -1199,8 +801,6 @@ jobs:
     - in_parallel:
         - get: platform-automation-image
           tags: [reference-pipeline-worker]
-          params:
-            unpack: true
           passed:
             - apply-certificates
         - get: platform-automation-tasks
