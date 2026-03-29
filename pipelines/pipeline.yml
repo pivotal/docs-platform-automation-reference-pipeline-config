@@ -456,11 +456,9 @@ jobs:
       input_mapping:
         config: configuration
         env: foundation-secrets
-        vars: foundation-secrets
       params:
         CONFIG_FILE: foundations/((foundation))/config/example-product.yml
         ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-        VARS_FILES: vars/reference-epc/((foundation))/secrets/example-product.yml
       tags: [reference-pipeline-worker]
 
 - name: configure-example-product-foo
@@ -489,11 +487,9 @@ jobs:
       input_mapping:
         config: configuration
         env: foundation-secrets
-        vars: foundation-secrets
       params:
         CONFIG_FILE: foundations/((foundation))/config/example-product-foo.yml
         ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-        VARS_FILES: vars/reference-epc/((foundation))/secrets/example-product-foo.yml
       tags: [reference-pipeline-worker]
 
 - name: configure-example-product-bar
@@ -522,11 +518,9 @@ jobs:
       input_mapping:
         config: configuration
         env: foundation-secrets
-        vars: foundation-secrets
       params:
         CONFIG_FILE: foundations/((foundation))/config/example-product-bar.yml
         ENV_FILE: reference-epc/((foundation))/secrets/env.yml
-        VARS_FILES: vars/reference-epc/((foundation))/secrets/example-product-bar.yml
       tags: [reference-pipeline-worker]
 
 - name: apply-product-changes
