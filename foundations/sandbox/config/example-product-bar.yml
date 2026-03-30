@@ -1,4 +1,4 @@
-product-name: example-product
+product-name: example-product-bar
 deploy-in-parallel: true
 network-properties:
   network:
