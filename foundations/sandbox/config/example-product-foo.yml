@@ -1,2 +1,9 @@
 product-name: example-product
 deploy-in-parallel: true
+network-properties:
+  network:
+    name: deployment
+  other_availability_zones:
+    - name: zone1
+  singleton_availability_zone:
+    name: zone1
