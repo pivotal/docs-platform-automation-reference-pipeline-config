@@ -102,7 +102,7 @@ properties-configuration:
     short_lived_nats_bootstrap_credentials_enabled: false
     skip_director_drain: false
     system_metrics_runtime_enabled: true
-    product_deploy_parallelism: 3
+    product_deploy_parallelism: 2
   dns_configuration:
     excluded_recursors: []
     handlers: []
