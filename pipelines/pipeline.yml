@@ -529,11 +529,6 @@ jobs:
   plan:
   - in_parallel:
     - get: platform-automation-image
-      passed:
-      - configure-example-product
-      - configure-example-product-foo
-      - configure-example-product-bar
-      trigger: true
       tags: [reference-pipeline-worker]
     - get: platform-automation-tasks
       params:
