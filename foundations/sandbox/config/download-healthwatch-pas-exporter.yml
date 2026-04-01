@@ -5,4 +5,4 @@ file-glob: "p-healthwatch2-pas-exporter*.pivotal"
 product-version: ((healthwatch-version))
 stemcell-iaas: vsphere
 
-pivnet-api-token: ((pivnet_token))
+pivnet-api-token: ((platform-automation/main.pivnet_token))

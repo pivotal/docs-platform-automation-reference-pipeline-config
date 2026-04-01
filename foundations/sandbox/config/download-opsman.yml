@@ -4,4 +4,4 @@ pivnet-product-slug: ops-manager
 file-glob: "*.ova"
 product-version: ((opsman-version))
 
-pivnet-api-token: ((pivnet_token))
+pivnet-api-token: ((platform-automation/main.pivnet_token))
