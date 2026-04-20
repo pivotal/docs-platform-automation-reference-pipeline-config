@@ -3,7 +3,7 @@
 pivnet-api-token: ((pivnet_token))
 pivnet-product-slug: ops-manager
 
-file-glob: "ops-manager-gcp*.yml"
+file-glob: "ops-manager*.yml"
 product-version-regex: ^3\.0\.\d+(?:\+LTS-T)?$ #^3\.\d+\.\d+(?:\+LTS-T)?$|^3\.\d+\.\d+-rc.*$|^3\.\d+\.\d+-alpha.*$
 
 s3-access-key-id: ((s3_access_key_id))
